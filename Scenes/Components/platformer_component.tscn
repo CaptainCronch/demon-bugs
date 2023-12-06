@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgm8e3v4kpfux"]
+
+[ext_resource type="Script" path="res://Scripts/Components/platformer_component.gd" id="1_ihgo7"]
+
+[node name="PlatformerComponent" type="Node3D"]
+script = ExtResource("1_ihgo7")

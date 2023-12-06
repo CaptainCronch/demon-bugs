@@ -1,0 +1,198 @@
+[gd_scene load_steps=19 format=3 uid="uid://cpsbck5o8h5qa"]
+
+[ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
+[ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
+[ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="2_mvr2n"]
+[ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_xugwe"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_idle_state.gd" id="3_c040h"]
+[ext_resource type="Script" path="res://Scripts/Player/spring_arm.gd" id="3_xot8x"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_walk_state.gd" id="4_e3lre"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_run_state.gd" id="5_cp4a0"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_hold_state.gd" id="6_rqytr"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_use_state.gd" id="7_4de8u"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_throw_state.gd" id="8_cx2dy"]
+[ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="9_1tpgm"]
+[ext_resource type="Texture2D" uid="uid://wjytge4ccgay" path="res://Assets/white dashed circle.png" id="10_alom2"]
+[ext_resource type="Script" path="res://Scripts/spinner.gd" id="10_vlrsn"]
+[ext_resource type="Script" path="res://Scripts/ui_spin.gd" id="11_sdxhg"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8vfe4"]
+height = 1.0
+radius = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5cai1"]
+albedo_texture = ExtResource("2_mvr2n")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wf0um"]
+radius = 0.75
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "pickup_area") groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_layer = 4
+collision_mask = 3
+platform_on_leave = 2
+script = ExtResource("1_fbsit")
+model = NodePath("Model")
+item_holder = NodePath("ItemSpinner/ItemHolder")
+spring_arm = NodePath("SpringArm3D")
+buffer_timer = NodePath("JumpBuffer")
+coyote_timer = NodePath("CoyoteTimer")
+pickup_area = NodePath("Pickup")
+
+[node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model") instance=ExtResource("2_xugwe")]
+jump_force = 12.0
+max_fall_speed = -100.0
+move_speed = 4.0
+turn_acceleration = 120.0
+gravity = 50.0
+acceleration = 10.0
+friction = 30.0
+target = NodePath("..")
+model = NodePath("../Model")
+
+[node name="StateDebug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879393, 0)
+billboard = 1
+text = "shrimps is bugs?"
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_g5p8y")
+initial_state = NodePath("PlayerIdle")
+
+[node name="PlayerIdle" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("3_c040h")
+
+[node name="PlayerWalk" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("4_e3lre")
+
+[node name="PlayerRun" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("5_cp4a0")
+
+[node name="PlayerHold" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_rqytr")
+
+[node name="PlayerUse" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_4de8u")
+
+[node name="PlayerThrow" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_cx2dy")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
+top_level = true
+spring_length = 10.0
+margin = 0.1
+script = ExtResource("3_xot8x")
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+fov = 50.0
+
+[node name="Control" type="Control" parent="SpringArm3D/Camera3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FPS" type="Label" parent="SpringArm3D/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="SpringArm3D/Camera3D/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(256, 256)
+fill_mode = 4
+texture_progress = ExtResource("10_alom2")
+script = ExtResource("11_sdxhg")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_8vfe4")
+
+[node name="Model" type="CSGCombiner3D" parent="."]
+layers = 2
+material_override = SubResource("StandardMaterial3D_5cai1")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Model"]
+radius = 0.3
+height = 1.0
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0933675, 0.333076, -0.197277)
+radius = 0.108882
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.084409, 0.349471, -0.197277)
+radius = 0.108882
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Model"]
+transform = Transform3D(0.965926, 0.183013, 0.183013, -0.258819, 0.683013, 0.683013, -1.43934e-08, -0.707107, 0.707107, 0, 0.189478, -0.212439)
+inner_radius = 0.065
+outer_radius = 0.135
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Model"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.25, 0.933013, -0.258819, -0.0669873, 0.25, 0.965926, 0.173743, 0.570051, 0.0372738)
+radius = 0.15
+height = 0.25
+cone = true
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Model"]
+transform = Transform3D(0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0, 1, -0.196698, 0.544073, 0)
+radius = 0.15
+height = 0.325768
+cone = true
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="Model"]
+transform = Transform3D(0.965926, 0.25, 0.0669873, 0, -0.258819, 0.965926, 0.258819, -0.933013, -0.25, -0.0288087, -0.154155, 0.345175)
+radius = 0.150666
+height = 0.441
+cone = true
+
+[node name="ItemSpinner" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("10_vlrsn")
+target = NodePath("../Model")
+
+[node name="ItemHolder" type="Node3D" parent="ItemSpinner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0)
+
+[node name="Decal" type="Decal" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.49, 0)
+size = Vector3(2.5, 10, 2.5)
+texture_albedo = ExtResource("9_1tpgm")
+modulate = Color(0, 0, 0, 1)
+upper_fade = 1e-05
+lower_fade = 1e-05
+
+[node name="JumpBuffer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="Pickup" type="Area3D" parent="." node_paths=PackedStringArray("target")]
+collision_layer = 4
+collision_mask = 16
+script = ExtResource("10_vlrsn")
+target = NodePath("../Model")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.541364)
+shape = SubResource("SphereShape3D_wf0um")
