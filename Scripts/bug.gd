@@ -20,7 +20,5 @@ func _on_timer_timeout():
 	flash_explosion()
 	
 	for body in $ExplodeArea.get_overlapping_bodies():
-		print("looking")
 		if body.has_method("explode") and body != self:
-			print("found")
-			body.explode(global_position, $ExplodeArea/CollisionShape3D.shape.radius, 30, 0)
+			body.explode(global_position, $ExplodeArea/CollisionShape3D.shape.radius, 15, 0)

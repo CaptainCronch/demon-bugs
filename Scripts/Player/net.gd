@@ -3,7 +3,7 @@ extends Tool
 @export var area : Area3D
 
 
-func swing(on : bool) -> void :
+func on_use(on : bool) -> void :
 	area.monitorable = on
 	area.monitoring = on
 

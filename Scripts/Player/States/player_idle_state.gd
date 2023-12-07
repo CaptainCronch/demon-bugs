@@ -1,4 +1,4 @@
-extends PlayerState
+extends PlayerMoveState
 
 
 func enter():
@@ -7,12 +7,10 @@ func enter():
 
 
 func update(_delta):
-	super.get_interact_input()
-	
-	if player.move_dir.length_squared() <= 0: return
+	if player.plat_comp.move_dir.length_squared() <= 0: return
 	
 	if Input.is_action_pressed("run"):
-		transitioned.emit(self, "playerrun")
+		transitioned.emit(self, "run")
 	else:
-		transitioned.emit(self, "playerwalk")
+		transitioned.emit(self, "walk")
 	# switch to random idle anims

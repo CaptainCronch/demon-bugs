@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=24 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
@@ -10,11 +10,13 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/player_run_state.gd" id="5_cp4a0"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_hold_state.gd" id="6_rqytr"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_use_state.gd" id="7_4de8u"]
+[ext_resource type="Script" path="res://Scripts/Player/States/player_charge_state.gd" id="7_o62mw"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_throw_state.gd" id="8_cx2dy"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="9_1tpgm"]
 [ext_resource type="Texture2D" uid="uid://wjytge4ccgay" path="res://Assets/white dashed circle.png" id="10_alom2"]
 [ext_resource type="Script" path="res://Scripts/spinner.gd" id="10_vlrsn"]
 [ext_resource type="Script" path="res://Scripts/ui_spin.gd" id="11_sdxhg"]
+[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="16_akj2m"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8vfe4"]
 height = 1.0
@@ -26,7 +28,85 @@ albedo_texture = ExtResource("2_mvr2n")
 [sub_resource type="SphereShape3D" id="SphereShape3D_wf0um"]
 radius = 0.75
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "pickup_area") groups=["player"]]
+[sub_resource type="Animation" id="Animation_y11xh"]
+resource_name = "swing_down"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ItemSpinner/ItemHolder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.8),
+"transitions": PackedFloat32Array(0.432376, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.5, 0.3, 0), Vector3(0.285879, -0.0254659, -0.611744), Vector3(0.285879, -0.0254659, -0.611744), Vector3(0.5, 0.3, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ItemSpinner/ItemHolder:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.8),
+"transitions": PackedFloat32Array(0.432376, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.38309, -2.84927, 3.02216), Vector3(-1.38309, -2.84927, 3.02216), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ItemStateMachine/Use")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [true],
+"method": &"active_swing"
+}, {
+"args": [false],
+"method": &"active_swing"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_p2f0i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ItemSpinner/ItemHolder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.3, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ItemSpinner/ItemHolder:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gaw3d"]
+_data = {
+"RESET": SubResource("Animation_p2f0i"),
+"swing_down": SubResource("Animation_y11xh")
+}
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "plat_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 3
@@ -37,51 +117,54 @@ item_holder = NodePath("ItemSpinner/ItemHolder")
 spring_arm = NodePath("SpringArm3D")
 buffer_timer = NodePath("JumpBuffer")
 coyote_timer = NodePath("CoyoteTimer")
+animation_player = NodePath("AnimationPlayer")
 pickup_area = NodePath("Pickup")
+plat_comp = NodePath("PlatformerComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model") instance=ExtResource("2_xugwe")]
-jump_force = 12.0
-max_fall_speed = -100.0
-move_speed = 4.0
-turn_acceleration = 120.0
-gravity = 50.0
-acceleration = 10.0
-friction = 30.0
 target = NodePath("..")
 model = NodePath("../Model")
 
 [node name="StateDebug" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879393, 0)
 billboard = 1
-text = "shrimps is bugs?"
+no_depth_test = true
+text = "you are bugs"
 
-[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+[node name="MoveStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_g5p8y")
-initial_state = NodePath("PlayerIdle")
+initial_state = NodePath("Idle")
 
-[node name="PlayerIdle" type="Node" parent="PlayerStateMachine"]
+[node name="Idle" type="Node" parent="MoveStateMachine"]
 script = ExtResource("3_c040h")
 
-[node name="PlayerWalk" type="Node" parent="PlayerStateMachine"]
+[node name="Walk" type="Node" parent="MoveStateMachine"]
 script = ExtResource("4_e3lre")
 
-[node name="PlayerRun" type="Node" parent="PlayerStateMachine"]
+[node name="Run" type="Node" parent="MoveStateMachine"]
 script = ExtResource("5_cp4a0")
 
-[node name="PlayerHold" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("6_rqytr")
+[node name="ItemStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_text")]
+script = ExtResource("2_g5p8y")
+initial_state = NodePath("Hold")
+debug_text = NodePath("../StateDebug")
 
-[node name="PlayerUse" type="Node" parent="PlayerStateMachine"]
+[node name="Charge" type="Node" parent="ItemStateMachine"]
+script = ExtResource("7_o62mw")
+
+[node name="Use" type="Node" parent="ItemStateMachine"]
 script = ExtResource("7_4de8u")
 
-[node name="PlayerThrow" type="Node" parent="PlayerStateMachine"]
+[node name="Throw" type="Node" parent="ItemStateMachine"]
 script = ExtResource("8_cx2dy")
+
+[node name="Hold" type="Node" parent="ItemStateMachine"]
+script = ExtResource("6_rqytr")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
 top_level = true
 spring_length = 10.0
-margin = 0.1
 script = ExtResource("3_xot8x")
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
@@ -117,6 +200,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(256, 256)
 fill_mode = 4
 texture_progress = ExtResource("10_alom2")
@@ -171,6 +255,8 @@ target = NodePath("../Model")
 [node name="ItemHolder" type="Node3D" parent="ItemSpinner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0)
 
+[node name="Net" parent="ItemSpinner/ItemHolder" instance=ExtResource("16_akj2m")]
+
 [node name="Decal" type="Decal" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.49, 0)
 size = Vector3(2.5, 10, 2.5)
@@ -196,3 +282,8 @@ target = NodePath("../Model")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.541364)
 shape = SubResource("SphereShape3D_wf0um")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_gaw3d")
+}
