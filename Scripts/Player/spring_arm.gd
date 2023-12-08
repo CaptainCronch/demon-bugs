@@ -1,21 +1,21 @@
 extends SpringArm3D
 
-var mouse_sensitivity := 0.15
-var analog_sensitivity := 0.75
-var offset := Vector3.ZERO
+@export var mouse_sensitivity := 0.15
+@export var analog_sensitivity := 0.75
+@export var offset := Vector3.ZERO
 
-var _analog_look := Vector2()
+var _analog_look := 0.0
 
-@onready var player : Player =  $".."
+@export var target : Node3D
 
 
-func _process(delta):
+func _process(_delta):
 	$Camera3D/Control/FPS.text = str(Engine.get_frames_per_second())
-	_analog_look = Input.get_vector("look_left", "look_right", "look_down", "look_up")
-	rotate_y(deg_to_rad(_analog_look.x * analog_sensitivity))
-	global_position.x = player.global_position.x + offset.x
-	global_position.z = player.global_position.z + offset.z
-	global_position.y = player.global_position.y + offset.y
+	_analog_look = Input.get_axis("look_left", "look_right")
+	rotate_y(deg_to_rad(_analog_look * analog_sensitivity))
+	global_position.x = target.global_position.x
+	global_position.z = target.global_position.z
+	global_position.y = target.global_position.y + offset.y
 	#if player.is_on_floor() or absf(player.velocity.y) > player.plat_comp.jump_force * 1.5 or player.plat_comp.explosive_jumping:
 	#	global_position.y = player.global_position.y + offset.y
 

@@ -1,6 +1,6 @@
 extends PlayerItemState
 
-@export var charge_time := 0.5
+@export var charge_time := 0.2
 @export var max_power_level := 3
 
 var item : Item

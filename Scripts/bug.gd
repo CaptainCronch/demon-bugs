@@ -1,9 +1,11 @@
 extends CharacterBody3D
 
+@export var explode_attack : Attack
+
 @onready var plat_comp : PlatformerComponent = $PlatformerComponent
 
 
-func _process(delta):
+func _process(_delta):
 	plat_comp.move_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 	
 	if randf() > 0.99 and is_on_floor():
@@ -22,3 +24,7 @@ func _on_timer_timeout():
 	for body in $ExplodeArea.get_overlapping_bodies():
 		if body.has_method("explode") and body != self:
 			body.explode(global_position, $ExplodeArea/CollisionShape3D.shape.radius, 15, 0)
+	
+	for area in $ExplodeArea.get_overlapping_areas():
+		if area is HitboxComponent and area != $HitboxComponent:
+			area.damage(explode_attack)

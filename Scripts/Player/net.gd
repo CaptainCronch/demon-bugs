@@ -1,12 +1,14 @@
 extends Tool
 
-@export var area : Area3D
+@export var net_area : Area3D
 
 
 func on_use(on : bool) -> void :
-	area.monitorable = on
-	area.monitoring = on
+	net_area.monitorable = on
+	net_area.monitoring = on
 
 
 func _on_area_entered(area):
-	pass # Replace with function body.
+	if area is HitboxComponent:
+		attack.attack_position = global_position
+		area.damage(attack)

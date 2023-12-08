@@ -1,13 +1,24 @@
-[gd_scene load_steps=9 format=3 uid="uid://dy6oqfyna5fh4"]
+[gd_scene load_steps=14 format=3 uid="uid://dy6oqfyna5fh4"]
 
 [ext_resource type="Script" path="res://Scripts/bug.gd" id="1_dcr2u"]
+[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_c41qw"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_k3w74"]
 [ext_resource type="Texture2D" uid="uid://dyntflns808cm" path="res://Assets/squawq7-pfp.png" id="2_rqfre"]
+[ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="3_0pyq4"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="3_722u2"]
+[ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="4_el5bk"]
+
+[sub_resource type="Resource" id="Resource_c0sjm"]
+script = ExtResource("2_c41qw")
+attack_damage = 1.0
+knockback_force = 0.0
+stun_time = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hhteb"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qgi3k"]
-height = 0.155069
-radius = 0.388203
+height = 0.18
+radius = 0.25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_45cx8"]
 albedo_texture = ExtResource("2_rqfre")
@@ -23,16 +34,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 3
 script = ExtResource("1_dcr2u")
+explode_attack = SubResource("Resource_c0sjm")
 
-[node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model") instance=ExtResource("2_k3w74")]
+[node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_k3w74")]
 max_fall_speed = -75.0
 move_speed = 2.0
 turn_acceleration = 50.0
 target = NodePath("..")
 model = NodePath("../Model")
+health_comp = NodePath("../HealthComponent")
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") instance=ExtResource("3_0pyq4")]
+collision_layer = 8
+health_comp = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+shape = SubResource("SphereShape3D_hhteb")
+
+[node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_el5bk")]
+max_health = 10
+target = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.101317)
 shape = SubResource("CylinderShape3D_qgi3k")
 
 [node name="Model" type="CSGCombiner3D" parent="."]
@@ -80,6 +103,7 @@ size = Vector3(0.101544, 0.0728633, 0.314474)
 [node name="ExplodeArea" type="Area3D" parent="."]
 collision_layer = 8
 collision_mask = 31
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExplodeArea"]
 shape = SubResource("SphereShape3D_rct7k")

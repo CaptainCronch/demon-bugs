@@ -6,7 +6,8 @@ var power_level := 0
 
 
 func enter() -> void :
-	pass
+	if not player.held_item.chargeable:
+		transitioned.emit(self, "use")
 	#player.plat_comp.move_speed = slow_move_speed
 	#player.animation_player.play("hold")
 

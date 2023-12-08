@@ -4,3 +4,7 @@
 
 [node name="PlatformerComponent" type="Node3D"]
 script = ExtResource("1_ihgo7")
+
+[node name="StunTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="StunTimer" to="." method="_on_stun_timer_timeout"]

@@ -97,6 +97,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41734, 0.5, 5.49828)
 
 [node name="Beetle" parent="." instance=ExtResource("3_8jf1w")]
 
+[node name="Beetle2" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.69121, 0.0901996, 1.44908)
+
+[node name="Beetle3" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.26499, 0.0901996, -5.35449)
+
+[node name="Beetle4" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.36736, 0.0901996, -4.84987)
+
+[node name="Beetle5" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.22732, 0.0901996, 3.13821)
+
+[node name="Beetle6" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15891, 0.0901996, 6.61323)
+
 [node name="Item" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.74028, 0.825028, -2.38242)
 collision_layer = 16

@@ -19,10 +19,15 @@ var held_item : Item
 @export var coyote_timer : Timer
 @export var animation_player : AnimationPlayer
 @export var pickup_area : Area3D
+@export var health_bar : TextureProgressBar
 @export var plat_comp : PlatformerComponent
+@export var health_comp : HealthComponent
 
 
 func _ready() -> void :
+	health_bar.max_value = health_comp.max_health
+	health_bar.value = health_comp.health
+	health_comp.damage_taken.connect(update_health_bar)
 	if item_holder.get_child(0):
 		holding_item = true
 		held_item = item_holder.get_child(0)
@@ -32,7 +37,10 @@ func _ready() -> void :
 
 
 func _process(_delta : float) -> void :
-	held_item = item_holder.get_child(0)
+	if item_holder.get_child_count() > 0:
+		held_item = item_holder.get_child(0)
+	else:
+		held_item = null
 	get_input()
 
 
@@ -40,12 +48,9 @@ func _physics_process(_delta : float) -> void :
 	air_movement(_delta)
 
 
-
 func _input(event : InputEvent) -> void :
 	if event.is_action_pressed("jump"):
 		buffer_timer.start(buffer_time) # waits until you touch the ground to jump
-	#elif event.is_action_pressed("drop"):
-		#throw_item(0)
 
 
 func get_input() -> void :
@@ -80,9 +85,6 @@ func air_movement(_delta : float) -> void :
 				#velocity.x = cut_velocity.x # removes multiplier from move speed
 				#velocity.z = cut_velocity.y
 
-func ground_movement(_delta : float) -> void :
-	pass
-
 
 func throw_item(power_level) -> void :
 	var item : Item = item_holder.get_child(0) as Item
@@ -111,13 +113,7 @@ func stun(time : float) -> void :
 
 func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -> void :
 	plat_comp.explode(origin, radius, power, upthrust)
-	#var distance_factor := (inverse_lerp(0, radius, global_position.distance_to(origin)) * -0.5) + 1
-	#if distance_factor < 0.5: return
-	#
-	#var up_pos := Vector3(global_position.x, global_position.y + upthrust, global_position.z)
-	#velocity += origin.direction_to(up_pos) * distance_factor * power
-	#explosive_jumping = true
 
 
-func _on_net_area_entered(_area : Area3D) -> void :
-	pass # Replace with function body.
+func update_health_bar(_attack : Attack):
+	health_bar.value = health_comp.health

@@ -1,4 +1,4 @@
-extends Node3D
+extends Node
 class_name PlatformerComponent
 
 @export var jump_force := 8.0
@@ -29,13 +29,21 @@ var turning := true
 
 @export var target : CharacterBody3D
 @export var model : VisualInstance3D
+@export var health_comp : HealthComponent
+
+@onready var stun_timer : Timer = $StunTimer
 
 
-func _process(_delta):
+func _ready():
+	if health_comp:
+		health_comp.damage_taken.connect(knockback)
+
+
+func _process(_delta) -> void :
 	model_controls(_delta)
 
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void :
 	air_movement(_delta)
 	ground_movement(_delta)
 	target.move_and_slide()
@@ -71,7 +79,7 @@ func ground_movement(delta : float) -> void :
 
 
 func model_controls(delta : float) -> void :
-	if move_dir != Vector2.ZERO and turning:
+	if move_dir != Vector2.ZERO and turning and not stunned:
 		model.rotation.y = Global.decay_angle_towards(
 				model.rotation.y,
 				atan2(move_dir.x, move_dir.y) + PI,
@@ -79,12 +87,13 @@ func model_controls(delta : float) -> void :
 				delta)
 
 
-func jump():
+func jump() -> void :
+	if stunned: return
 	target.velocity.y = jump_force
 
 
 func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -> void :
-	var distance_factor : float = (inverse_lerp(0, radius, global_position.distance_to(origin)) * -0.5) + 1
+	var distance_factor : float = (inverse_lerp(0, radius, target.global_position.distance_to(origin)) * -0.5) + 1
 	if distance_factor < 0.5: return
 	
 	var upthrust_corrected_position = Vector3(
@@ -96,8 +105,21 @@ func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -
 	explosive_jumping = true
 
 
+func knockback(attack : Attack) -> void :
+	if is_equal_approx(attack.knockback_force, 0.0): return
+	var pos_2d := Vector2(target.global_position.x, target.global_position.z)
+	var attack_2d := Vector2(attack.attack_position.x, attack.attack_position.z)
+	var dir := attack_2d.direction_to(pos_2d)
+	var knockback_total := Vector3(dir.x, 1, dir.y).normalized() * attack.knockback_force
+	target.velocity = knockback_total
+	stun(attack.stun_time)
+
+
 func stun(time : float) -> void :
 	stunned = true
-	move_dir = Vector2.ZERO
-	await get_tree().create_timer(time).timeout
+	#move_dir = Vector2.ZERO
+	stun_timer.start(time)
+
+
+func _on_stun_timer_timeout():
 	stunned = false

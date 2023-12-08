@@ -6,7 +6,7 @@ func update(_delta) -> void :
 		pick_up()
 	
 	if not player.holding_item: return
-	if Input.is_action_just_pressed("drop"):
+	if Input.is_action_pressed("drop"):
 		if player.item_holder.get_child(0) is Item:
 			transitioned.emit(self, "throw")
 	elif Input.is_action_just_pressed("use"):

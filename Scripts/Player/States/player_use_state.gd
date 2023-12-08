@@ -2,7 +2,7 @@ extends PlayerItemState
 
 
 func enter():
-	player.animation_player.play("swing_down")
+	player.animation_player.play("swing_down", -1, player.held_item.attack_cooldown)
 
 
 func update(_delta):
