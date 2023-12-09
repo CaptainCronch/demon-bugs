@@ -1,18 +1,23 @@
-[gd_scene load_steps=14 format=3 uid="uid://dy6oqfyna5fh4"]
+[gd_scene load_steps=19 format=3 uid="uid://dy6oqfyna5fh4"]
 
-[ext_resource type="Script" path="res://Scripts/bug.gd" id="1_dcr2u"]
+[ext_resource type="Script" path="res://Scripts/Bug/bug.gd" id="1_dcr2u"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_c41qw"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_k3w74"]
 [ext_resource type="Texture2D" uid="uid://dyntflns808cm" path="res://Assets/squawq7-pfp.png" id="2_rqfre"]
 [ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="3_0pyq4"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="3_722u2"]
+[ext_resource type="PackedScene" uid="uid://cmkncb45gpt2o" path="res://Scenes/Components/detection_component.tscn" id="3_joxl0"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="4_el5bk"]
+[ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="6_o58k5"]
+[ext_resource type="Script" path="res://Scripts/Bug/States/bug_wander_state.gd" id="7_34q3n"]
+[ext_resource type="Script" path="res://Scripts/Bug/States/bug_wait_state.gd" id="8_x74jg"]
+[ext_resource type="Script" path="res://Scripts/Bug/States/bug_chase_state.gd" id="10_bkqep"]
 
 [sub_resource type="Resource" id="Resource_c0sjm"]
 script = ExtResource("2_c41qw")
 attack_damage = 1.0
 knockback_force = 0.0
-stun_time = 0.0
+stun_time = 1.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hhteb"]
 
@@ -29,17 +34,20 @@ radius = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6vth"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Beetle" type="CharacterBody3D"]
+[node name="Beetle" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 3
 script = ExtResource("1_dcr2u")
 explode_attack = SubResource("Resource_c0sjm")
+plat_comp = NodePath("PlatformerComponent")
+
+[node name="DetectionComponent" parent="." node_paths=PackedStringArray("rotation_target", "character_body", "plat_comp") instance=ExtResource("3_joxl0")]
+rotation_target = NodePath("../Model")
+character_body = NodePath("..")
+plat_comp = NodePath("../PlatformerComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_k3w74")]
-max_fall_speed = -75.0
-move_speed = 2.0
-turn_acceleration = 50.0
 target = NodePath("..")
 model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
@@ -51,9 +59,41 @@ health_comp = NodePath("../HealthComponent")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
 shape = SubResource("SphereShape3D_hhteb")
 
+[node name="StateDebug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+billboard = 1
+no_depth_test = true
+text = "i am bugs"
+
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_el5bk")]
-max_health = 10
+max_health = 5
 target = NodePath("..")
+
+[node name="BugStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_text")]
+script = ExtResource("6_o58k5")
+initial_state = NodePath("Wander")
+debug_text = NodePath("../StateDebug")
+
+[node name="Wander" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("plat_comp", "detect_comp")]
+script = ExtResource("7_34q3n")
+plat_comp = NodePath("../../PlatformerComponent")
+detect_comp = NodePath("../../DetectionComponent")
+
+[node name="Walk" type="Timer" parent="BugStateMachine/Wander"]
+one_shot = true
+
+[node name="Wait" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("plat_comp", "detect_comp")]
+script = ExtResource("8_x74jg")
+plat_comp = NodePath("../../PlatformerComponent")
+detect_comp = NodePath("../../DetectionComponent")
+
+[node name="Wait" type="Timer" parent="BugStateMachine/Wait"]
+one_shot = true
+
+[node name="Chase" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("plat_comp", "detect_comp")]
+script = ExtResource("10_bkqep")
+plat_comp = NodePath("../../PlatformerComponent")
+detect_comp = NodePath("../../DetectionComponent")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_qgi3k")

@@ -37,10 +37,6 @@ func _ready() -> void :
 
 
 func _process(_delta : float) -> void :
-	if item_holder.get_child_count() > 0:
-		held_item = item_holder.get_child(0)
-	else:
-		held_item = null
 	get_input()
 
 
@@ -55,7 +51,7 @@ func _input(event : InputEvent) -> void :
 
 func get_input() -> void :
 	plat_comp.move_dir = Vector2.ZERO
-	
+
 	plat_comp.move_dir.x = Input.get_axis("left", "right")
 	plat_comp.move_dir.y = Input.get_axis("forward", "back")
 	plat_comp.move_dir = plat_comp.move_dir.rotated(-spring_arm.rotation.y).limit_length()
@@ -64,16 +60,16 @@ func get_input() -> void :
 func air_movement(_delta : float) -> void :
 	if is_on_floor():
 		coyote_timer.start(coyote_time) # starts letting you jump
-	
+
 	if not coyote_timer.is_stopped() and not buffer_timer.is_stopped():
 		plat_comp.jump()
 		plat_comp.move_multiplier = jump_move_multiplier
 		velocity.x *= jump_move_multiplier
 		velocity.z *= jump_move_multiplier
-		
+
 		buffer_timer.stop()
 		coyote_timer.stop()
-	
+
 	#if not Input.is_action_pressed("jump"):
 		#if plat_comp.explosive_jumping: return
 		#if velocity.y > plat_comp.jump_force * 0.5 and velocity.y <= plat_comp.jump_force * 1:
@@ -89,19 +85,19 @@ func air_movement(_delta : float) -> void :
 func throw_item(power_level) -> void :
 	var item : Item = item_holder.get_child(0) as Item
 	if not item: return
-	
+
 	for child in item.get_children():
 		if child is CollisionShape3D:
 			child.disabled = false
-	
+
 	item_holder.remove_child(item)
 	get_tree().current_scene.add_child(item)
-	
+
 	item.global_position = item_holder.global_position
 	item.rotation.y = model.rotation.y
 	item.freeze = false
 	holding_item = false
-	
+	held_item = null
 	var offset := randf_range(-1.0, 1.0)
 	item.linear_velocity = (Vector3(0, 0.5, -1).rotated(Vector3.UP, model.rotation.y) * throw_force * power_level) + (velocity * 0.5)
 	item.angular_velocity = Vector3(offset, offset, offset) * throw_force

@@ -30,7 +30,7 @@ mass = 2.0
 script = ExtResource("2_ll4jk")
 net_area = NodePath("Area3D")
 attack = SubResource("Resource_yr4dl")
-attack_cooldown = 2.0
+attack_cooldown = 3.0
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)

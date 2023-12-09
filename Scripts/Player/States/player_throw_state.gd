@@ -2,6 +2,7 @@ extends PlayerItemState
 
 @export var charge_time := 0.2
 @export var max_power_level := 3
+@export var drop_delay := 0.2
 
 var item : Item
 var charge_timer : float
@@ -19,7 +20,7 @@ func enter() -> void :
 
 func update(_delta) -> void :
 	if thrown: return
-	
+
 	charge_timer += _delta
 	if charge_timer >= charge_time and power_level < max_power_level:
 		charge_timer = 0.0
@@ -29,7 +30,7 @@ func update(_delta) -> void :
 				#progress, "value",
 				#progress.max_value * (power_level / max_power_level),
 				#0.5).set_trans(Tween.TRANS_CUBIC)
-	
+
 	if Input.is_action_just_released("drop"):
 		thrown = true
 		progress.value = 0
@@ -38,5 +39,5 @@ func update(_delta) -> void :
 				#0,
 				#0.5).set_trans(Tween.TRANS_CUBIC)
 		player.throw_item(power_level)
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(drop_delay).timeout
 		transitioned.emit(self, "hold")

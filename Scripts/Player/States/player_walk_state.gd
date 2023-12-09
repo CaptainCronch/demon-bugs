@@ -11,6 +11,6 @@ func enter():
 func update(_delta):
 	if Input.is_action_pressed("run"):
 		transitioned.emit(self, "run")
-	
+
 	if player.plat_comp.move_dir.length_squared() <= 0:
 		transitioned.emit(self, "idle")

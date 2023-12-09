@@ -2,7 +2,7 @@ extends Node
 class_name HealthComponent
 
 signal damage_taken(attack : Attack)
-signal death()
+signal death(attack : Attack)
 
 @export var max_health : int
 @export var target : Node3D
@@ -14,9 +14,9 @@ func damage(attack : Attack):
 	health -= roundi(attack.attack_damage)
 	damage_taken.emit(attack)
 	if health <= 0:
-		die()
+		die(attack)
 
 
-func die():
-	death.emit()
+func die(attack):
+	death.emit(attack)
 	target.queue_free()

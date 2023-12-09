@@ -4,7 +4,7 @@ extends PlayerItemState
 func update(_delta) -> void :
 	if Input.is_action_just_pressed("interact"):
 		pick_up()
-	
+
 	if not player.holding_item: return
 	if Input.is_action_pressed("drop"):
 		if player.item_holder.get_child(0) is Item:
@@ -23,9 +23,10 @@ func pick_up():
 			body.global_position = player.item_holder.global_position
 			body.rotation = player.item_holder.rotation
 			body.freeze = true
-			
+
 			for child in body.get_children():
 				if child is CollisionShape3D:
 					child.disabled = true
-			
+
 			player.holding_item = true
+			player.held_item = player.item_holder.get_child(0)

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/beetle.tscn" id="3_8jf1w"]
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="4_l0ih0"]
 [ext_resource type="Script" path="res://Scripts/Classes/item.gd" id="4_rytf5"]
-[ext_resource type="Script" path="res://Scripts/basket.gd" id="6_v5utc"]
+[ext_resource type="Script" path="res://Scripts/Misc/basket.gd" id="6_v5utc"]
 [ext_resource type="Texture2D" uid="uid://bxfn6r5lvbfco" path="res://Assets/star_07.png" id="7_vfn3k"]
 [ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="9_5dxr4"]
@@ -91,6 +91,13 @@ size = Vector3(50, 1, 50)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 61.714, 0)
 flip_faces = true
 radius = 65.0
+
+[node name="Tree" type="CSGCylinder3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48482, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+height = 10.0
 
 [node name="Player" parent="." instance=ExtResource("2_0uico")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41734, 0.5, 5.49828)

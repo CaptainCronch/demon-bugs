@@ -16,8 +16,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/player_throw_state.gd" id="8_cx2dy"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="9_1tpgm"]
 [ext_resource type="Texture2D" uid="uid://wjytge4ccgay" path="res://Assets/white dashed circle.png" id="10_alom2"]
-[ext_resource type="Script" path="res://Scripts/spinner.gd" id="10_vlrsn"]
-[ext_resource type="Script" path="res://Scripts/ui_spin.gd" id="11_sdxhg"]
+[ext_resource type="Script" path="res://Scripts/Misc/spinner.gd" id="10_vlrsn"]
+[ext_resource type="Script" path="res://Scripts/Misc/ui_spin.gd" id="11_sdxhg"]
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="16_akj2m"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
@@ -65,7 +65,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_y11xh"]
 resource_name = "swing_down"
-length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -73,7 +72,7 @@ tracks/0/path = NodePath("ItemSpinner/ItemHolder:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.8),
+"times": PackedFloat32Array(0, 0.2, 0.3, 1),
 "transitions": PackedFloat32Array(0.432376, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0.5, 0.3, 0), Vector3(0.285879, -0.0254659, -0.611744), Vector3(0.285879, -0.0254659, -0.611744), Vector3(0.5, 0.3, 0)]
@@ -85,7 +84,7 @@ tracks/1/path = NodePath("ItemSpinner/ItemHolder:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.8),
+"times": PackedFloat32Array(0, 0.2, 0.3, 1),
 "transitions": PackedFloat32Array(0.432376, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-1.38309, -2.84927, 3.02216), Vector3(-1.38309, -2.84927, 3.02216), Vector3(0, 0, 0)]
@@ -114,7 +113,7 @@ _data = {
 "swing_down": SubResource("Animation_y11xh")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp") groups=["attack_target"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 3
@@ -132,6 +131,8 @@ plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
+knockback_resistance = 0.5
+stun_resistance = 0.5
 target = NodePath("..")
 model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
@@ -140,7 +141,7 @@ health_comp = NodePath("../HealthComponent")
 max_health = 10
 target = NodePath("..")
 
-[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") instance=ExtResource("4_js2p5")]
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["attack_target"] instance=ExtResource("4_js2p5")]
 collision_layer = 4
 health_comp = NodePath("../HealthComponent")
 
@@ -248,8 +249,8 @@ debug_text = NodePath("../../StateDebug")
 
 [node name="Over" type="Node" parent="SpringArm3D/CameraStateMachine"]
 script = ExtResource("14_c6ptj")
-fov = 60.0
-distance = 12.0
+fov = 40.0
+distance = 15.0
 angle = -70.0
 up_state = "close"
 down_state = "default"

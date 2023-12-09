@@ -8,15 +8,13 @@ class_name Attack
 var attack_position := Vector3.ZERO
 
 
-func init(
+func _init(
 		dam := attack_damage,
 		knock := knockback_force,
 		pos := attack_position,
 		stun := stun_time,
-		) -> Attack :
-	var attack := Attack.new()
-	attack.attack_damage = dam
-	attack.knockback_force = knock
-	attack.attack_position = pos
-	attack.stun_time = stun
-	return attack
+		):
+	attack_damage = dam
+	knockback_force = knock
+	attack_position = pos
+	stun_time = stun
