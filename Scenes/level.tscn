@@ -72,6 +72,9 @@ albedo_texture = ExtResource("4_l0ih0")
 
 [node name="Level" type="Node3D"]
 
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.35231, 26.332)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_mvglh")
 
@@ -83,14 +86,14 @@ use_collision = true
 collision_mask = 0
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Stage/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, -0.5, 0)
 visible = false
-size = Vector3(50, 1, 50)
+size = Vector3(100, 1, 100)
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Stage/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 61.714, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 77.0904, 0)
 flip_faces = true
-radius = 65.0
+radius = 80.0
 
 [node name="Tree" type="CSGCylinder3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48482, 0)
@@ -100,24 +103,118 @@ collision_mask = 0
 height = 10.0
 
 [node name="Player" parent="." instance=ExtResource("2_0uico")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41734, 0.5, 5.49828)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.82625, 7.75094, 29.9346)
 
 [node name="Beetle" parent="." instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86602, 0.0901996, 0)
 
-[node name="Beetle2" parent="." instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.69121, 0.0901996, 1.44908)
+[node name="Beetle2" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.47348, 0.0902015, 2.35635)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
 
-[node name="Beetle3" parent="." instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.26499, 0.0901996, -5.35449)
+[node name="Beetle3" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84181, 0.0902053, 7.59386)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
 
-[node name="Beetle4" parent="." instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.36736, 0.0901996, -4.84987)
+[node name="Beetle4" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.93376, 0.0902053, 9.71997)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
 
-[node name="Beetle5" parent="." instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.22732, 0.0901996, 3.13821)
+[node name="Beetle6" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.42441, 0.0902053, 5.19516)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
 
-[node name="Beetle6" parent="." instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15891, 0.0901996, 6.61323)
+[node name="Beetle7" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33246, 0.0902053, 2.08776)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle5" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6034, 0.0902053, 6.12193)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle8" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5168, 15.7207, -22.35)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle9" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3203, 15.7207, -16.5411)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle10" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.9741, 15.7207, -15.9519)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle11" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.1189, 15.7207, -16.0449)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle12" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8987, 15.7207, -18.5803)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle13" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.5052, 15.7207, -19.1186)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle14" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.521, 15.7207, -14.0191)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle15" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.4094, 15.7207, 3.57737)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle16" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.2129, 15.7207, 9.38628)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle17" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.8668, 15.7207, 9.97541)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle18" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.0115, 15.7207, 9.88244)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle19" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.7913, 15.7207, 7.3471)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle20" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.3978, 15.7207, 6.80877)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle21" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.4136, 15.7207, 11.9083)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle22" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4328, 15.7207, -10.1862)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle23" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6293, 15.7207, -4.37726)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle24" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.9755, 15.7207, -3.78814)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle25" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8307, 15.7207, -3.8811)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle26" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0509, 15.7207, -6.41644)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle27" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4444, 15.7207, -6.95477)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+
+[node name="Beetle28" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.4286, 15.7207, -1.85526)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
 
 [node name="Item" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.74028, 0.825028, -2.38242)

@@ -113,7 +113,7 @@ _data = {
 "swing_down": SubResource("Animation_y11xh")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp") groups=["attack_target"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 3
@@ -131,7 +131,6 @@ plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
-knockback_resistance = 0.5
 stun_resistance = 0.5
 target = NodePath("..")
 model = NodePath("../Model")
@@ -140,8 +139,9 @@ health_comp = NodePath("../HealthComponent")
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_rsfx7")]
 max_health = 10
 target = NodePath("..")
+invincibility_time = 1.0
 
-[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["attack_target"] instance=ExtResource("4_js2p5")]
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["player"] instance=ExtResource("4_js2p5")]
 collision_layer = 4
 health_comp = NodePath("../HealthComponent")
 
@@ -180,6 +180,9 @@ script = ExtResource("7_4de8u")
 [node name="Throw" type="Node" parent="ItemStateMachine"]
 script = ExtResource("8_cx2dy")
 
+[node name="DropDelay" type="Timer" parent="ItemStateMachine/Throw"]
+one_shot = true
+
 [node name="Hold" type="Node" parent="ItemStateMachine"]
 script = ExtResource("6_rqytr")
 
@@ -193,6 +196,7 @@ target = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0254101, 9.97785)
+current = true
 fov = 50.0
 
 [node name="Control" type="Control" parent="SpringArm3D/Camera3D"]
@@ -351,3 +355,5 @@ shape = SubResource("SphereShape3D_wf0um")
 libraries = {
 "": SubResource("AnimationLibrary_gaw3d")
 }
+
+[connection signal="timeout" from="ItemStateMachine/Throw/DropDelay" to="ItemStateMachine/Throw" method="_on_drop_delay_timeout"]

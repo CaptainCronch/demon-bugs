@@ -35,10 +35,14 @@ func _physics_process(_delta) -> void:
 
 
 func _on_child_transition(state, new_state_name) -> void :
-	if state != current_state: return
+	if state != current_state:
+		printerr("State ", state, " not current state!")
+		return
 
 	var new_state = states.get(new_state_name.to_lower())
-	if !new_state: return
+	if !new_state:
+		printerr("State ", new_state, " not found!")
+		return
 
 	if current_state:
 		current_state.exit()

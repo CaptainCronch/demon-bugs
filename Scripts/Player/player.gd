@@ -31,7 +31,8 @@ func _ready() -> void :
 	if item_holder.get_child(0):
 		holding_item = true
 		held_item = item_holder.get_child(0)
-		for child in item_holder.get_child(0).get_children():
+		held_item.global_position = item_holder.global_position
+		for child in held_item.get_children():
 				if child is CollisionShape3D:
 					child.disabled = true
 

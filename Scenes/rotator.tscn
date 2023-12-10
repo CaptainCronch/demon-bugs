@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://de7j28ib0thi7"]
+
+[ext_resource type="Shader" path="res://depth_test_disabled.gdshader" id="1_1rvh6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4rtlb"]
+render_priority = 0
+shader = ExtResource("1_1rvh6")
+
+[node name="Rotator" type="Node3D"]
+
+[node name="DebugLine" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+visible = false
+radius = 0.05
+sides = 3
+material = SubResource("ShaderMaterial_4rtlb")

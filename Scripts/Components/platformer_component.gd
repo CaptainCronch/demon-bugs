@@ -90,7 +90,7 @@ func model_controls(delta : float) -> void :
 
 
 func jump() -> void :
-	if stunned: return
+	if stunned or not target.is_on_floor(): return
 	target.velocity.y = jump_force
 
 
@@ -109,7 +109,7 @@ func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -
 
 func knockback(attack : Attack) -> void :
 	stun(attack.stun_time)
-	if is_equal_approx(attack.knockback_force, 0.0): return
+	if is_zero_approx(attack.knockback_force): return
 	var pos_2d := Vector2(target.global_position.x, target.global_position.z)
 	var attack_2d := Vector2(attack.attack_position.x, attack.attack_position.z)
 	var dir := attack_2d.direction_to(pos_2d)
@@ -119,10 +119,20 @@ func knockback(attack : Attack) -> void :
 
 
 func stun(time : float) -> void :
-	if is_equal_approx(time, 0.0): return
+	if is_zero_approx(time): return
 	stunned = true
 	#move_dir = Vector2.ZERO
 	stun_timer.start(time)
+
+
+func instant_velocity(direction : Vector2) -> void :
+	direction *= move_speed
+	target.velocity.x = direction.x
+	target.velocity.z = direction.y
+
+
+func is_on_floor() -> bool :
+	return target.is_on_floor()
 
 
 func _on_stun_timer_timeout():

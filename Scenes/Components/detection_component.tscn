@@ -1,41 +1,35 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmkncb45gpt2o"]
+[gd_scene load_steps=4 format=3 uid="uid://cmkncb45gpt2o"]
 
 [ext_resource type="Script" path="res://Scripts/Components/detection_component.gd" id="1_ihoyl"]
-[ext_resource type="Shader" path="res://depth_test_disabled.gdshader" id="2_r076x"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_o5jr0"]
-radius = 10.0
+radius = 15.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cgose"]
-radius = 5.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_65meb"]
-render_priority = 0
-shader = ExtResource("2_r076x")
+radius = 8.0
 
 [node name="DetectionComponent" type="Area3D"]
 collision_layer = 8
 collision_mask = 14
+monitorable = false
 script = ExtResource("1_ihoyl")
+danger_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_o5jr0")
 
+[node name="DetectionCooldown" type="Timer" parent="."]
+process_callback = 0
+one_shot = true
+
 [node name="EnterArea" type="Area3D" parent="."]
 collision_layer = 8
 collision_mask = 14
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="EnterArea"]
 shape = SubResource("SphereShape3D_cgose")
 
-[node name="Rotator" type="Node3D" parent="."]
-
-[node name="DebugLine" type="CSGCylinder3D" parent="Rotator"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-visible = false
-radius = 0.05
-sides = 3
-material = SubResource("ShaderMaterial_65meb")
-
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="timeout" from="DetectionCooldown" to="." method="_on_detection_cooldown_timeout"]
 [connection signal="area_entered" from="EnterArea" to="." method="_on_area_entered"]

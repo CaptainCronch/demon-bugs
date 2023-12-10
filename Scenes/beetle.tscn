@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dy6oqfyna5fh4"]
+[gd_scene load_steps=24 format=3 uid="uid://dy6oqfyna5fh4"]
 
 [ext_resource type="Script" path="res://Scripts/Bug/bug.gd" id="1_dcr2u"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_c41qw"]
@@ -9,9 +9,12 @@
 [ext_resource type="PackedScene" uid="uid://cmkncb45gpt2o" path="res://Scenes/Components/detection_component.tscn" id="3_joxl0"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="4_el5bk"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="6_o58k5"]
+[ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="6_rlhxv"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_wander_state.gd" id="7_34q3n"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_wait_state.gd" id="8_x74jg"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_chase_state.gd" id="10_bkqep"]
+[ext_resource type="Script" path="res://Scripts/Bug/States/bug_attack_state.gd" id="11_hq22q"]
+[ext_resource type="Script" path="res://Scripts/Bug/States/bug_anticipation_state.gd" id="13_edfgo"]
 
 [sub_resource type="Resource" id="Resource_c0sjm"]
 script = ExtResource("2_c41qw")
@@ -20,6 +23,15 @@ knockback_force = 0.0
 stun_time = 1.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hhteb"]
+
+[sub_resource type="Resource" id="Resource_agxo6"]
+script = ExtResource("2_c41qw")
+attack_damage = 1.0
+knockback_force = 10.0
+stun_time = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ojrgp"]
+radius = 0.3
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qgi3k"]
 height = 0.18
@@ -34,7 +46,7 @@ radius = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6vth"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Beetle" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp")]
+[node name="Beetle" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp") groups=["beetle", "bug"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 3
@@ -42,25 +54,34 @@ script = ExtResource("1_dcr2u")
 explode_attack = SubResource("Resource_c0sjm")
 plat_comp = NodePath("PlatformerComponent")
 
-[node name="DetectionComponent" parent="." node_paths=PackedStringArray("rotation_target", "character_body", "plat_comp") instance=ExtResource("3_joxl0")]
+[node name="DetectionComponent" parent="." node_paths=PackedStringArray("rotation_target", "character_body", "plat_comp", "own_hitbox") instance=ExtResource("3_joxl0")]
 rotation_target = NodePath("../Model")
 character_body = NodePath("..")
 plat_comp = NodePath("../PlatformerComponent")
+own_hitbox = NodePath("../HitboxComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_k3w74")]
+turn_acceleration = 5.0
 target = NodePath("..")
 model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
 
-[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") instance=ExtResource("3_0pyq4")]
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["beetle", "bug"] instance=ExtResource("3_0pyq4")]
 collision_layer = 8
 health_comp = NodePath("../HealthComponent")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
 shape = SubResource("SphereShape3D_hhteb")
 
+[node name="HurtAreaComponent" parent="." instance=ExtResource("6_rlhxv")]
+attack = SubResource("Resource_agxo6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtAreaComponent"]
+shape = SubResource("SphereShape3D_ojrgp")
+
 [node name="StateDebug" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
 billboard = 1
 no_depth_test = true
 text = "i am bugs"
@@ -90,10 +111,31 @@ detect_comp = NodePath("../../DetectionComponent")
 [node name="Wait" type="Timer" parent="BugStateMachine/Wait"]
 one_shot = true
 
-[node name="Chase" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("plat_comp", "detect_comp")]
+[node name="Chase" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("health_comp", "plat_comp", "detect_comp")]
 script = ExtResource("10_bkqep")
+health_comp = NodePath("../../HealthComponent")
 plat_comp = NodePath("../../PlatformerComponent")
 detect_comp = NodePath("../../DetectionComponent")
+
+[node name="AttackCooldown" type="Timer" parent="BugStateMachine/Chase"]
+process_callback = 0
+one_shot = true
+
+[node name="Attack" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("hurt_area_comp", "plat_comp", "detect_comp")]
+script = ExtResource("11_hq22q")
+hurt_area_comp = NodePath("../../HurtAreaComponent")
+plat_comp = NodePath("../../PlatformerComponent")
+detect_comp = NodePath("../../DetectionComponent")
+
+[node name="Anticipation" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("health_comp", "plat_comp", "detect_comp")]
+script = ExtResource("13_edfgo")
+health_comp = NodePath("../../HealthComponent")
+plat_comp = NodePath("../../PlatformerComponent")
+detect_comp = NodePath("../../DetectionComponent")
+
+[node name="AnticipationTimer" type="Timer" parent="BugStateMachine/Anticipation"]
+process_callback = 0
+one_shot = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_qgi3k")

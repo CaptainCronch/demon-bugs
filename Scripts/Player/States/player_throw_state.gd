@@ -10,6 +10,7 @@ var power_level := 0
 var thrown := false
 
 @onready var progress : TextureProgressBar = $"../../SpringArm3D/Camera3D/Control/TextureProgressBar"
+@onready var drop_timer : Timer = $DropDelay
 
 
 func enter() -> void :
@@ -39,5 +40,12 @@ func update(_delta) -> void :
 				#0,
 				#0.5).set_trans(Tween.TRANS_CUBIC)
 		player.throw_item(power_level)
-		await get_tree().create_timer(drop_delay).timeout
-		transitioned.emit(self, "hold")
+		drop_timer.start(drop_delay)
+
+
+func exit():
+	drop_timer.stop()
+
+
+func _on_drop_delay_timeout():
+	transitioned.emit(self, "hold")

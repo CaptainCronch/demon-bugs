@@ -9,7 +9,6 @@ var target : Bug
 
 
 func _ready() -> void :
-	var above : StateMachine = get_parent()
-	await above.ready
-	target = above.get_parent()
-	detect_comp.interest_entered.connect(func(): transitioned.emit(above.current_state, "chase"))
+	state_machine = get_parent()
+	await state_machine.ready
+	target = state_machine.get_parent()
