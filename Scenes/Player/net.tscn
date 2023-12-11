@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cl82itj3cqgxi"]
+[gd_scene load_steps=8 format=3 uid="uid://cl82itj3cqgxi"]
 
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="1_mxjl3"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_ipbl5"]
@@ -8,10 +8,7 @@
 script = ExtResource("2_ipbl5")
 attack_damage = 1.0
 knockback_force = 10.0
-stun_time = 0.2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_i4fpa"]
-size = Vector3(1.25, 2.5, 0.75)
+stun_time = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukpxc"]
 albedo_texture = ExtResource("1_mxjl3")
@@ -23,24 +20,13 @@ size = Vector3(0.15, 1.5, 0.15)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ftoqi"]
 height = 0.2
 
-[node name="Net" type="RigidBody3D" node_paths=PackedStringArray("net_area")]
+[node name="Net" type="RigidBody3D"]
 collision_layer = 16
 collision_mask = 19
 mass = 2.0
 script = ExtResource("2_ll4jk")
-net_area = NodePath("Area3D")
 attack = SubResource("Resource_yr4dl")
 attack_cooldown = 3.0
-
-[node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-collision_layer = 4
-collision_mask = 8
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("BoxShape3D_i4fpa")
 
 [node name="Model" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ukpxc")
@@ -63,5 +49,3 @@ shape = SubResource("BoxShape3D_2mwuh")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.37693, 0)
 shape = SubResource("CylinderShape3D_ftoqi")
-
-[connection signal="area_entered" from="Area3D" to="." method="_on_area_entered"]

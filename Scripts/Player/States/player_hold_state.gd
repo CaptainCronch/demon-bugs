@@ -23,10 +23,8 @@ func pick_up():
 			body.global_position = player.item_holder.global_position
 			body.rotation = player.item_holder.rotation
 			body.freeze = true
-
-			for child in body.get_children():
-				if child is CollisionShape3D:
-					child.disabled = true
-
 			player.holding_item = true
 			player.held_item = player.item_holder.get_child(0)
+		if body is Tool:
+			player.hurt_area_comp.collider.shape.size.z = body.range + 1
+			player.hurt_area_comp.collider.position.z = body.range / -2

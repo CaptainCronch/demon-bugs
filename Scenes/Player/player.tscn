@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=33 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
@@ -21,6 +21,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="16_akj2m"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
+[ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="20_uo1pg"]
+[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_euo68"]
 height = 0.8
@@ -32,6 +34,15 @@ radius = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5cai1"]
 albedo_texture = ExtResource("2_mvr2n")
+
+[sub_resource type="Resource" id="Resource_5ihsv"]
+script = ExtResource("21_pui17")
+attack_damage = 1.0
+knockback_force = 10.0
+stun_time = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kok24"]
+size = Vector3(2, 3, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wf0um"]
 radius = 0.75
@@ -113,7 +124,7 @@ _data = {
 "swing_down": SubResource("Animation_y11xh")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp") groups=["player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp", "hurt_area_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 3
@@ -129,6 +140,7 @@ pickup_area = NodePath("Pickup")
 health_bar = NodePath("SpringArm3D/Camera3D/Control/HealthBar")
 plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
+hurt_area_comp = NodePath("ItemSpinner/HurtAreaComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
 stun_resistance = 0.5
@@ -195,7 +207,6 @@ offset = Vector3(0, 0.8, 0)
 target = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0254101, 9.97785)
 current = true
 fov = 50.0
 
@@ -318,6 +329,15 @@ cone = true
 [node name="ItemSpinner" type="Node3D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("10_vlrsn")
 target = NodePath("../Model")
+
+[node name="HurtAreaComponent" parent="ItemSpinner" instance=ExtResource("20_uo1pg")]
+monitoring = false
+attack = SubResource("Resource_5ihsv")
+detection_groups = ["bug"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ItemSpinner/HurtAreaComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_kok24")
 
 [node name="ItemHolder" type="Node3D" parent="ItemSpinner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0)

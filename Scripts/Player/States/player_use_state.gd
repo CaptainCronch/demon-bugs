@@ -11,5 +11,5 @@ func update(_delta):
 
 
 func active_swing(on : bool) -> void :
-	player.held_item.on_use(on)
+	player.hurt_area_comp.monitoring = on
 	player.plat_comp.turning = !on

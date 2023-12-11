@@ -3,6 +3,7 @@ class_name Tool
 
 @export var attack : Attack
 @export var attack_cooldown := 0.2
+@export var range = 2.0
 @export var chargeable := false
 
 func on_use(_on : bool) -> void :

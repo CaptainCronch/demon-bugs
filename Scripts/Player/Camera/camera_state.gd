@@ -7,11 +7,12 @@ class_name CameraState
 @export var offset := Vector3(0, 0.8, 0)
 @export var up_state : String
 @export var down_state : String
-
 @export var transition_time := 0.5
 
 var spring_arm : SpringArm3D
 var camera : Camera3D
+
+var tween : Tween
 
 
 func _ready():
@@ -22,12 +23,14 @@ func _ready():
 
 
 func enter():
-	var tween := create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_property(camera, "fov", fov, transition_time)
-	tween.tween_property(camera, "h_offset", offset.x, transition_time)
-	tween.tween_property(spring_arm, "spring_length", distance, transition_time)
-	tween.tween_property(spring_arm, "rotation_degrees:x", angle, transition_time)
-	tween.tween_property(spring_arm, "offset:y", offset.y, transition_time)
+	#if tween: tween.kill()
+	#tween = create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	camera.fov = fov
+	#tween.tween_property(camera, "fov", fov, transition_time)
+	#tween.tween_property(camera, "h_offset", offset.x, transition_time)
+	#tween.tween_property(spring_arm, "spring_length", distance, transition_time)
+	#tween.tween_property(spring_arm, "rotation_degrees:x", angle, transition_time)
+	#tween.tween_property(spring_arm, "offset:y", offset.y, transition_time)
 
 
 func update(_delta):

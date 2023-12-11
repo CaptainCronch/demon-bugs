@@ -126,7 +126,7 @@ func _on_detection_cooldown_timeout():
 	set_danger()
 	chosen_dir = Vector2()
 	for i in resolution:
-		print(str(interests[i]))
+		#print(str(interests[i]))
 		interests[i] = interests[i] - dangers[i]
 		chosen_dir += ray_directions[i] * interests[i]
 	chosen_dir = chosen_dir.normalized()

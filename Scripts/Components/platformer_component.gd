@@ -52,6 +52,7 @@ func _physics_process(_delta) -> void :
 
 
 func air_movement(delta) -> void :
+	if is_on_floor(): return
 	if target.velocity.y >= peak_range: gravity = base_gravity
 	elif target.velocity.y <= -peak_range: gravity = fall_gravity
 	else: gravity = peak_gravity # dfferent gravities applied based on y velocity
@@ -63,7 +64,7 @@ func air_movement(delta) -> void :
 func ground_movement(delta : float) -> void :
 	var desired_velocity := move_dir * move_speed * move_multiplier
 
-	if target.is_on_floor():
+	if is_on_floor():
 		acceleration = base_acceleration
 		friction = base_friction
 		explosive_jumping = false
@@ -90,7 +91,7 @@ func model_controls(delta : float) -> void :
 
 
 func jump() -> void :
-	if stunned or not target.is_on_floor(): return
+	if stunned or not is_on_floor(): return
 	target.velocity.y = jump_force
 
 

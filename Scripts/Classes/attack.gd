@@ -3,7 +3,7 @@ class_name Attack
 
 @export var attack_damage := 0.0
 @export var knockback_force := 0.0
-@export var stun_time := 0.2
+@export var stun_time := 0.0
 
 var attack_position := Vector3.ZERO
 

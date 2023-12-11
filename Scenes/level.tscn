@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
-[ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/beetle.tscn" id="3_8jf1w"]
+[ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/flea.tscn" id="3_8jf1w"]
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="4_l0ih0"]
 [ext_resource type="Script" path="res://Scripts/Classes/item.gd" id="4_rytf5"]
 [ext_resource type="Script" path="res://Scripts/Misc/basket.gd" id="6_v5utc"]
@@ -74,6 +74,7 @@ albedo_texture = ExtResource("4_l0ih0")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.35231, 26.332)
+fov = 50.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_mvglh")
@@ -202,18 +203,6 @@ plat_comp = NodePath("../Beetle/PlatformerComponent")
 
 [node name="Beetle25" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8307, 15.7207, -3.8811)
-plat_comp = NodePath("../Beetle/PlatformerComponent")
-
-[node name="Beetle26" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0509, 15.7207, -6.41644)
-plat_comp = NodePath("../Beetle/PlatformerComponent")
-
-[node name="Beetle27" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4444, 15.7207, -6.95477)
-plat_comp = NodePath("../Beetle/PlatformerComponent")
-
-[node name="Beetle28" parent="." node_paths=PackedStringArray("plat_comp") instance=ExtResource("3_8jf1w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.4286, 15.7207, -1.85526)
 plat_comp = NodePath("../Beetle/PlatformerComponent")
 
 [node name="Item" type="RigidBody3D" parent="."]

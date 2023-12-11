@@ -28,7 +28,7 @@ stun_time = 1.0
 script = ExtResource("2_c41qw")
 attack_damage = 1.0
 knockback_force = 10.0
-stun_time = 0.0
+stun_time = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ojrgp"]
 radius = 0.3
@@ -46,7 +46,7 @@ radius = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6vth"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Beetle" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp") groups=["beetle", "bug"]]
+[node name="Flea" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp") groups=["beetle", "bug"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 3
@@ -89,6 +89,7 @@ text = "i am bugs"
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_el5bk")]
 max_health = 5
 target = NodePath("..")
+invincibility_time = 0.1
 
 [node name="BugStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_text")]
 script = ExtResource("6_o58k5")
@@ -126,6 +127,10 @@ script = ExtResource("11_hq22q")
 hurt_area_comp = NodePath("../../HurtAreaComponent")
 plat_comp = NodePath("../../PlatformerComponent")
 detect_comp = NodePath("../../DetectionComponent")
+
+[node name="AttackTimer" type="Timer" parent="BugStateMachine/Attack"]
+process_callback = 0
+one_shot = true
 
 [node name="Anticipation" type="Node" parent="BugStateMachine" node_paths=PackedStringArray("health_comp", "plat_comp", "detect_comp")]
 script = ExtResource("13_edfgo")

@@ -13,7 +13,6 @@ config_version=5
 config/name="demon bugs"
 run/main_scene="res://Scenes/level.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-run/max_fps=60
 config/icon="res://Assets/icon.svg"
 
 [autoload]
@@ -124,6 +123,7 @@ debug_key={
 
 [physics]
 
+3d/run_on_separate_thread=true
 3d/default_gravity=19.6
 
 [rendering]

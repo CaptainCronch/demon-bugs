@@ -22,6 +22,7 @@ var held_item : Item
 @export var health_bar : TextureProgressBar
 @export var plat_comp : PlatformerComponent
 @export var health_comp : HealthComponent
+@export var hurt_area_comp : HurtAreaComponent
 
 
 func _ready() -> void :

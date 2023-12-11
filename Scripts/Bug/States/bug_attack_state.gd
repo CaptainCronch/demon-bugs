@@ -2,8 +2,9 @@ extends BugState
 
 @export var attack_speed := 8.0
 @export var attack_duration := 0.5
-
 @export var hurt_area_comp : HurtAreaComponent
+
+@onready var attack_timer : Timer = $AttackTimer
 
 
 func enter():
@@ -12,6 +13,10 @@ func enter():
 	detect_comp.active = false
 	plat_comp.jump()
 	plat_comp.instant_velocity(detect_comp.chosen_dir)
-	await get_tree().create_timer(attack_duration).timeout
+	attack_timer.start(attack_duration)
+
+
+func physics_update(_delta):
+	if not attack_timer.is_stopped(): return
 	#hurt_area_comp.monitoring = false
 	transitioned.emit(self, "chase")

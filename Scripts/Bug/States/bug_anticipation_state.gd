@@ -21,14 +21,12 @@ func enter():
 
 func physics_update(_delta):
 	if anticipation_timer.is_stopped():
+		active = false
 		transitioned.emit(self, "attack")
-
-
-func exit():
-	active = false
 
 
 func _on_damage_taken(_attack) -> void :
 	if not active: return
+	active = false
 	anticipation_timer.stop()
 	transitioned.emit(self, "chase")
