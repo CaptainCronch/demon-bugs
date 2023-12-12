@@ -1,6 +1,7 @@
-[gd_scene load_steps=33 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=36 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
+[ext_resource type="Script" path="res://Scenes/Player/inventory.gd" id="2_dd4fj"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
 [ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="2_mvr2n"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_xugwe"]
@@ -19,9 +20,11 @@
 [ext_resource type="Script" path="res://Scripts/Misc/spinner.gd" id="10_vlrsn"]
 [ext_resource type="Script" path="res://Scripts/Misc/ui_spin.gd" id="11_sdxhg"]
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
-[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="16_akj2m"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
+[ext_resource type="Script" path="res://Scenes/Player/hotbar.gd" id="18_1oyf8"]
+[ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/item_display.tscn" id="19_0vy76"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="20_uo1pg"]
+[ext_resource type="PackedScene" uid="uid://dpof2qspdgg7t" path="res://Scenes/Player/UI/inventory_panel.tscn" id="20_w77c1"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_euo68"]
@@ -142,6 +145,9 @@ plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
 hurt_area_comp = NodePath("ItemSpinner/HurtAreaComponent")
 
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("2_dd4fj")
+
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
 stun_resistance = 0.5
 target = NodePath("..")
@@ -257,6 +263,24 @@ texture_under = ExtResource("16_u7k8p")
 texture_progress = ExtResource("16_u7k8p")
 tint_progress = Color(1, 0, 1, 1)
 
+[node name="Hotbar" type="HBoxContainer" parent="SpringArm3D/Camera3D/Control" node_paths=PackedStringArray("inventory")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("18_1oyf8")
+inventory = NodePath("../../../../Inventory")
+item_display = ExtResource("19_0vy76")
+
+[node name="InventoryPanel" parent="SpringArm3D/Camera3D/Control" instance=ExtResource("20_w77c1")]
+layout_mode = 1
+
 [node name="CameraStateMachine" type="Node" parent="SpringArm3D" node_paths=PackedStringArray("initial_state", "debug_text")]
 script = ExtResource("2_g5p8y")
 initial_state = NodePath("Default")
@@ -341,8 +365,6 @@ shape = SubResource("BoxShape3D_kok24")
 
 [node name="ItemHolder" type="Node3D" parent="ItemSpinner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0)
-
-[node name="Net" parent="ItemSpinner/ItemHolder" instance=ExtResource("16_akj2m")]
 
 [node name="Decal" type="Decal" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.49, 0)

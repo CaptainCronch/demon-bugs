@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SlotRef" load_steps=4 format=3 uid="uid://betck3oxakj1e"]
+
+[ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="1_mvuoy"]
+[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/net.tscn" id="2_l2i1d"]
+[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="3_jvat4"]
+
+[resource]
+script = ExtResource("3_jvat4")
+item_scene = ExtResource("2_l2i1d")
+image = ExtResource("1_mvuoy")
+name = "Bug Net"
+description = "This is a bug net. What did you expect?"
+stackable = null
+max_stack = 1
+tags = null

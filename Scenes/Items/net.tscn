@@ -1,17 +1,17 @@
 [gd_scene load_steps=8 format=3 uid="uid://cl82itj3cqgxi"]
 
-[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="1_mxjl3"]
-[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_ipbl5"]
-[ext_resource type="Script" path="res://Scripts/Player/net.gd" id="2_ll4jk"]
+[ext_resource type="Script" path="res://Scripts/Player/net.gd" id="1_5x8rh"]
+[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_tmt06"]
+[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="3_guf1y"]
 
 [sub_resource type="Resource" id="Resource_yr4dl"]
-script = ExtResource("2_ipbl5")
+script = ExtResource("2_tmt06")
 attack_damage = 1.0
 knockback_force = 10.0
 stun_time = 0.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukpxc"]
-albedo_texture = ExtResource("1_mxjl3")
+albedo_texture = ExtResource("3_guf1y")
 uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2mwuh"]
@@ -24,9 +24,10 @@ height = 0.2
 collision_layer = 16
 collision_mask = 19
 mass = 2.0
-script = ExtResource("2_ll4jk")
+script = ExtResource("1_5x8rh")
 attack = SubResource("Resource_yr4dl")
 attack_cooldown = 3.0
+ref_id = "bug_net"
 
 [node name="Model" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ukpxc")

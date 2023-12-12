@@ -23,14 +23,13 @@ func _ready():
 
 
 func enter():
-	#if tween: tween.kill()
-	#tween = create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
-	camera.fov = fov
+	if tween: tween.kill()
+	tween = create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	#tween.tween_property(camera, "fov", fov, transition_time)
-	#tween.tween_property(camera, "h_offset", offset.x, transition_time)
-	#tween.tween_property(spring_arm, "spring_length", distance, transition_time)
-	#tween.tween_property(spring_arm, "rotation_degrees:x", angle, transition_time)
-	#tween.tween_property(spring_arm, "offset:y", offset.y, transition_time)
+	tween.tween_property(camera, "h_offset", offset.x, transition_time)
+	tween.tween_property(spring_arm, "spring_length", distance, transition_time)
+	tween.tween_property(spring_arm, "rotation_degrees:x", angle, transition_time)
+	tween.tween_property(spring_arm, "offset:y", offset.y, transition_time)
 
 
 func update(_delta):

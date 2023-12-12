@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctfgegkktk0ij"]
+
+[ext_resource type="Script" path="res://Scripts/itemref_loader.gd" id="1_ef1is"]
+
+[node name="ItemrefLoader" type="ResourcePreloader"]
+script = ExtResource("1_ef1is")

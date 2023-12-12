@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=22 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
+[ext_resource type="PackedScene" uid="uid://ctfgegkktk0ij" path="res://Scenes/itemref_loader.tscn" id="1_sm857"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
 [ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/flea.tscn" id="3_8jf1w"]
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="4_l0ih0"]
@@ -8,7 +9,7 @@
 [ext_resource type="Script" path="res://Scripts/Misc/basket.gd" id="6_v5utc"]
 [ext_resource type="Texture2D" uid="uid://bxfn6r5lvbfco" path="res://Assets/star_07.png" id="7_vfn3k"]
 [ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
-[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Player/net.tscn" id="9_5dxr4"]
+[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/net.tscn" id="9_5dxr4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -71,6 +72,8 @@ size = Vector2(2, 2)
 albedo_texture = ExtResource("4_l0ih0")
 
 [node name="Level" type="Node3D"]
+
+[node name="ItemrefLoader" parent="." instance=ExtResource("1_sm857")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.35231, 26.332)
@@ -304,5 +307,8 @@ max_db = 5.0
 
 [node name="Net" parent="." instance=ExtResource("9_5dxr4")]
 transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, -0.865727, 1.15493, 4.80525)
+
+[node name="Net2" parent="." instance=ExtResource("9_5dxr4")]
+transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, -0.865727, 7.87094, 30.113)
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

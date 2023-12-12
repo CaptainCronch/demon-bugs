@@ -26,5 +26,5 @@ func pick_up():
 			player.holding_item = true
 			player.held_item = player.item_holder.get_child(0)
 		if body is Tool:
-			player.hurt_area_comp.collider.shape.size.z = body.range + 1
-			player.hurt_area_comp.collider.position.z = body.range / -2
+			player.hurt_area_comp.collider.shape.size.z = body.attack_range + 1
+			player.hurt_area_comp.collider.position.z = body.attack_range / -2
