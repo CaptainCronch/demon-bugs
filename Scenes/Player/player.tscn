@@ -1,13 +1,13 @@
 [gd_scene load_steps=36 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
-[ext_resource type="Script" path="res://Scenes/Player/inventory.gd" id="2_dd4fj"]
+[ext_resource type="Resource" uid="uid://vunkdfmqtwau" path="res://invref.tres" id="2_7cd14"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
 [ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="2_mvr2n"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_xugwe"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_idle_state.gd" id="3_c040h"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="3_rsfx7"]
-[ext_resource type="Script" path="res://Scripts/Player/spring_arm.gd" id="3_xot8x"]
+[ext_resource type="Script" path="res://Scripts/Player/Camera/spring_arm.gd" id="3_xot8x"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_walk_state.gd" id="4_e3lre"]
 [ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="4_js2p5"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_run_state.gd" id="5_cp4a0"]
@@ -20,9 +20,9 @@
 [ext_resource type="Script" path="res://Scripts/Misc/spinner.gd" id="10_vlrsn"]
 [ext_resource type="Script" path="res://Scripts/Misc/ui_spin.gd" id="11_sdxhg"]
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
+[ext_resource type="Script" path="res://Scripts/Player/UI/UI.gd" id="15_1s6h5"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
-[ext_resource type="Script" path="res://Scenes/Player/hotbar.gd" id="18_1oyf8"]
-[ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/item_display.tscn" id="19_0vy76"]
+[ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/UI/item_display.tscn" id="19_anx3v"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="20_uo1pg"]
 [ext_resource type="PackedScene" uid="uid://dpof2qspdgg7t" path="res://Scenes/Player/UI/inventory_panel.tscn" id="20_w77c1"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
@@ -127,12 +127,14 @@ _data = {
 "swing_down": SubResource("Animation_y11xh")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp", "hurt_area_comp") groups=["player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp", "hurt_area_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 3
 platform_on_leave = 2
 script = ExtResource("1_fbsit")
+inventoryref = ExtResource("2_7cd14")
+ui = NodePath("UI")
 model = NodePath("Model")
 item_holder = NodePath("ItemSpinner/ItemHolder")
 spring_arm = NodePath("SpringArm3D")
@@ -140,13 +142,10 @@ buffer_timer = NodePath("JumpBuffer")
 coyote_timer = NodePath("CoyoteTimer")
 animation_player = NodePath("AnimationPlayer")
 pickup_area = NodePath("Pickup")
-health_bar = NodePath("SpringArm3D/Camera3D/Control/HealthBar")
+health_bar = NodePath("UI/HealthBar")
 plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
 hurt_area_comp = NodePath("ItemSpinner/HurtAreaComponent")
-
-[node name="Inventory" type="Node" parent="."]
-script = ExtResource("2_dd4fj")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
 stun_resistance = 0.5
@@ -204,27 +203,21 @@ one_shot = true
 [node name="Hold" type="Node" parent="ItemStateMachine"]
 script = ExtResource("6_rqytr")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
-top_level = true
-spring_length = 10.0
-script = ExtResource("3_xot8x")
-offset = Vector3(0, 0.8, 0)
-target = NodePath("..")
-
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
-current = true
-fov = 50.0
-
-[node name="Control" type="Control" parent="SpringArm3D/Camera3D"]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("15_1s6h5")
 
-[node name="FPS" type="Label" parent="SpringArm3D/Camera3D/Control"]
+[node name="InventoryPanel" parent="UI" instance=ExtResource("20_w77c1")]
+layout_mode = 1
+offset_left = -528.0
+offset_top = -112.0
+
+[node name="FPS" type="Label" parent="UI"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -233,7 +226,7 @@ offset_top = -23.0
 offset_right = 40.0
 grow_vertical = 0
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="SpringArm3D/Camera3D/Control"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -252,7 +245,7 @@ fill_mode = 4
 texture_progress = ExtResource("10_alom2")
 script = ExtResource("11_sdxhg")
 
-[node name="HealthBar" type="TextureProgressBar" parent="SpringArm3D/Camera3D/Control"]
+[node name="HealthBar" type="TextureProgressBar" parent="UI"]
 layout_mode = 0
 offset_left = 26.0
 offset_top = 25.0
@@ -263,23 +256,55 @@ texture_under = ExtResource("16_u7k8p")
 texture_progress = ExtResource("16_u7k8p")
 tint_progress = Color(1, 0, 1, 1)
 
-[node name="Hotbar" type="HBoxContainer" parent="SpringArm3D/Camera3D/Control" node_paths=PackedStringArray("inventory")]
+[node name="OpenPos" type="Control" parent="UI"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -528.0
+offset_top = -412.0
+offset_right = -488.0
+offset_bottom = -372.0
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("18_1oyf8")
-inventory = NodePath("../../../../Inventory")
-item_display = ExtResource("19_0vy76")
+mouse_filter = 2
 
-[node name="InventoryPanel" parent="SpringArm3D/Camera3D/Control" instance=ExtResource("20_w77c1")]
+[node name="ClosedPos" type="Control" parent="UI"]
 layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -528.0
+offset_top = -108.0
+offset_right = -488.0
+offset_bottom = -68.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="GrabbedSlot" parent="UI" instance=ExtResource("19_anx3v")]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 96.0
+offset_bottom = 96.0
+mouse_filter = 1
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
+top_level = true
+spring_length = 10.0
+script = ExtResource("3_xot8x")
+offset = Vector3(0, 0.8, 0)
+target = NodePath("..")
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+current = true
+fov = 50.0
 
 [node name="CameraStateMachine" type="Node" parent="SpringArm3D" node_paths=PackedStringArray("initial_state", "debug_text")]
 script = ExtResource("2_g5p8y")

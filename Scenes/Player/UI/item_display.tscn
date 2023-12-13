@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://0ev0v7xuoof0"]
+[gd_scene load_steps=2 format=3 uid="uid://0ev0v7xuoof0"]
 
-[ext_resource type="Script" path="res://Scripts/Player/item_display.gd" id="1_pr465"]
-[ext_resource type="Texture2D" uid="uid://wjytge4ccgay" path="res://Assets/white dashed circle.png" id="2_og5xk"]
+[ext_resource type="Script" path="res://Scripts/Player/UI/item_display.gd" id="1_u0xsr"]
 
 [node name="ItemDisplay" type="PanelContainer"]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(96, 96)
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("1_pr465")
+script = ExtResource("1_u0xsr")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
@@ -18,14 +18,17 @@ theme_override_constants/margin_bottom = 4
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 layout_mode = 2
-texture = ExtResource("2_og5xk")
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Amount" type="Label" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 text = "x99"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

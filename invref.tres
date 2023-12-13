@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="InventoryRef" load_steps=11 format=3 uid="uid://vunkdfmqtwau"]
+
+[ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="1_rm54p"]
+[ext_resource type="Resource" uid="uid://betck3oxakj1e" path="res://Resources/bug_net.tres" id="2_y4ohi"]
+[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="3_63mjg"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/cube.tres" id="4_th3a0"]
+
+[sub_resource type="Resource" id="Resource_7atrt"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("2_y4ohi")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_wfq33"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("4_th3a0")
+amount = 20
+
+[sub_resource type="Resource" id="Resource_xefa1"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("4_th3a0")
+amount = 11
+
+[sub_resource type="Resource" id="Resource_oshy6"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("4_th3a0")
+amount = 90
+
+[sub_resource type="Resource" id="Resource_h68xy"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("4_th3a0")
+amount = 20
+
+[sub_resource type="Resource" id="Resource_s7iku"]
+script = ExtResource("3_63mjg")
+itemref = ExtResource("4_th3a0")
+amount = 9
+
+[resource]
+script = ExtResource("1_rm54p")
+slotrefs = Array[ExtResource("3_63mjg")]([SubResource("Resource_7atrt"), null, SubResource("Resource_wfq33"), SubResource("Resource_xefa1"), SubResource("Resource_oshy6"), SubResource("Resource_h68xy"), SubResource("Resource_s7iku"), null, null, null, null, null, null, null, null, null, null, null, null, null])

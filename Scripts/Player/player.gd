@@ -12,6 +12,11 @@ var tool_stun_time := 0.5
 var holding_item := false
 var held_item : Item
 
+var last_mouse_pos : Vector2
+
+@export var inventoryref : InventoryRef
+@export var ui : UI
+
 @export var model : VisualInstance3D
 @export var item_holder : Node3D
 @export var spring_arm : SpringArm3D
@@ -20,15 +25,20 @@ var held_item : Item
 @export var animation_player : AnimationPlayer
 @export var pickup_area : Area3D
 @export var health_bar : TextureProgressBar
+
 @export var plat_comp : PlatformerComponent
 @export var health_comp : HealthComponent
 @export var hurt_area_comp : HurtAreaComponent
 
 
 func _ready() -> void :
+	last_mouse_pos = get_window().size / 2
+	ui.set_inventory_data(inventoryref)
+
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
 	health_comp.damage_taken.connect(update_health_bar)
+
 	if item_holder.get_child(0):
 		holding_item = true
 		held_item = item_holder.get_child(0)
@@ -49,6 +59,10 @@ func _physics_process(_delta : float) -> void :
 func _input(event : InputEvent) -> void :
 	if event.is_action_pressed("jump"):
 		buffer_timer.start(buffer_time) # waits until you touch the ground to jump
+	elif event.is_action_pressed("open_inventory"):
+		Global.mouse_switch(last_mouse_pos)
+		ui.slide_inventory()
+
 
 
 func get_input() -> void :

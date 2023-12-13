@@ -9,7 +9,7 @@ var charge_timer : float
 var power_level := 0
 var thrown := false
 
-@onready var progress : TextureProgressBar = $"../../SpringArm3D/Camera3D/Control/TextureProgressBar"
+@onready var progress : TextureProgressBar = $"../../UI/TextureProgressBar"
 @onready var drop_timer : Timer = $DropDelay
 
 

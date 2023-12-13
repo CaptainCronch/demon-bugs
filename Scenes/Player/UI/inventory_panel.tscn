@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpof2qspdgg7t"]
+[gd_scene load_steps=3 format=3 uid="uid://dpof2qspdgg7t"]
 
-[ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/item_display.tscn" id="1_0w8vf"]
+[ext_resource type="Script" path="res://Scripts/Player/UI/inventory_panel.gd" id="1_x17s3"]
+[ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/UI/item_display.tscn" id="2_kuiuq"]
 
 [node name="InventoryPanel" type="PanelContainer"]
 anchors_preset = 3
@@ -8,77 +9,37 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -336.0
-offset_top = -268.0
-offset_bottom = 0.000366211
+offset_left = -32.0
+offset_top = -16.0
+offset_right = -16.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_x17s3")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer"]
 layout_mode = 2
 columns = 5
 
-[node name="ItemDisplay" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
+[node name="ItemDisplay" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2
 
-[node name="ItemDisplay2" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
+[node name="ItemDisplay2" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2
 
-[node name="ItemDisplay3" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
+[node name="ItemDisplay3" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2
 
-[node name="ItemDisplay4" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
+[node name="ItemDisplay4" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2
 
-[node name="ItemDisplay5" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay6" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay7" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay8" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay9" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay10" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay11" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay12" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay13" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay14" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay15" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay16" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay17" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay18" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay19" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
-layout_mode = 2
-
-[node name="ItemDisplay20" parent="MarginContainer/GridContainer" instance=ExtResource("1_0w8vf")]
+[node name="ItemDisplay5" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2

@@ -10,7 +10,7 @@ var _analog_look := 0.0
 
 
 func _process(_delta):
-	$Camera3D/Control/FPS.text = str(Engine.get_frames_per_second())
+	$"../UI/FPS".text = str(Engine.get_frames_per_second())
 	_analog_look = Input.get_axis("look_left", "look_right")
 	rotate_y(deg_to_rad(_analog_look * analog_sensitivity))
 	global_position.x = target.global_position.x
@@ -21,5 +21,5 @@ func _process(_delta):
 
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
