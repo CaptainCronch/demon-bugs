@@ -1,7 +1,6 @@
-[gd_scene load_steps=20 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=29 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
-[ext_resource type="PackedScene" uid="uid://ctfgegkktk0ij" path="res://Scenes/itemref_loader.tscn" id="1_sm857"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
 [ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/flea.tscn" id="3_8jf1w"]
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="4_l0ih0"]
@@ -10,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://bxfn6r5lvbfco" path="res://Assets/star_07.png" id="7_vfn3k"]
 [ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/net.tscn" id="9_5dxr4"]
+[ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
+[ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/cube.tres" id="13_nul6t"]
+[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="14_4hw1o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -65,9 +68,37 @@ size = Vector2(2, 2)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w51ww"]
 albedo_texture = ExtResource("4_l0ih0")
 
-[node name="Level" type="Node3D"]
+[sub_resource type="Resource" id="Resource_gm20x"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 1
 
-[node name="ItemrefLoader" parent="." instance=ExtResource("1_sm857")]
+[sub_resource type="Resource" id="Resource_plsb2"]
+resource_local_to_scene = true
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([SubResource("Resource_gm20x"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="Resource" id="Resource_qmihw"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_58be3"]
+resource_local_to_scene = true
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([null, SubResource("Resource_qmihw"), null, null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="Resource" id="Resource_k6u83"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_xnkds"]
+resource_local_to_scene = true
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([null, null, SubResource("Resource_k6u83"), null, null, null, null, null, null, null, null, null, null, null, null])
+
+[node name="Level" type="Node3D"]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.35231, 26.332)
@@ -98,6 +129,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48482, 0)
 use_collision = true
 collision_layer = 2
 collision_mask = 0
+radius = 1.0
 height = 10.0
 
 [node name="Player" parent="." instance=ExtResource("2_0uico")]
@@ -203,14 +235,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8307, 15.7207, -3.8811)
 plat_comp = NodePath("../Beetle/PlatformerComponent")
 
 [node name="Item" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
 
 [node name="Item2" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
 
 [node name="Item3" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
 
 [node name="Item4" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
 
 [node name="Item5" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
 
 [node name="Basket" type="Node3D" parent="."]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.60544, 3.13076, 6.86461)
@@ -249,5 +286,17 @@ transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, 
 
 [node name="Net2" parent="." instance=ExtResource("9_5dxr4")]
 transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, -0.865727, 7.87094, 30.113)
+
+[node name="Chest" parent="." instance=ExtResource("11_x56hf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9343, 20.6069)
+inventoryref = SubResource("Resource_plsb2")
+
+[node name="Chest2" parent="." instance=ExtResource("11_x56hf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97354, 4.9343, 21.7376)
+inventoryref = SubResource("Resource_58be3")
+
+[node name="Chest3" parent="." instance=ExtResource("11_x56hf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.135421, 4.9343, 22.6649)
+inventoryref = SubResource("Resource_xnkds")
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

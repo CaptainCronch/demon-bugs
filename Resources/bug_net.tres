@@ -12,4 +12,4 @@ name = "Bug Net"
 description = "This is a bug net. What did you expect?"
 stackable = null
 max_stack = 1
-tags = PackedStringArray()
+tags = []

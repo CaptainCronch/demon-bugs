@@ -2,6 +2,7 @@ extends RigidBody3D
 class_name Item
 
 @export var ref_id : String
+@export var slotref : SlotRef
 
 
 func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -> void :

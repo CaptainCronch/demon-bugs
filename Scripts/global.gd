@@ -1,16 +1,12 @@
 extends Node
 
-var itemref_loader : ResourcePreloader
-
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	get_window().mode = Window.MODE_FULLSCREEN
 
 
 func _process(_delta):
-	#if Input.is_action_just_pressed("mouse_escape"):
-		#mouse_switch()
-
 	if Input.is_action_just_pressed("debug_key"):
 		if DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED:
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
@@ -91,3 +87,7 @@ func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 
 		mesh_instance.queue_free()
 	else:
 		return mesh_instance
+
+
+func tag_to_ref(tag : String) -> ItemRef:
+	return load("res://Resources/" + tag + ".tres")

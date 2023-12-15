@@ -61,6 +61,14 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 		return null
 
 
+func pick_up_slotref(pickup : SlotRef) -> bool :
+	for ref in slotrefs:
+		if ref.can_merge_with(pickup):
+			ref.merge_with(pickup)
+			return true
+	return false
+
+
 func _on_slot_clicked(index : int, button : int) -> void :
 	inventory_interact.emit(self, index, button)
 	#print("inventory interacted at index ", str(index), " with button ", str(button))

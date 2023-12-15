@@ -1,14 +1,11 @@
 extends ResourcePreloader
 
-var ref_strings : PackedStringArray = [
-	"bug_net"
-]
 
-
-func _init():
-	for ref in ref_strings:
-		add_resource(ref, load("res://Resources/" + ref + ".tres"))
+#func _init():
+	#var resources_folder = DirAccess.open("res://Resources").get_files()
+	#for path in resources_folder:
+		#add_resource(path.erase(path.length() - 5, 5), load("res://Resources" + path))
 
 
 func _ready():
-	Global.itemref_loader = self
+	pass

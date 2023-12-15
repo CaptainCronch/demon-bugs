@@ -10,9 +10,8 @@ size = Vector3(0.5, 0.5, 0.5)
 albedo_texture = ExtResource("2_slec8")
 
 [node name="Item" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.74028, 0.825028, -2.38242)
 collision_layer = 16
-collision_mask = 19
+collision_mask = 51
 script = ExtResource("1_n7mrr")
 ref_id = "cube"
 

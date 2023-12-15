@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3 uid="uid://kxrynlmrjn5c"]
+
+[ext_resource type="Script" path="res://Scripts/chest.gd" id="1_gmf2p"]
+[ext_resource type="Texture2D" uid="uid://doxl1ofdj3oay" path="res://Assets/texture_08.png" id="1_jfh7h"]
+[ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="2_06mhq"]
+
+[sub_resource type="Resource" id="Resource_qtvid"]
+resource_local_to_scene = true
+script = ExtResource("2_06mhq")
+slotrefs = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fgoux"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ldwvh"]
+albedo_texture = ExtResource("1_jfh7h")
+
+[node name="Chest" type="RigidBody3D" groups=["external_inventory"]]
+collision_layer = 32
+collision_mask = 51
+mass = 5.0
+script = ExtResource("1_gmf2p")
+inventoryref = SubResource("Resource_qtvid")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fgoux")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material = SubResource("StandardMaterial3D_ldwvh")

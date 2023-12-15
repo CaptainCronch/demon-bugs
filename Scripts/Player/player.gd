@@ -12,8 +12,6 @@ var tool_stun_time := 0.5
 var holding_item := false
 var held_item : Item
 
-var last_mouse_pos : Vector2
-
 @export var inventoryref : InventoryRef
 @export var ui : UI
 
@@ -32,8 +30,7 @@ var last_mouse_pos : Vector2
 
 
 func _ready() -> void :
-	last_mouse_pos = get_window().size / 2
-	ui.set_inventory_data(inventoryref)
+	ui.set_inventory_data(inventoryref, true)
 
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
@@ -46,6 +43,8 @@ func _ready() -> void :
 		for child in held_item.get_children():
 				if child is CollisionShape3D:
 					child.disabled = true
+
+	print(str(Global.tag_to_ref("bug_net")))
 
 
 func _process(_delta : float) -> void :
@@ -60,8 +59,9 @@ func _input(event : InputEvent) -> void :
 	if event.is_action_pressed("jump"):
 		buffer_timer.start(buffer_time) # waits until you touch the ground to jump
 	elif event.is_action_pressed("open_inventory"):
-		Global.mouse_switch(last_mouse_pos)
 		ui.slide_inventory()
+	elif event.is_action_pressed("interact"):
+		pick_up()
 
 
 
@@ -119,6 +119,32 @@ func throw_item(power_level) -> void :
 	item.angular_velocity = Vector3(offset, offset, offset) * throw_force
 
 
+func pick_up():
+	if not holding_item and pickup_area.has_overlapping_bodies():
+		for body in pickup_area.get_overlapping_bodies():
+			if body is Tool:
+				hurt_area_comp.collider.shape.size.z = body.attack_range + 1
+				hurt_area_comp.collider.position.z = body.attack_range / -2
+			if body is Item:
+				body.get_parent().remove_child(body)
+				item_holder.add_child(body)
+				body.global_position = item_holder.global_position
+				body.rotation = item_holder.rotation
+				body.freeze = true
+				holding_item = true
+				held_item = item_holder.get_child(0)
+
+				for child in body.get_children():
+					if child is CollisionShape3D:
+						child.disabled = true
+
+				return
+
+
+func switch_held(index : int):
+	pass
+
+
 func stun(time : float) -> void :
 	plat_comp.stun(time)
 
@@ -129,3 +155,11 @@ func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -
 
 func update_health_bar(_attack : Attack):
 	health_bar.value = health_comp.health
+
+
+func _on_interact_body_entered(body):
+	if body is Chest: ui.external_inventory.add_external_inventory(body)
+
+
+func _on_interact_body_exited(body):
+	if body is Chest: ui.external_inventory.remove_external_inventory(body)

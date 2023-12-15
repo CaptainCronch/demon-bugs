@@ -1,8 +1,8 @@
-[gd_scene load_steps=36 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=39 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
-[ext_resource type="Resource" uid="uid://vunkdfmqtwau" path="res://invref.tres" id="2_7cd14"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
+[ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="2_mtpeg"]
 [ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="2_mvr2n"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_xugwe"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_idle_state.gd" id="3_c040h"]
@@ -22,10 +22,15 @@
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
 [ext_resource type="Script" path="res://Scripts/Player/UI/UI.gd" id="15_1s6h5"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
+[ext_resource type="Script" path="res://Scripts/Player/UI/external_inventory_display.gd" id="16_wdyl0"]
 [ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/UI/item_display.tscn" id="19_anx3v"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="20_uo1pg"]
 [ext_resource type="PackedScene" uid="uid://dpof2qspdgg7t" path="res://Scenes/Player/UI/inventory_panel.tscn" id="20_w77c1"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
+
+[sub_resource type="Resource" id="Resource_cjnqy"]
+script = ExtResource("2_mtpeg")
+slotrefs = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_euo68"]
 height = 0.8
@@ -127,13 +132,16 @@ _data = {
 "swing_down": SubResource("Animation_y11xh")
 }
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_5u7wp"]
+radius = 3.0
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp", "hurt_area_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 35
 platform_on_leave = 2
 script = ExtResource("1_fbsit")
-inventoryref = ExtResource("2_7cd14")
+inventoryref = SubResource("Resource_cjnqy")
 ui = NodePath("UI")
 model = NodePath("Model")
 item_holder = NodePath("ItemSpinner/ItemHolder")
@@ -212,10 +220,28 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("15_1s6h5")
 
-[node name="InventoryPanel" parent="UI" instance=ExtResource("20_w77c1")]
+[node name="InventoryPanel" parent="UI" node_paths=PackedStringArray("parent_node") instance=ExtResource("20_w77c1")]
 layout_mode = 1
-offset_left = -528.0
 offset_top = -112.0
+parent_node = NodePath("../..")
+
+[node name="ExternalInventory" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -528.0
+offset_right = -16.0
+offset_bottom = 488.0
+grow_horizontal = 0
+theme_override_constants/separation = 0
+script = ExtResource("16_wdyl0")
+
+[node name="TabBar" type="TabBar" parent="UI/ExternalInventory"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 64
+theme_override_constants/outline_size = 0
+tab_alignment = 2
 
 [node name="FPS" type="Label" parent="UI"]
 layout_mode = 1
@@ -255,36 +281,6 @@ scale = Vector2(0.3, 0.02)
 texture_under = ExtResource("16_u7k8p")
 texture_progress = ExtResource("16_u7k8p")
 tint_progress = Color(1, 0, 1, 1)
-
-[node name="OpenPos" type="Control" parent="UI"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -528.0
-offset_top = -412.0
-offset_right = -488.0
-offset_bottom = -372.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
-
-[node name="ClosedPos" type="Control" parent="UI"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -528.0
-offset_top = -108.0
-offset_right = -488.0
-offset_bottom = -68.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
 
 [node name="GrabbedSlot" parent="UI" instance=ExtResource("19_anx3v")]
 visible = false
@@ -329,7 +325,7 @@ script = ExtResource("14_c6ptj")
 fov = 60.0
 distance = 4.0
 angle = -10.0
-offset = Vector3(0.5, 0.8, 0)
+offset = Vector3(0.8, 0.8, 0)
 up_state = "default"
 down_state = "over"
 
@@ -423,4 +419,15 @@ libraries = {
 "": SubResource("AnimationLibrary_gaw3d")
 }
 
+[node name="InteractRange" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractRange"]
+shape = SubResource("SphereShape3D_5u7wp")
+
 [connection signal="timeout" from="ItemStateMachine/Throw/DropDelay" to="ItemStateMachine/Throw" method="_on_drop_delay_timeout"]
+[connection signal="tab_clicked" from="UI/ExternalInventory/TabBar" to="UI/ExternalInventory" method="_on_tab_clicked"]
+[connection signal="body_entered" from="InteractRange" to="." method="_on_interact_body_entered"]
+[connection signal="body_exited" from="InteractRange" to="." method="_on_interact_body_exited"]

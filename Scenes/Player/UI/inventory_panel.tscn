@@ -9,8 +9,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -32.0
-offset_top = -16.0
+offset_left = -528.0
+offset_top = -412.0
 offset_right = -16.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -42,4 +42,49 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="ItemDisplay5" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay6" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay7" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay8" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay9" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay10" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay11" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay12" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay13" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay14" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay15" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay16" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay17" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay18" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay19" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
+layout_mode = 2
+
+[node name="ItemDisplay20" parent="MarginContainer/GridContainer" instance=ExtResource("2_kuiuq")]
 layout_mode = 2

@@ -22,7 +22,7 @@ height = 0.2
 
 [node name="Net" type="RigidBody3D"]
 collision_layer = 16
-collision_mask = 19
+collision_mask = 51
 mass = 2.0
 script = ExtResource("1_5x8rh")
 attack = SubResource("Resource_yr4dl")
