@@ -31,6 +31,8 @@ var held_item : Item
 
 func _ready() -> void :
 	ui.set_inventory_data(inventoryref, true)
+	ui.active_slot_changed.connect(switch_held)
+	inventoryref.inventory_updated.connect(_on_inventory_updated)
 
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
@@ -44,8 +46,6 @@ func _ready() -> void :
 				if child is CollisionShape3D:
 					child.disabled = true
 
-	print(str(Global.tag_to_ref("bug_net")))
-
 
 func _process(_delta : float) -> void :
 	get_input()
@@ -55,14 +55,11 @@ func _physics_process(_delta : float) -> void :
 	air_movement(_delta)
 
 
-func _input(event : InputEvent) -> void :
+func _unhandled_input(event : InputEvent) -> void :
 	if event.is_action_pressed("jump"):
 		buffer_timer.start(buffer_time) # waits until you touch the ground to jump
 	elif event.is_action_pressed("open_inventory"):
 		ui.slide_inventory()
-	elif event.is_action_pressed("interact"):
-		pick_up()
-
 
 
 func get_input() -> void :
@@ -100,7 +97,7 @@ func air_movement(_delta : float) -> void :
 
 func throw_item(power_level) -> void :
 	var item : Item = item_holder.get_child(0) as Item
-	if not item: return
+	if not is_instance_valid(item): return
 
 	for child in item.get_children():
 		if child is CollisionShape3D:
@@ -118,31 +115,61 @@ func throw_item(power_level) -> void :
 	item.linear_velocity = (Vector3(0, 0.5, -1).rotated(Vector3.UP, model.rotation.y) * throw_force * power_level) + (velocity * 0.5)
 	item.angular_velocity = Vector3(offset, offset, offset) * throw_force
 
+	inventoryref.delete_slotref(ui.active_slot)
+
 
 func pick_up():
-	if not holding_item and pickup_area.has_overlapping_bodies():
+	if pickup_area.has_overlapping_bodies():
 		for body in pickup_area.get_overlapping_bodies():
-			if body is Tool:
-				hurt_area_comp.collider.shape.size.z = body.attack_range + 1
-				hurt_area_comp.collider.position.z = body.attack_range / -2
 			if body is Item:
-				body.get_parent().remove_child(body)
-				item_holder.add_child(body)
-				body.global_position = item_holder.global_position
-				body.rotation = item_holder.rotation
-				body.freeze = true
-				holding_item = true
-				held_item = item_holder.get_child(0)
-
-				for child in body.get_children():
-					if child is CollisionShape3D:
-						child.disabled = true
-
+				if inventoryref.add_slotref(body.slotref) == OK:
+					body.free()
 				return
 
 
 func switch_held(index : int):
-	pass
+	print("switching held item")
+	var slotref : SlotRef = inventoryref.slotrefs[index]
+	#var new_item = item.item_scene.instantiate()
+	if not is_instance_valid(slotref):
+		if is_instance_valid(held_item): # if nothing in new slot but held item then delete item and return
+			held_item.free()
+		return
+
+	if is_instance_valid(held_item): # if held item and new slot is actually new then delete held item
+		if slotref != held_item.slotref: # but if the new slot is the same as held item then return
+			held_item.free()
+		else:
+			return
+
+	held_item = Global.tag_to_item(slotref.itemref.ref_id).instantiate()
+	item_holder.add_child(held_item)
+
+	held_item.global_position = item_holder.global_position
+	held_item.rotation = item_holder.rotation
+	held_item.freeze = true
+
+	held_item.slotref = slotref
+	holding_item = true
+
+	for child in held_item.get_children():
+		if child is CollisionShape3D:
+			child.disabled = true
+	if held_item is Tool:
+		hurt_area_comp.collider.shape.size.z = held_item.attack_range + 1
+		hurt_area_comp.collider.position.z = held_item.attack_range / -2
+
+
+func _on_inventory_updated(new_invref: InventoryRef):
+	if not is_instance_valid(held_item): # if not holding an item switch to current slot (does nothing if nothing in slot)
+		switch_held(ui.active_slot)
+		return
+	elif not new_invref.slotrefs[ui.active_slot]: # if no item in slot delete held item
+		held_item.free()
+		return
+	elif new_invref.slotrefs[ui.active_slot] != held_item.slotref: # if item different then switch
+		call_deferred("switch_held", ui.active_slot) #switch_held(ui.active_slot)
+		return
 
 
 func stun(time : float) -> void :

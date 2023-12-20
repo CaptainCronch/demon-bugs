@@ -89,5 +89,9 @@ func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 
 		return mesh_instance
 
 
+func tag_to_item(tag : String) -> PackedScene:
+	return load("res://Scenes/Items/" + tag + ".tscn")
+
+
 func tag_to_ref(tag : String) -> ItemRef:
 	return load("res://Resources/" + tag + ".tres")

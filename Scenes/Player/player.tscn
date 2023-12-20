@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=40 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
@@ -20,7 +20,7 @@
 [ext_resource type="Script" path="res://Scripts/Misc/spinner.gd" id="10_vlrsn"]
 [ext_resource type="Script" path="res://Scripts/Misc/ui_spin.gd" id="11_sdxhg"]
 [ext_resource type="Script" path="res://Scripts/Player/Camera/camera_state.gd" id="14_c6ptj"]
-[ext_resource type="Script" path="res://Scripts/Player/UI/UI.gd" id="15_1s6h5"]
+[ext_resource type="Script" path="res://Scripts/Player/UI/ui.gd" id="15_1s6h5"]
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
 [ext_resource type="Script" path="res://Scripts/Player/UI/external_inventory_display.gd" id="16_wdyl0"]
 [ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/UI/item_display.tscn" id="19_anx3v"]
@@ -35,6 +35,10 @@ slotrefs = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_euo68"]
 height = 0.8
 radius = 0.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v72li"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 0.352941)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8vfe4"]
 height = 1.0
@@ -208,22 +212,37 @@ script = ExtResource("8_cx2dy")
 [node name="DropDelay" type="Timer" parent="ItemStateMachine/Throw"]
 one_shot = true
 
-[node name="Hold" type="Node" parent="ItemStateMachine"]
+[node name="Hold" type="Node" parent="ItemStateMachine" node_paths=PackedStringArray("ui")]
 script = ExtResource("6_rqytr")
+ui = NodePath("../../UI")
 
-[node name="UI" type="Control" parent="."]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("15_1s6h5")
+player = NodePath("..")
 
 [node name="InventoryPanel" parent="UI" node_paths=PackedStringArray("parent_node") instance=ExtResource("20_w77c1")]
 layout_mode = 1
-offset_top = -112.0
+offset_bottom = 0.00012207
 parent_node = NodePath("../..")
+
+[node name="ActiveSelector" type="TextureRect" parent="UI"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+offset_right = 96.0
+offset_bottom = 96.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("10_alom2")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ExternalInventory" type="VBoxContainer" parent="UI"]
 layout_mode = 1
@@ -289,6 +308,7 @@ layout_mode = 0
 offset_right = 96.0
 offset_bottom = 96.0
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_v72li")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)

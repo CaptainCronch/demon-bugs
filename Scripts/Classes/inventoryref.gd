@@ -69,6 +69,28 @@ func pick_up_slotref(pickup : SlotRef) -> bool :
 	return false
 
 
+func delete_slotref(index : int) -> void :
+	slotrefs[index] = null
+	inventory_updated.emit(self)
+
+
+func add_slotref(slotref : SlotRef) -> Error :
+	var i := 0
+	for space in slotrefs:
+		if space == null:
+			slotrefs[i] = slotref
+			inventory_updated.emit(self)
+			return OK
+		if space.can_merge_with(slotref):
+			var remainder := space.merge_with(slotref)
+			if remainder == null:
+				inventory_updated.emit(self)
+				return OK
+			else: add_slotref(remainder)
+		i += 1
+	return FAILED
+
+
 func _on_slot_clicked(index : int, button : int) -> void :
 	inventory_interact.emit(self, index, button)
 	#print("inventory interacted at index ", str(index), " with button ", str(button))

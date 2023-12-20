@@ -3,10 +3,10 @@ extends PanelContainer
 signal slot_clicked(index: int, button: int)
 
 var itemref : ItemRef = null
-var id := 0
 
 @onready var texture_rect : TextureRect = $MarginContainer/TextureRect
 @onready var amount_label : Label = $Amount
+#@onready var color_rect = $MarginContainer/ColorRect
 
 
 #func _ready():
@@ -38,6 +38,10 @@ func set_slotref(slotref : SlotRef, is_grabbed := false) -> void :
 	#itemref = manager_itemref
 	#texture_rect.texture = itemref.image
 	#texture_rect.tooltip_text = itemref.name
+
+
+#func set_active(index : int) -> void :
+	#color_rect.visible = get_index() == index
 
 
 func _on_gui_input(event):

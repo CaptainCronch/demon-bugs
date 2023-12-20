@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/Misc/basket.gd" id="6_v5utc"]
 [ext_resource type="Texture2D" uid="uid://bxfn6r5lvbfco" path="res://Assets/star_07.png" id="7_vfn3k"]
 [ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
-[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/net.tscn" id="9_5dxr4"]
+[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/bug_net.tscn" id="9_5dxr4"]
 [ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
 [ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/cube.tres" id="13_nul6t"]
@@ -234,21 +234,6 @@ plat_comp = NodePath("../Beetle/PlatformerComponent")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8307, 15.7207, -3.8811)
 plat_comp = NodePath("../Beetle/PlatformerComponent")
 
-[node name="Item" parent="." instance=ExtResource("5_hjudd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
-
-[node name="Item2" parent="." instance=ExtResource("5_hjudd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
-
-[node name="Item3" parent="." instance=ExtResource("5_hjudd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
-
-[node name="Item4" parent="." instance=ExtResource("5_hjudd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
-
-[node name="Item5" parent="." instance=ExtResource("5_hjudd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.93479, 0, -4.58117)
-
 [node name="Basket" type="Node3D" parent="."]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.60544, 3.13076, 6.86461)
 script = ExtResource("6_v5utc")
@@ -281,12 +266,6 @@ stream = ExtResource("8_ss83f")
 volume_db = 5.0
 max_db = 5.0
 
-[node name="Net" parent="." instance=ExtResource("9_5dxr4")]
-transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, -0.865727, 1.15493, 4.80525)
-
-[node name="Net2" parent="." instance=ExtResource("9_5dxr4")]
-transform = Transform3D(1, 0, 0, 0, 0.954621, 0.297825, 0, -0.297825, 0.954621, -0.865727, 7.87094, 30.113)
-
 [node name="Chest" parent="." instance=ExtResource("11_x56hf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9343, 20.6069)
 inventoryref = SubResource("Resource_plsb2")
@@ -298,5 +277,26 @@ inventoryref = SubResource("Resource_58be3")
 [node name="Chest3" parent="." instance=ExtResource("11_x56hf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.135421, 4.9343, 22.6649)
 inventoryref = SubResource("Resource_xnkds")
+
+[node name="Net" parent="." instance=ExtResource("9_5dxr4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07828, 7.04918, 26.6104)
+
+[node name="Net2" parent="." instance=ExtResource("9_5dxr4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.8809, 7.04918, 13.9932)
+
+[node name="Cube" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
+
+[node name="Cube2" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
+
+[node name="Cube3" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
+
+[node name="Cube4" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
+
+[node name="Cube5" parent="." instance=ExtResource("5_hjudd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

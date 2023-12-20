@@ -2,7 +2,19 @@ extends RigidBody3D
 class_name Item
 
 @export var ref_id : String
-@export var slotref : SlotRef
+@export var amount : int
+
+var slotref : SlotRef
+
+
+
+func _ready():
+	slotref = SlotRef.new()
+	slotref.itemref = Global.tag_to_ref(ref_id)
+	if slotref.itemref == null:
+		printerr("couldnt find itemref resource")
+	if amount:
+		slotref.amount = amount
 
 
 func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -> void :
