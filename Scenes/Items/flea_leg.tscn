@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://csdahhoko1408"]
+
+[ext_resource type="Script" path="res://Scripts/Classes/item.gd" id="1_dkdo8"]
+[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="2_5wk47"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plort"]
+size = Vector3(0.48204, 0.133244, 0.981796)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0igr2"]
+albedo_texture = ExtResource("2_5wk47")
+
+[node name="FleaLeg" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 51
+script = ExtResource("1_dkdo8")
+ref_id = "flea_leg"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0918807, 0.00107764, 0.00421911)
+shape = SubResource("BoxShape3D_plort")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0, 0)
+material_override = SubResource("StandardMaterial3D_0igr2")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="CSGCombiner3D"]
+inner_radius = 0.338
+outer_radius = 0.492
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0)
+operation = 2
+size = Vector3(0.5, 1, 1)

@@ -1,13 +1,17 @@
-[gd_scene load_steps=24 format=3 uid="uid://dy6oqfyna5fh4"]
+[gd_scene load_steps=31 format=3 uid="uid://dy6oqfyna5fh4"]
 
 [ext_resource type="Script" path="res://Scripts/Bug/bug.gd" id="1_dcr2u"]
+[ext_resource type="Script" path="res://Scripts/Classes/weighted_inventoryref.gd" id="2_bhmm0"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_c41qw"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_k3w74"]
 [ext_resource type="Texture2D" uid="uid://dyntflns808cm" path="res://Assets/squawq7-pfp.png" id="2_rqfre"]
 [ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="3_0pyq4"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="3_722u2"]
 [ext_resource type="PackedScene" uid="uid://cmkncb45gpt2o" path="res://Scenes/Components/detection_component.tscn" id="3_joxl0"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/flea_leg.tres" id="3_mhu62"]
+[ext_resource type="Resource" uid="uid://chhmp0d3ax1i" path="res://Resources/cube.tres" id="3_mvi0o"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="4_el5bk"]
+[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="4_k7trb"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="6_o58k5"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="6_rlhxv"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_wander_state.gd" id="7_34q3n"]
@@ -15,6 +19,21 @@
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_chase_state.gd" id="10_bkqep"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_attack_state.gd" id="11_hq22q"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_anticipation_state.gd" id="13_edfgo"]
+
+[sub_resource type="Resource" id="Resource_8pms5"]
+script = ExtResource("4_k7trb")
+itemref = ExtResource("3_mhu62")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_1finm"]
+script = ExtResource("4_k7trb")
+itemref = ExtResource("3_mvi0o")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_hp4om"]
+script = ExtResource("2_bhmm0")
+weights = []
+slotrefs = Array[ExtResource("4_k7trb")]([SubResource("Resource_8pms5"), SubResource("Resource_1finm")])
 
 [sub_resource type="Resource" id="Resource_c0sjm"]
 script = ExtResource("2_c41qw")
@@ -46,13 +65,15 @@ radius = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6vth"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Flea" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp") groups=["beetle", "bug"]]
+[node name="Flea" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp", "health_comp") groups=["beetle", "bug"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 35
 script = ExtResource("1_dcr2u")
+inventory = SubResource("Resource_hp4om")
 explode_attack = SubResource("Resource_c0sjm")
 plat_comp = NodePath("PlatformerComponent")
+health_comp = NodePath("HealthComponent")
 
 [node name="DetectionComponent" parent="." node_paths=PackedStringArray("rotation_target", "character_body", "plat_comp", "own_hitbox") instance=ExtResource("3_joxl0")]
 rotation_target = NodePath("../Model")

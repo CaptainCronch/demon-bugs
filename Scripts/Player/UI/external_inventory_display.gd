@@ -12,8 +12,8 @@ func add_external_inventory(chest: Chest):
 	var inv := INVENTORY_PANEL_SCENE.instantiate()
 	add_child(inv)
 	move_child(inv, 0)
-	inv.set_inventory_data(chest.inventoryref)
-	chest.inventoryref.inventory_interact.connect(ui._on_inventory_interact)
+	inv.set_inventory_data(chest.inventory)
+	chest.inventory.inventory_interact.connect(ui._on_inventory_interact)
 	inv.parent_node = chest
 	change_tab(0)
 	tab_bar.add_tab("Chest")
@@ -24,7 +24,7 @@ func remove_external_inventory(chest: Chest):
 	var i := 0
 	for child in get_children():
 		if child is InventoryPanel and child.parent_node == chest:
-			chest.inventoryref.inventory_interact.disconnect(ui._on_inventory_interact)
+			chest.inventory.inventory_interact.disconnect(ui._on_inventory_interact)
 			chests.erase(chest)
 			child.free()
 			tab_bar.remove_tab(i)

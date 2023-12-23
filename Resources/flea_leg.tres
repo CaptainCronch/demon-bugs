@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemRef" load_steps=3 format=3 uid="uid://bylur81oc5lf7"]
+
+[ext_resource type="Texture2D" uid="uid://dosvno64mcer1" path="res://Assets/gay-furry-kiss-wanna-be-twittter-mutuals.png" id="1_bfmgh"]
+[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="3_acrsa"]
+
+[resource]
+script = ExtResource("3_acrsa")
+ref_id = "flea_leg"
+image = ExtResource("1_bfmgh")
+name = "Flea Leg"
+description = "ew where the fuck did you get this"
+stackable = true
+max_stack = 99
+tags = []

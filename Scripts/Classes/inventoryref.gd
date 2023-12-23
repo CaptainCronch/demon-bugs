@@ -33,12 +33,12 @@ func grab_half_slotref(index : int) -> SlotRef :
 func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 	var slotref = slotrefs[index]
 
-	var return_slotref: SlotRef
 	if slotref and slotref.can_merge_with(grabbed_slotref):
 		var grabbed := slotref.merge_with(grabbed_slotref)
 		inventory_updated.emit(self)
 		return grabbed
 	else:
+		var return_slotref: SlotRef
 		slotrefs[index] = grabbed_slotref
 		return_slotref = slotref
 		inventory_updated.emit(self)
@@ -74,21 +74,23 @@ func delete_slotref(index : int) -> void :
 	inventory_updated.emit(self)
 
 
-func add_slotref(slotref : SlotRef) -> Error :
+func add_slotref(input : SlotRef) -> SlotRef :
+	var slotref := input.duplicate()
 	var i := 0
 	for space in slotrefs:
 		if space == null:
 			slotrefs[i] = slotref
+			slotref = null
 			inventory_updated.emit(self)
-			return OK
+			return null
 		if space.can_merge_with(slotref):
 			var remainder := space.merge_with(slotref)
 			if remainder == null:
 				inventory_updated.emit(self)
-				return OK
+				return null
 			else: add_slotref(remainder)
 		i += 1
-	return FAILED
+	return slotref
 
 
 func _on_slot_clicked(index : int, button : int) -> void :

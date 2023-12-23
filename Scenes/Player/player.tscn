@@ -28,7 +28,7 @@
 [ext_resource type="PackedScene" uid="uid://dpof2qspdgg7t" path="res://Scenes/Player/UI/inventory_panel.tscn" id="20_w77c1"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
 
-[sub_resource type="Resource" id="Resource_cjnqy"]
+[sub_resource type="Resource" id="Resource_tidbt"]
 script = ExtResource("2_mtpeg")
 slotrefs = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
@@ -36,7 +36,7 @@ slotrefs = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null
 height = 0.8
 radius = 0.2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v72li"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_enjco"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 0.352941)
 
@@ -145,7 +145,7 @@ collision_layer = 4
 collision_mask = 35
 platform_on_leave = 2
 script = ExtResource("1_fbsit")
-inventoryref = SubResource("Resource_cjnqy")
+inventory = SubResource("Resource_tidbt")
 ui = NodePath("UI")
 model = NodePath("Model")
 item_holder = NodePath("ItemSpinner/ItemHolder")
@@ -308,7 +308,7 @@ layout_mode = 0
 offset_right = 96.0
 offset_bottom = 96.0
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_v72li")
+theme_override_styles/panel = SubResource("StyleBoxFlat_enjco")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("target")]
 transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
@@ -448,6 +448,7 @@ monitorable = false
 shape = SubResource("SphereShape3D_5u7wp")
 
 [connection signal="timeout" from="ItemStateMachine/Throw/DropDelay" to="ItemStateMachine/Throw" method="_on_drop_delay_timeout"]
+[connection signal="gui_input" from="UI" to="UI" method="_on_gui_input"]
 [connection signal="tab_clicked" from="UI/ExternalInventory/TabBar" to="UI/ExternalInventory" method="_on_tab_clicked"]
 [connection signal="body_entered" from="InteractRange" to="." method="_on_interact_body_entered"]
 [connection signal="body_exited" from="InteractRange" to="." method="_on_interact_body_exited"]

@@ -41,18 +41,28 @@ func _process(_delta):
 
 func slide_inventory() -> void :
 	Global.mouse_switch(open_pos)
+
+	if inv_open and is_instance_valid(grabbed_slotref): # put away grabbed slotref on inv close
+		var result := player.inventory.add_slotref(grabbed_slotref) # if no room then drop
+		grabbed_slotref = null
+		update_grabbed_slot()
+		if result != null:
+			Global.spawn_item_pop(result, player.global_position, player.throw_force)
+
+
 	if slide_tween: slide_tween.kill()
 	var change_pos : Vector2 = closed_pos if inv_open else open_pos
 	var external_change_pos : Vector2 = external_closed_pos if inv_open else external_open_pos
 	slide_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	slide_tween.tween_property(inventory_panel, "position", change_pos, inv_slide_duration)
 	slide_tween.tween_property(external_inventory, "position", external_change_pos, inv_slide_duration)
+
 	inv_open = !inv_open
 
 
-func set_inventory_data(invref : InventoryRef, player := false) -> void:
+func set_inventory_data(invref : InventoryRef, is_player := false) -> void:
 	invref.inventory_interact.connect(_on_inventory_interact)
-	if player:
+	if is_player:
 		inventory_panel.set_inventory_data(invref)
 
 
@@ -86,3 +96,14 @@ func change_active_slot(index : int) -> void :
 	if hotbar_tween: hotbar_tween.kill()
 	hotbar_tween = create_tween().set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT)
 	hotbar_tween.tween_property(active_selector, "position:x", desired_x_pos, inv_slide_duration)
+
+
+func _on_gui_input(event : InputEventMouseButton): # drop grabbed slot if clicked out of inventory
+	if (event is InputEventMouseButton
+		and (event.button_index == MOUSE_BUTTON_LEFT
+		or event.button_index == MOUSE_BUTTON_RIGHT)
+		and event.is_pressed()
+		and is_instance_valid(grabbed_slotref)):
+		Global.spawn_item_pop(grabbed_slotref, player.item_holder.global_position, player.throw_force)
+		grabbed_slotref = null
+		update_grabbed_slot()

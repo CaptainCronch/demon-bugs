@@ -14,26 +14,26 @@ func can_merge_with(other_slotref: SlotRef, single := false) -> bool :
 
 func merge_with(other_slotref: SlotRef, single := false) -> SlotRef :
 	if single:
-		amount += 1
-		other_slotref.amount -= 1
+		set_amount(amount + 1)
+		other_slotref.set_amount(other_slotref.amount - 1)
 		if other_slotref.amount == 0:
 			return null
 		else: return other_slotref
 
 	var total := amount + other_slotref.amount
 	if total > itemref.max_stack:
-		amount = itemref.max_stack
-		other_slotref.amount = total - itemref.max_stack
+		set_amount(itemref.max_stack)
+		other_slotref.set_amount(total - itemref.max_stack)
 		return other_slotref
 	else:
-		amount = total
+		set_amount(total)
 		return null
 
 
 func create_single_slotref() -> SlotRef:
 	var new_slotref : SlotRef = duplicate()
-	new_slotref.amount = 1
-	amount -= 1
+	new_slotref.set_amount(1)
+	set_amount(amount - 1)
 	return new_slotref
 
 

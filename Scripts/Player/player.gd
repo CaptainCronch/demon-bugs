@@ -12,7 +12,7 @@ var tool_stun_time := 0.5
 var holding_item := false
 var held_item : Item
 
-@export var inventoryref : InventoryRef
+@export var inventory : InventoryRef
 @export var ui : UI
 
 @export var model : VisualInstance3D
@@ -30,15 +30,15 @@ var held_item : Item
 
 
 func _ready() -> void :
-	ui.set_inventory_data(inventoryref, true)
+	ui.set_inventory_data(inventory, true)
 	ui.active_slot_changed.connect(switch_held)
-	inventoryref.inventory_updated.connect(_on_inventory_updated)
+	inventory.inventory_updated.connect(_on_inventory_updated)
 
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
 	health_comp.damage_taken.connect(update_health_bar)
 
-	if item_holder.get_child(0):
+	if item_holder.get_child_count() > 0:
 		holding_item = true
 		held_item = item_holder.get_child(0)
 		held_item.global_position = item_holder.global_position
@@ -115,21 +115,21 @@ func throw_item(power_level) -> void :
 	item.linear_velocity = (Vector3(0, 0.5, -1).rotated(Vector3.UP, model.rotation.y) * throw_force * power_level) + (velocity * 0.5)
 	item.angular_velocity = Vector3(offset, offset, offset) * throw_force
 
-	inventoryref.delete_slotref(ui.active_slot)
+	inventory.delete_slotref(ui.active_slot)
 
 
-func pick_up():
+func pick_up() -> void : # if item fits delete item else set item quantity to remainder
 	if pickup_area.has_overlapping_bodies():
 		for body in pickup_area.get_overlapping_bodies():
 			if body is Item:
-				if inventoryref.add_slotref(body.slotref) == OK:
-					body.free()
+				var result := inventory.add_slotref(body.slotref)
+				if result == null: body.free()
+				else: body.slotref = result
 				return
 
 
 func switch_held(index : int):
-	print("switching held item")
-	var slotref : SlotRef = inventoryref.slotrefs[index]
+	var slotref : SlotRef = inventory.slotrefs[index]
 	#var new_item = item.item_scene.instantiate()
 	if not is_instance_valid(slotref):
 		if is_instance_valid(held_item): # if nothing in new slot but held item then delete item and return

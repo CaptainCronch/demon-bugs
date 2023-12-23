@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/bug_net.tscn" id="9_5dxr4"]
 [ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
-[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/cube.tres" id="13_nul6t"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/flea_leg.tres" id="13_nul6t"]
 [ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="14_4hw1o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
@@ -68,35 +68,32 @@ size = Vector2(2, 2)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w51ww"]
 albedo_texture = ExtResource("4_l0ih0")
 
-[sub_resource type="Resource" id="Resource_gm20x"]
+[sub_resource type="Resource" id="Resource_ugmg2"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 5
+
+[sub_resource type="Resource" id="Resource_iy2ja"]
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([null, null, SubResource("Resource_ugmg2"), null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="Resource" id="Resource_b0wad"]
 script = ExtResource("14_4hw1o")
 itemref = ExtResource("13_nul6t")
 amount = 1
 
-[sub_resource type="Resource" id="Resource_plsb2"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_lv4vn"]
 script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([SubResource("Resource_gm20x"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+slotrefs = Array[ExtResource("14_4hw1o")]([null, SubResource("Resource_b0wad"), null, null, null, null, null, null, null, null, null, null, null, null, null])
 
-[sub_resource type="Resource" id="Resource_qmihw"]
+[sub_resource type="Resource" id="Resource_tw1wl"]
 script = ExtResource("14_4hw1o")
 itemref = ExtResource("13_nul6t")
-amount = 1
+amount = 20
 
-[sub_resource type="Resource" id="Resource_58be3"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_mg8un"]
 script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([null, SubResource("Resource_qmihw"), null, null, null, null, null, null, null, null, null, null, null, null, null])
-
-[sub_resource type="Resource" id="Resource_k6u83"]
-script = ExtResource("14_4hw1o")
-itemref = ExtResource("13_nul6t")
-amount = 1
-
-[sub_resource type="Resource" id="Resource_xnkds"]
-resource_local_to_scene = true
-script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([null, null, SubResource("Resource_k6u83"), null, null, null, null, null, null, null, null, null, null, null, null])
+slotrefs = Array[ExtResource("14_4hw1o")]([SubResource("Resource_tw1wl"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
 [node name="Level" type="Node3D"]
 
@@ -268,15 +265,15 @@ max_db = 5.0
 
 [node name="Chest" parent="." instance=ExtResource("11_x56hf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.9343, 20.6069)
-inventoryref = SubResource("Resource_plsb2")
+inventory = SubResource("Resource_iy2ja")
 
 [node name="Chest2" parent="." instance=ExtResource("11_x56hf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97354, 4.9343, 21.7376)
-inventoryref = SubResource("Resource_58be3")
+inventory = SubResource("Resource_lv4vn")
 
 [node name="Chest3" parent="." instance=ExtResource("11_x56hf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.135421, 4.9343, 22.6649)
-inventoryref = SubResource("Resource_xnkds")
+inventory = SubResource("Resource_mg8un")
 
 [node name="Net" parent="." instance=ExtResource("9_5dxr4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.07828, 7.04918, 26.6104)

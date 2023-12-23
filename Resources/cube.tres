@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ItemRef" load_steps=3 format=3 uid="uid://bylur81oc5lf7"]
+[gd_resource type="Resource" script_class="ItemRef" load_steps=3 format=3 uid="uid://chhmp0d3ax1i"]
 
-[ext_resource type="Texture2D" uid="uid://dyntflns808cm" path="res://Assets/squawq7-pfp.png" id="1_8lfqo"]
-[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="3_acrsa"]
+[ext_resource type="Texture2D" uid="uid://dyntflns808cm" path="res://Assets/squawq7-pfp.png" id="1_fpk0q"]
+[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="2_40rtm"]
 
 [resource]
-script = ExtResource("3_acrsa")
+script = ExtResource("2_40rtm")
 ref_id = "cube"
-image = ExtResource("1_8lfqo")
+image = ExtResource("1_fpk0q")
 name = "Cube"
 description = "its a fucking CUBE oh my godddd"
 stackable = true

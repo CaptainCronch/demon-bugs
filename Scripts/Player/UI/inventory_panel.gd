@@ -13,7 +13,7 @@ func set_inventory_data(invref : InventoryRef) -> void :
 	populate_grid(invref)
 
 
-func populate_grid(invref: InventoryRef, active_index := -1) -> void :
+func populate_grid(invref: InventoryRef) -> void :
 	for child in grid.get_children():
 		child.queue_free()
 

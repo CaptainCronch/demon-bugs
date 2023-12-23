@@ -95,3 +95,38 @@ func tag_to_item(tag : String) -> PackedScene:
 
 func tag_to_ref(tag : String) -> ItemRef:
 	return load("res://Resources/" + tag + ".tres")
+
+
+func spawn_item(slotref : SlotRef,
+		pos : Vector3,
+		rotation := Vector3(),
+		velocity := Vector3(),
+		torque := Vector3()) -> void :
+
+	var item : Item = tag_to_item(slotref.itemref.ref_id).instantiate()
+	get_tree().current_scene.add_child(item)
+	item.global_position = pos
+	item.angular_velocity = torque
+	item.linear_velocity = velocity
+	item.rotation = rotation
+	item.slotref = slotref
+
+
+func spawn_item_pop(slotref : SlotRef,
+		pos : Vector3,
+		torque := 0.0,
+		force := 0.0,
+		directional := Vector3(),
+		rand_factor := 1.0) -> void :
+	if not is_instance_valid(slotref): return
+
+	var rand := Vector3(randf_range(-rand_factor, rand_factor),
+			randf_range(-rand_factor, rand_factor),
+			randf_range(-rand_factor, rand_factor))
+
+	var item : Item = tag_to_item(slotref.itemref.ref_id).instantiate()
+	get_tree().current_scene.add_child(item)
+	item.global_position = pos
+	item.angular_velocity = rand * torque
+	item.linear_velocity = rand * force if not directional else directional * (force * randf_range(0, rand_factor))
+	item.slotref = slotref

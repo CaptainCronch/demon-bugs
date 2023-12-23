@@ -1,8 +1,15 @@
 extends CharacterBody3D
 class_name Bug
 
+@export var item_spawn_force := 12.0
+@export var inventory : WeightedInventoryRef
 @export var explode_attack : Attack
 @export var plat_comp : PlatformerComponent
+@export var health_comp : HealthComponent
+
+
+func _ready():
+	health_comp.death.connect(_on_death)
 
 
 func _process(_delta):
@@ -11,6 +18,10 @@ func _process(_delta):
 	#
 	#if randf() > 0.99 and is_on_floor():
 		#plat_comp.jump()
+
+
+func _on_death(attack : Attack):
+	Global.spawn_item_pop(inventory.get_random_slotref(), global_position, item_spawn_force, item_spawn_force, attack.attack_position.direction_to(global_position))
 
 
 #func flash_explosion():

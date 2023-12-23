@@ -1,0 +1,96 @@
+[gd_scene load_steps=29 format=3 uid="uid://ds82nbqrof5xr"]
+
+[ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
+[ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
+[ext_resource type="PackedScene" uid="uid://dy6oqfyna5fh4" path="res://Scenes/flea.tscn" id="3_8jf1w"]
+[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="4_l0ih0"]
+[ext_resource type="PackedScene" uid="uid://c2k5xsa37keik" path="res://Scenes/Items/cube.tscn" id="5_hjudd"]
+[ext_resource type="Script" path="res://Scripts/Misc/basket.gd" id="6_v5utc"]
+[ext_resource type="Texture2D" uid="uid://bxfn6r5lvbfco" path="res://Assets/star_07.png" id="7_vfn3k"]
+[ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
+[ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/bug_net.tscn" id="9_5dxr4"]
+[ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
+[ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/cube.tres" id="13_nul6t"]
+[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="14_4hw1o"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_u36xs"]
+sky_material = SubResource("ProceduralSkyMaterial_n2pj1")
+
+[sub_resource type="Environment" id="Environment_mvglh"]
+background_mode = 2
+sky = SubResource("Sky_u36xs")
+tonemap_mode = 2
+glow_normalized = true
+glow_intensity = 1.59
+glow_strength = 1.16
+glow_bloom = 0.26
+glow_blend_mode = 0
+fog_light_color = Color(0, 0.627451, 0.396078, 1)
+fog_density = 0.0009
+adjustment_brightness = 0.86
+adjustment_contrast = 1.14
+adjustment_saturation = 1.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yn48s"]
+albedo_texture = ExtResource("1_hm3ms")
+uv1_scale = Vector3(0.05, 0.05, 0.05)
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cl3xm"]
+size = Vector3(0.817261, 2.07802, 2.05426)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s6dre"]
+direction = Vector3(0, 1, 0)
+flatness = 1.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, -19.6, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cae1n"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(1, 1, 0, 1)
+albedo_texture = ExtResource("7_vfn3k")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_pvxqo"]
+material = SubResource("StandardMaterial3D_cae1n")
+size = Vector2(2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w51ww"]
+albedo_texture = ExtResource("4_l0ih0")
+
+[sub_resource type="Resource" id="Resource_ugmg2"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 5
+
+[sub_resource type="Resource" id="Resource_iy2ja"]
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([null, null, SubResource("Resource_ugmg2"), null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="Resource" id="Resource_b0wad"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_lv4vn"]
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([null, SubResource("Resource_b0wad"), null, null, null, null, null, null, null, null, null, null, null, null, null])
+
+[sub_resource type="Resource" id="Resource_tw1wl"]
+script = ExtResource("14_4hw1o")
+itemref = ExtResource("13_nul6t")
+amount = 20
+
+[sub_resource type="Resource" id="Resource_mg8un"]
+script = ExtResource("12_a5c8j")
+slotrefs = Array[ExtResource("14_4hw1o")]([SubResource("Resource_tw1wl"), null, 
