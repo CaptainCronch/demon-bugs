@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=24 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
@@ -11,8 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/bug_net.tscn" id="9_5dxr4"]
 [ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
-[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/flea_leg.tres" id="13_nul6t"]
-[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="14_4hw1o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -68,32 +66,17 @@ size = Vector2(2, 2)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w51ww"]
 albedo_texture = ExtResource("4_l0ih0")
 
-[sub_resource type="Resource" id="Resource_ugmg2"]
-script = ExtResource("14_4hw1o")
-itemref = ExtResource("13_nul6t")
-amount = 5
-
 [sub_resource type="Resource" id="Resource_iy2ja"]
 script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([null, null, SubResource("Resource_ugmg2"), null, null, null, null, null, null, null, null, null, null, null, null])
-
-[sub_resource type="Resource" id="Resource_b0wad"]
-script = ExtResource("14_4hw1o")
-itemref = ExtResource("13_nul6t")
-amount = 1
+slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
 [sub_resource type="Resource" id="Resource_lv4vn"]
 script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([null, SubResource("Resource_b0wad"), null, null, null, null, null, null, null, null, null, null, null, null, null])
-
-[sub_resource type="Resource" id="Resource_tw1wl"]
-script = ExtResource("14_4hw1o")
-itemref = ExtResource("13_nul6t")
-amount = 20
+slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
 [sub_resource type="Resource" id="Resource_mg8un"]
 script = ExtResource("12_a5c8j")
-slotrefs = Array[ExtResource("14_4hw1o")]([SubResource("Resource_tw1wl"), null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 
 [node name="Level" type="Node3D"]
 

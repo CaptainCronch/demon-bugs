@@ -4,13 +4,25 @@ class_name InventoryRef
 signal inventory_interact(invref: InventoryRef, index: int, button: int)
 signal inventory_updated(invref: InventoryRef)
 
-@export var slotrefs : Array[SlotRef] = []
+@export var slotref_list : Array[SlotRef] = []
+
+
+func get_slotrefs() -> Array[SlotRef] :
+	return slotref_list
+
+
+func get_slotref(index : int) -> SlotRef :
+	return slotref_list[index]
+
+
+func set_slotref(index : int, value : SlotRef) -> void :
+	slotref_list[index] = value
 
 
 func grab_slotref(index : int) -> SlotRef :
-	var slotref = slotrefs[index]
+	var slotref = get_slotref(index)
 	if slotref:
-		slotrefs[index] = null
+		set_slotref(index, null)
 		inventory_updated.emit(self)
 		return slotref
 	else:
@@ -18,11 +30,11 @@ func grab_slotref(index : int) -> SlotRef :
 
 
 func grab_half_slotref(index : int) -> SlotRef :
-	var slotref = slotrefs[index].duplicate()
+	var slotref = get_slotref(index).duplicate()
 	if slotref:
 		if slotref.amount == 1: return grab_slotref(index)
 		var half_amount = round(slotref.amount / 2)
-		slotrefs[index].amount = half_amount
+		get_slotref(index).amount = half_amount
 		slotref.amount -= half_amount
 		inventory_updated.emit(self)
 		return slotref
@@ -31,7 +43,7 @@ func grab_half_slotref(index : int) -> SlotRef :
 
 
 func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
-	var slotref = slotrefs[index]
+	var slotref = get_slotref(index)
 
 	if slotref and slotref.can_merge_with(grabbed_slotref):
 		var grabbed := slotref.merge_with(grabbed_slotref)
@@ -39,17 +51,17 @@ func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 		return grabbed
 	else:
 		var return_slotref: SlotRef
-		slotrefs[index] = grabbed_slotref
+		set_slotref(index, grabbed_slotref)
 		return_slotref = slotref
 		inventory_updated.emit(self)
 		return slotref
 
 
 func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
-	var slotref = slotrefs[index]
+	var slotref = get_slotref(index)
 
 	if not slotref:
-		slotrefs[index] = grabbed_slotref.create_single_slotref()
+		set_slotref(index, grabbed_slotref.create_single_slotref())
 	elif slotref.can_merge_with(grabbed_slotref, true):
 		slotref.merge_with(grabbed_slotref, true)
 
@@ -62,7 +74,7 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 
 
 func pick_up_slotref(pickup : SlotRef) -> bool :
-	for ref in slotrefs:
+	for ref in get_slotrefs():
 		if ref.can_merge_with(pickup):
 			ref.merge_with(pickup)
 			return true
@@ -70,16 +82,16 @@ func pick_up_slotref(pickup : SlotRef) -> bool :
 
 
 func delete_slotref(index : int) -> void :
-	slotrefs[index] = null
+	set_slotref(index, null)
 	inventory_updated.emit(self)
 
 
 func add_slotref(input : SlotRef) -> SlotRef :
 	var slotref := input.duplicate()
 	var i := 0
-	for space in slotrefs:
+	for space in get_slotrefs():
 		if space == null:
-			slotrefs[i] = slotref
+			set_slotref(i, slotref)
 			slotref = null
 			inventory_updated.emit(self)
 			return null

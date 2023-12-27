@@ -129,7 +129,7 @@ func pick_up() -> void : # if item fits delete item else set item quantity to re
 
 
 func switch_held(index : int):
-	var slotref : SlotRef = inventory.slotrefs[index]
+	var slotref : SlotRef = inventory.get_slotref(index)
 	#var new_item = item.item_scene.instantiate()
 	if not is_instance_valid(slotref):
 		if is_instance_valid(held_item): # if nothing in new slot but held item then delete item and return
@@ -164,10 +164,10 @@ func _on_inventory_updated(new_invref: InventoryRef):
 	if not is_instance_valid(held_item): # if not holding an item switch to current slot (does nothing if nothing in slot)
 		switch_held(ui.active_slot)
 		return
-	elif not new_invref.slotrefs[ui.active_slot]: # if no item in slot delete held item
+	elif not new_invref.get_slotref(ui.active_slot): # if no item in slot delete held item
 		held_item.free()
 		return
-	elif new_invref.slotrefs[ui.active_slot] != held_item.slotref: # if item different then switch
+	elif new_invref.get_slotref(ui.active_slot) != held_item.slotref: # if item different then switch
 		call_deferred("switch_held", ui.active_slot) #switch_held(ui.active_slot)
 		return
 

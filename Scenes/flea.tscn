@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dy6oqfyna5fh4"]
+[gd_scene load_steps=33 format=3 uid="uid://dy6oqfyna5fh4"]
 
 [ext_resource type="Script" path="res://Scripts/Bug/bug.gd" id="1_dcr2u"]
 [ext_resource type="Script" path="res://Scripts/Classes/weighted_inventoryref.gd" id="2_bhmm0"]
@@ -8,32 +8,43 @@
 [ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="3_0pyq4"]
 [ext_resource type="Texture2D" uid="uid://vbnxbujkkq08" path="res://Assets/circle_05.png" id="3_722u2"]
 [ext_resource type="PackedScene" uid="uid://cmkncb45gpt2o" path="res://Scenes/Components/detection_component.tscn" id="3_joxl0"]
-[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/flea_leg.tres" id="3_mhu62"]
-[ext_resource type="Resource" uid="uid://chhmp0d3ax1i" path="res://Resources/cube.tres" id="3_mvi0o"]
+[ext_resource type="Resource" uid="uid://bylur81oc5lf7" path="res://Resources/flea_leg.tres" id="3_l81vv"]
+[ext_resource type="Script" path="res://Scripts/Classes/weighted_slotref.gd" id="4_ckeq3"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="4_el5bk"]
-[ext_resource type="Script" path="res://Scripts/Classes/slotref.gd" id="4_k7trb"]
+[ext_resource type="Resource" uid="uid://chhmp0d3ax1i" path="res://Resources/cube.tres" id="5_qjd6c"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="6_o58k5"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="6_rlhxv"]
+[ext_resource type="Resource" uid="uid://betck3oxakj1e" path="res://Resources/bug_net.tres" id="6_s44dk"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_wander_state.gd" id="7_34q3n"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_wait_state.gd" id="8_x74jg"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_chase_state.gd" id="10_bkqep"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_attack_state.gd" id="11_hq22q"]
 [ext_resource type="Script" path="res://Scripts/Bug/States/bug_anticipation_state.gd" id="13_edfgo"]
 
-[sub_resource type="Resource" id="Resource_8pms5"]
-script = ExtResource("4_k7trb")
-itemref = ExtResource("3_mhu62")
+[sub_resource type="Resource" id="Resource_ymjcy"]
+script = ExtResource("4_ckeq3")
+weight = 1
+amount_range = Array[int]([1, 2])
+itemref = ExtResource("3_l81vv")
 amount = 1
 
-[sub_resource type="Resource" id="Resource_1finm"]
-script = ExtResource("4_k7trb")
-itemref = ExtResource("3_mvi0o")
+[sub_resource type="Resource" id="Resource_0pqvt"]
+script = ExtResource("4_ckeq3")
+weight = 2
+amount_range = Array[int]([1, 3])
+itemref = ExtResource("5_qjd6c")
+amount = 1
+
+[sub_resource type="Resource" id="Resource_rnt5l"]
+script = ExtResource("4_ckeq3")
+weight = 3
+amount_range = Array[int]([1])
+itemref = ExtResource("6_s44dk")
 amount = 1
 
 [sub_resource type="Resource" id="Resource_hp4om"]
 script = ExtResource("2_bhmm0")
-weights = []
-slotrefs = Array[ExtResource("4_k7trb")]([SubResource("Resource_8pms5"), SubResource("Resource_1finm")])
+weighted_slotrefs = Array[ExtResource("4_ckeq3")]([SubResource("Resource_ymjcy"), SubResource("Resource_0pqvt"), SubResource("Resource_rnt5l")])
 
 [sub_resource type="Resource" id="Resource_c0sjm"]
 script = ExtResource("2_c41qw")
@@ -108,7 +119,7 @@ no_depth_test = true
 text = "i am bugs"
 
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_el5bk")]
-max_health = 5
+max_health = 1
 target = NodePath("..")
 invincibility_time = 0.1
 

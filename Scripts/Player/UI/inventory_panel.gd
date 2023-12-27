@@ -17,7 +17,7 @@ func populate_grid(invref: InventoryRef) -> void :
 	for child in grid.get_children():
 		child.queue_free()
 
-	for slotref in invref.slotrefs:
+	for slotref in invref.get_slotrefs():
 		var item_display = SLOT.instantiate()
 		grid.add_child(item_display)
 

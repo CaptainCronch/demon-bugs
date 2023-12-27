@@ -2,7 +2,7 @@ extends Resource
 class_name SlotRef
 
 @export var itemref : ItemRef
-@export var amount := 1: set = set_amount
+@export var amount := 1 : set = set_amount
 
 
 func can_merge_with(other_slotref: SlotRef, single := false) -> bool :

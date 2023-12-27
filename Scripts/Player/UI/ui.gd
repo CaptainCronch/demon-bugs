@@ -98,7 +98,7 @@ func change_active_slot(index : int) -> void :
 	hotbar_tween.tween_property(active_selector, "position:x", desired_x_pos, inv_slide_duration)
 
 
-func _on_gui_input(event : InputEventMouseButton): # drop grabbed slot if clicked out of inventory
+func _on_gui_input(event): # drop grabbed slot if clicked out of inventory
 	if (event is InputEventMouseButton
 		and (event.button_index == MOUSE_BUTTON_LEFT
 		or event.button_index == MOUSE_BUTTON_RIGHT)
