@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=38 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
@@ -24,9 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://mtbqqk8u7sb8" path="res://Assets/texture_01.png" id="16_u7k8p"]
 [ext_resource type="Script" path="res://Scripts/Player/UI/external_inventory_display.gd" id="16_wdyl0"]
 [ext_resource type="PackedScene" uid="uid://0ev0v7xuoof0" path="res://Scenes/Player/UI/item_display.tscn" id="19_anx3v"]
-[ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="20_uo1pg"]
 [ext_resource type="PackedScene" uid="uid://dpof2qspdgg7t" path="res://Scenes/Player/UI/inventory_panel.tscn" id="20_w77c1"]
-[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="21_pui17"]
+[ext_resource type="PackedScene" uid="uid://3iq3avr3te45" path="res://Scenes/Components/melee_component.tscn" id="25_rdw4o"]
 
 [sub_resource type="Resource" id="Resource_tidbt"]
 script = ExtResource("2_mtpeg")
@@ -36,7 +35,7 @@ slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, 
 height = 0.8
 radius = 0.2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahtus"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ducj"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 0.352941)
 
@@ -47,17 +46,11 @@ radius = 0.3
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5cai1"]
 albedo_texture = ExtResource("2_mvr2n")
 
-[sub_resource type="Resource" id="Resource_5ihsv"]
-script = ExtResource("21_pui17")
-attack_damage = 1.0
-knockback_force = 10.0
-stun_time = 0.2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_kok24"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_58cdi"]
 size = Vector3(2, 3, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wf0um"]
-radius = 0.75
+radius = 1.0
 
 [sub_resource type="Animation" id="Animation_p2f0i"]
 length = 0.001
@@ -129,6 +122,20 @@ tracks/2/keys = {
 "method": &"active_swing"
 }]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ItemSpinner/MeleeComponent")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"melee"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gaw3d"]
 _data = {
@@ -139,7 +146,7 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_5u7wp"]
 radius = 3.0
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "plat_comp", "health_comp", "hurt_area_comp") groups=["player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "cap_health_bar", "plat_comp", "health_comp", "melee_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 35
@@ -155,9 +162,10 @@ coyote_timer = NodePath("CoyoteTimer")
 animation_player = NodePath("AnimationPlayer")
 pickup_area = NodePath("Pickup")
 health_bar = NodePath("UI/HealthBar")
+cap_health_bar = NodePath("UI/CapHealthBar")
 plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
-hurt_area_comp = NodePath("ItemSpinner/HurtAreaComponent")
+melee_comp = NodePath("ItemSpinner/MeleeComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
 stun_resistance = 0.5
@@ -166,22 +174,23 @@ model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
 
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_rsfx7")]
-max_health = 10
+max_health = 100.0
 target = NodePath("..")
 invincibility_time = 1.0
-
-[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["player"] instance=ExtResource("4_js2p5")]
-collision_layer = 4
-health_comp = NodePath("../HealthComponent")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
-shape = SubResource("CylinderShape3D_euo68")
 
 [node name="StateDebug" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879393, 0)
 billboard = 1
 no_depth_test = true
 text = "wishlist on steam"
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["player"] instance=ExtResource("4_js2p5")]
+collision_layer = 4
+color = Color(0, 0.623529, 0.533333, 1)
+health_comp = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxComponent"]
+shape = SubResource("CylinderShape3D_euo68")
 
 [node name="MoveStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_g5p8y")
@@ -205,6 +214,9 @@ script = ExtResource("7_o62mw")
 
 [node name="Use" type="Node" parent="ItemStateMachine"]
 script = ExtResource("7_4de8u")
+
+[node name="Cooldown" type="Timer" parent="ItemStateMachine/Use"]
+one_shot = true
 
 [node name="Throw" type="Node" parent="ItemStateMachine"]
 script = ExtResource("8_cx2dy")
@@ -291,15 +303,35 @@ texture_progress = ExtResource("10_alom2")
 script = ExtResource("11_sdxhg")
 
 [node name="HealthBar" type="TextureProgressBar" parent="UI"]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 25.0
-offset_right = 1050.0
-offset_bottom = 1049.0
-scale = Vector2(0.3, 0.02)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = -458.0
+offset_right = 1072.0
+offset_bottom = 566.0
+grow_vertical = 0
+scale = Vector2(0.08, 0.4)
+fill_mode = 3
 texture_under = ExtResource("16_u7k8p")
 texture_progress = ExtResource("16_u7k8p")
 tint_progress = Color(1, 0, 1, 1)
+
+[node name="CapHealthBar" type="TextureProgressBar" parent="UI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = -458.0
+offset_right = 1072.0
+offset_bottom = 566.0
+grow_vertical = 0
+scale = Vector2(0.08, 0.4)
+fill_mode = 2
+texture_progress = ExtResource("16_u7k8p")
+tint_progress = Color(0, 1, 1, 1)
 
 [node name="GrabbedSlot" parent="UI" instance=ExtResource("19_anx3v")]
 visible = false
@@ -308,14 +340,15 @@ layout_mode = 0
 offset_right = 96.0
 offset_bottom = 96.0
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_ahtus")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ducj")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("target")]
+[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("plat_comp", "target")]
 transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
 top_level = true
 spring_length = 10.0
 script = ExtResource("3_xot8x")
 offset = Vector3(0, 0.8, 0)
+plat_comp = NodePath("../PlatformerComponent")
 target = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
@@ -394,17 +427,14 @@ cone = true
 script = ExtResource("10_vlrsn")
 target = NodePath("../Model")
 
-[node name="HurtAreaComponent" parent="ItemSpinner" instance=ExtResource("20_uo1pg")]
-monitoring = false
-attack = SubResource("Resource_5ihsv")
-detection_groups = ["bug"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ItemSpinner/HurtAreaComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_kok24")
-
 [node name="ItemHolder" type="Node3D" parent="ItemSpinner"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.3, 0)
+
+[node name="MeleeComponent" parent="ItemSpinner" node_paths=PackedStringArray("parent") instance=ExtResource("25_rdw4o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+parent = NodePath("../..")
+base_shape = SubResource("BoxShape3D_58cdi")
+layers = 8
 
 [node name="Decal" type="Decal" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.49, 0)
@@ -422,18 +452,16 @@ one_shot = true
 wait_time = 0.1
 one_shot = true
 
-[node name="Pickup" type="Area3D" parent="." node_paths=PackedStringArray("target")]
+[node name="Pickup" type="Area3D" parent="."]
 collision_layer = 4
 collision_mask = 16
 monitorable = false
-script = ExtResource("10_vlrsn")
-target = NodePath("../Model")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, -0.55)
 shape = SubResource("SphereShape3D_wf0um")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
 libraries = {
 "": SubResource("AnimationLibrary_gaw3d")
 }

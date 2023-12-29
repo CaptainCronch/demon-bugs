@@ -18,12 +18,12 @@ func enter(): active = true
 func _unhandled_input(event):
 	if not active: return
 	if event.is_action_pressed("use"):
-		if player.item_holder.get_child(0) is Tool:
+		if is_instance_valid(player.held_item) and player.held_item is Tool:
 			transitioned.emit(self, "charge")
-	elif event.is_action_pressed("interact"):
-		player.pick_up()
+	#elif event.is_action_pressed("interact"):
+		#player.pick_up()
 	elif event.is_action_pressed("drop") and player.holding_item:
-		if player.item_holder.get_child(0) is Item:
+		if is_instance_valid(player.held_item) and player.held_item is Item:
 			transitioned.emit(self, "throw")
 	elif event.is_action_pressed("next_hotbar_slot"):
 		ui.change_active_slot(ui.active_slot + 1)

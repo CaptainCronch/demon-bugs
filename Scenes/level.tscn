@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=25 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://bdp2ocdi2avwc" path="res://Assets/victory.mp3" id="8_ss83f"]
 [ext_resource type="PackedScene" uid="uid://cl82itj3cqgxi" path="res://Scenes/Items/bug_net.tscn" id="9_5dxr4"]
 [ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
+[ext_resource type="PackedScene" uid="uid://cgmw6nuxj2d8r" path="res://Scenes/Items/demon_sickle.tscn" id="12_22w3c"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
@@ -95,12 +96,12 @@ use_collision = true
 collision_mask = 0
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Stage/CSGCombiner3D"]
-transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, -0.5, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 size = Vector3(100, 1, 100)
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Stage/CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 77.0904, 0)
+visible = false
 flip_faces = true
 radius = 80.0
 
@@ -214,6 +215,131 @@ plat_comp = NodePath("../Beetle/PlatformerComponent")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.8307, 15.7207, -3.8811)
 plat_comp = NodePath("../Beetle/PlatformerComponent")
 
+[node name="Beetle26" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.73265, 8.22238, -11.1728)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle/HealthComponent")
+
+[node name="Beetle27" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12519, 8.22238, -8.81642)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle2/HealthComponent")
+
+[node name="Beetle28" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75686, 8.22239, -3.57891)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle3/HealthComponent")
+
+[node name="Beetle29" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.66491, 8.22239, -1.4528)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle4/HealthComponent")
+
+[node name="Beetle30" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.17426, 8.22239, -5.97761)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle6/HealthComponent")
+
+[node name="Beetle31" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.26621, 8.22239, -9.08501)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle7/HealthComponent")
+
+[node name="Beetle32" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99527, 8.22239, -5.05084)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle5/HealthComponent")
+
+[node name="Beetle33" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9181, 23.8529, -33.5228)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle8/HealthComponent")
+
+[node name="Beetle34" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.7216, 23.8529, -27.7139)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle9/HealthComponent")
+
+[node name="Beetle35" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.37543, 23.8529, -27.1247)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle10/HealthComponent")
+
+[node name="Beetle36" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.52023, 23.8529, -27.2177)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle11/HealthComponent")
+
+[node name="Beetle37" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.30003, 23.8529, -29.7531)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle12/HealthComponent")
+
+[node name="Beetle38" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9065, 23.8529, -30.2914)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle13/HealthComponent")
+
+[node name="Beetle39" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92233, 23.8529, -25.1919)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle14/HealthComponent")
+
+[node name="Beetle40" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8107, 23.8529, -7.5954)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle15/HealthComponent")
+
+[node name="Beetle41" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6142, 23.8529, -1.78649)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle16/HealthComponent")
+
+[node name="Beetle42" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.26813, 23.8529, -1.19736)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle17/HealthComponent")
+
+[node name="Beetle43" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.41283, 23.8529, -1.29033)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle18/HealthComponent")
+
+[node name="Beetle44" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1926, 23.8529, -3.82567)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle19/HealthComponent")
+
+[node name="Beetle45" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.7991, 23.8529, -4.364)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle20/HealthComponent")
+
+[node name="Beetle46" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8149, 23.8529, 0.735527)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle21/HealthComponent")
+
+[node name="Beetle47" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0315, 23.8529, -21.359)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle22/HealthComponent")
+
+[node name="Beetle48" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.228, 23.8529, -15.55)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle23/HealthComponent")
+
+[node name="Beetle49" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.5742, 23.8529, -14.9609)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle24/HealthComponent")
+
+[node name="Beetle50" parent="." node_paths=PackedStringArray("plat_comp", "health_comp") instance=ExtResource("3_8jf1w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.4294, 23.8529, -15.0539)
+plat_comp = NodePath("../Beetle/PlatformerComponent")
+health_comp = NodePath("../Beetle25/HealthComponent")
+
 [node name="Basket" type="Node3D" parent="."]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 5.60544, 3.13076, 6.86461)
 script = ExtResource("6_v5utc")
@@ -278,5 +404,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
 
 [node name="Cube5" parent="." instance=ExtResource("5_hjudd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
+
+[node name="DemonSickle" parent="." instance=ExtResource("12_22w3c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7936, 7.79614, 22.1775)
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

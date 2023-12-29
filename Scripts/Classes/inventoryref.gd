@@ -50,9 +50,7 @@ func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 		inventory_updated.emit(self)
 		return grabbed
 	else:
-		var return_slotref: SlotRef
 		set_slotref(index, grabbed_slotref)
-		return_slotref = slotref
 		inventory_updated.emit(self)
 		return slotref
 

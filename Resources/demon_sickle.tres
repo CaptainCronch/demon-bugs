@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemRef" load_steps=3 format=3 uid="uid://dp2gk67sxm3jw"]
+
+[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="1_5ykst"]
+[ext_resource type="Texture2D" uid="uid://bh5lka5wy3sr6" path="res://Assets/get them big ass fucking ears out of the caption god damn.jpg" id="1_xrvtg"]
+
+[resource]
+script = ExtResource("1_5ykst")
+ref_id = "demon_sickle"
+image = ExtResource("1_xrvtg")
+name = "Demon Sickle"
+description = "straight from the hellish bowels of an alternate universe where everything is made of flat blocks"
+stackable = false
+max_stack = 1
+tags = []

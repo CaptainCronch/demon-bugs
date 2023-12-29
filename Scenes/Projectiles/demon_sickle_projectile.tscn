@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://bq06mk5861sva"]
+
+[ext_resource type="Script" path="res://Scripts/Projectiles/demon_sickle_projectile.gd" id="1_5jhmj"]
+[ext_resource type="Texture2D" uid="uid://doxl1ofdj3oay" path="res://Assets/texture_08.png" id="2_nnosk"]
+[ext_resource type="Script" path="res://Scripts/Misc/auto_spinner.gd" id="3_11kfn"]
+[ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="4_6v8xd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ndyx"]
+albedo_texture = ExtResource("2_nnosk")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wwws1"]
+size = Vector3(0.5, 0.25, 0.5)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_p2e10"]
+height = 1.0
+radius = 0.75
+
+[node name="DemonSickleProjectile" type="CharacterBody3D"]
+collision_layer = 64
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_5jhmj")
+pierce = 1
+
+[node name="Model" type="CSGCombiner3D" parent="."]
+material_override = SubResource("StandardMaterial3D_2ndyx")
+script = ExtResource("3_11kfn")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Model"]
+inner_radius = 0.3
+outer_radius = 0.7
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.924785, 0.380489, 0, -0.380489, 0.924785, 0, 0, 0.563302)
+operation = 2
+size = Vector3(2, 1, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_wwws1")
+
+[node name="HurtAreaComponent" parent="." instance=ExtResource("4_6v8xd")]
+collision_layer = 64
+collision_mask = 8
+detection_groups = PackedStringArray("enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtAreaComponent"]
+shape = SubResource("CylinderShape3D_p2e10")
+
+[node name="SpeedTime" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="area_entered" from="HurtAreaComponent" to="." method="_on_hurt_area_component_area_entered"]

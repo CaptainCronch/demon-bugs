@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://3iq3avr3te45"]
+
+[ext_resource type="Script" path="res://Scripts/Components/melee_component.gd" id="1_sleam"]
+
+[node name="MeleeComponent" type="Node3D"]
+script = ExtResource("1_sleam")

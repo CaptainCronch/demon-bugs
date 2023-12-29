@@ -33,7 +33,7 @@ func get_random_slotref() -> SlotRef : # returns weighted random slotref with ra
 	for slot in weighted_slotrefs:
 		total_weight += slot.weight
 	var chosen_value := randi_range(1, total_weight)
-	print(chosen_value, "/", total_weight)
+	#print(chosen_value, "/", total_weight)
 	for slot in weighted_slotrefs:
 		if chosen_value <= slot.weight:
 			return slot.consolidate()

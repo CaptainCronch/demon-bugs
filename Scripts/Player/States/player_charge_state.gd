@@ -2,7 +2,6 @@ extends PlayerItemState
 
 @export var slow_move_speed := 1.0
 
-var power_level := 0
 
 
 func enter() -> void :

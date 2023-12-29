@@ -23,10 +23,11 @@ var held_item : Item
 @export var animation_player : AnimationPlayer
 @export var pickup_area : Area3D
 @export var health_bar : TextureProgressBar
+@export var cap_health_bar : TextureProgressBar
 
 @export var plat_comp : PlatformerComponent
 @export var health_comp : HealthComponent
-@export var hurt_area_comp : HurtAreaComponent
+@export var melee_comp : MeleeComponent
 
 
 func _ready() -> void :
@@ -36,7 +37,11 @@ func _ready() -> void :
 
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
-	health_comp.damage_taken.connect(update_health_bar)
+	health_comp.health_changed.connect(update_health_bar)
+
+	cap_health_bar.max_value = health_comp.max_health
+	cap_health_bar.value = health_comp.max_health - health_comp.cap_health
+	health_comp.cap_health_changed.connect(update_cap_health_bar)
 
 	if item_holder.get_child_count() > 0:
 		holding_item = true
@@ -53,6 +58,7 @@ func _process(_delta : float) -> void :
 
 func _physics_process(_delta : float) -> void :
 	air_movement(_delta)
+	pick_up()
 
 
 func _unhandled_input(event : InputEvent) -> void :
@@ -121,11 +127,10 @@ func throw_item(power_level) -> void :
 func pick_up() -> void : # if item fits delete item else set item quantity to remainder
 	if pickup_area.has_overlapping_bodies():
 		for body in pickup_area.get_overlapping_bodies():
-			if body is Item:
+			if body is Item and body.grabbable:
 				var result := inventory.add_slotref(body.slotref)
 				if result == null: body.free()
 				else: body.slotref = result
-				return
 
 
 func switch_held(index : int):
@@ -155,9 +160,10 @@ func switch_held(index : int):
 	for child in held_item.get_children():
 		if child is CollisionShape3D:
 			child.disabled = true
-	if held_item is Tool:
-		hurt_area_comp.collider.shape.size.z = held_item.attack_range + 1
-		hurt_area_comp.collider.position.z = held_item.attack_range / -2
+	if held_item is Melee:
+		melee_comp.base_shape.size.z = held_item.attack_range + 1
+		melee_comp.position.z = held_item.attack_range / -2
+		melee_comp.base_attack = held_item.attack
 
 
 func _on_inventory_updated(new_invref: InventoryRef):
@@ -180,8 +186,13 @@ func explode(origin : Vector3, radius : float, power : float, upthrust := 0.0) -
 	plat_comp.explode(origin, radius, power, upthrust)
 
 
-func update_health_bar(_attack : Attack):
+func update_health_bar(_attack = null) -> void :
 	health_bar.value = health_comp.health
+
+
+func update_cap_health_bar(_amount = null) -> void :
+	cap_health_bar.value = health_comp.max_health - health_comp.cap_health
+	update_health_bar()
 
 
 func _on_interact_body_entered(body):

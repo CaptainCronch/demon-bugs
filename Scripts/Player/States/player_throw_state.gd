@@ -3,6 +3,7 @@ extends PlayerItemState
 @export var charge_time := 0.2
 @export var max_power_level := 3
 @export var drop_delay := 0.2
+@export var item_delay := 2.0
 
 var item : Item
 var charge_timer : float
@@ -39,6 +40,7 @@ func update(_delta) -> void :
 				#progress, "value",
 				#0,
 				#0.5).set_trans(Tween.TRANS_CUBIC)
+		player.held_item.pick_up_timer(item_delay)
 		player.throw_item(power_level)
 		drop_timer.start(drop_delay)
 

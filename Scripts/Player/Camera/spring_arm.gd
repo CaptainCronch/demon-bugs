@@ -3,10 +3,16 @@ extends SpringArm3D
 @export var mouse_sensitivity := 0.15
 @export var analog_sensitivity := 0.75
 @export var offset := Vector3.ZERO
+@export var plat_comp : PlatformerComponent
 
 var _analog_look := 0.0
+var cam_lock := false
 
 @export var target : Node3D
+
+
+func _ready():
+	cam_lock
 
 
 func _process(_delta):
@@ -18,8 +24,15 @@ func _process(_delta):
 	global_position.y = target.global_position.y + offset.y
 	#if player.is_on_floor() or absf(player.velocity.y) > player.plat_comp.jump_force * 1.5 or player.plat_comp.explosive_jumping:
 	#	global_position.y = player.global_position.y + offset.y
+	if cam_lock:
+		plat_comp.turn_target = Vector2.UP.rotated(-rotation.y)
+	else:
+		plat_comp.turn_target = Vector2()
 
 
-func _input(event):
+
+func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sensitivity))
+	elif event.is_action_pressed("lock_camera"):
+		cam_lock = !cam_lock

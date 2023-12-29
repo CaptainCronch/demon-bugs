@@ -56,7 +56,7 @@ stun_time = 1.0
 
 [sub_resource type="Resource" id="Resource_agxo6"]
 script = ExtResource("2_c41qw")
-attack_damage = 1.0
+attack_damage = 14.0
 knockback_force = 10.0
 stun_time = 0.2
 
@@ -76,7 +76,7 @@ radius = 2.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6vth"]
 albedo_color = Color(1, 0, 0, 1)
 
-[node name="Flea" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp", "health_comp") groups=["beetle", "bug"]]
+[node name="Flea" type="CharacterBody3D" node_paths=PackedStringArray("plat_comp", "health_comp") groups=["beetle", "bug", "enemy"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0901996, 0)
 collision_layer = 8
 collision_mask = 35
@@ -98,7 +98,7 @@ target = NodePath("..")
 model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
 
-[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["beetle", "bug"] instance=ExtResource("3_0pyq4")]
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["beetle", "bug", "enemy"] instance=ExtResource("3_0pyq4")]
 collision_layer = 8
 health_comp = NodePath("../HealthComponent")
 
@@ -107,6 +107,7 @@ shape = SubResource("SphereShape3D_hhteb")
 
 [node name="HurtAreaComponent" parent="." instance=ExtResource("6_rlhxv")]
 attack = SubResource("Resource_agxo6")
+detection_groups = PackedStringArray("player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtAreaComponent"]
 shape = SubResource("SphereShape3D_ojrgp")
@@ -119,9 +120,8 @@ no_depth_test = true
 text = "i am bugs"
 
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_el5bk")]
-max_health = 1
+max_health = 50.0
 target = NodePath("..")
-invincibility_time = 0.1
 
 [node name="BugStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "debug_text")]
 script = ExtResource("6_o58k5")

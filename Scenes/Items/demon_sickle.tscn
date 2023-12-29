@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgmw6nuxj2d8r"]
+
+[ext_resource type="Script" path="res://Scripts/Items/demon_sickle.gd" id="1_0pfwt"]
+[ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_vdmvh"]
+[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="3_5jrpi"]
+
+[sub_resource type="Resource" id="Resource_hfn35"]
+script = ExtResource("2_vdmvh")
+attack_damage = 12.0
+knockback_force = 5.0
+stun_time = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukpxc"]
+albedo_texture = ExtResource("3_5jrpi")
+uv1_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xw60c"]
+size = Vector3(0.261475, 0.515625, 1.02539)
+
+[node name="DemonSickle" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 51
+mass = 2.0
+script = ExtResource("1_0pfwt")
+cap_damage_amount = 15
+attack = SubResource("Resource_hfn35")
+attack_cooldown = 0.4
+ref_id = "demon_sickle"
+
+[node name="Model" type="CSGCombiner3D" parent="."]
+material_override = SubResource("StandardMaterial3D_ukpxc")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Model"]
+transform = Transform3D(-0.0259638, -0.87313, 0.486796, -0.294803, 0.471992, 0.830852, -0.955205, -0.121937, -0.269656, 0.0464263, 0.0229848, 0.17965)
+size = Vector3(0.5, 0.1, 0.5)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Model"]
+transform = Transform3D(-0.685545, -0.541347, 0.486796, 0.172071, 0.529223, 0.830852, -0.707403, 0.65335, -0.269656, -0.090461, -0.00507106, -0.170794)
+size = Vector3(0.5, 0.1, 0.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.770957, 0.539829, 0.337949, -0.587926, 0.807259, 0.0517336, -0.244885, -0.238574, 0.939741, -0.029789, 0, 0)
+shape = SubResource("BoxShape3D_xw60c")

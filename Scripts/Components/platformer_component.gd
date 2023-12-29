@@ -28,6 +28,7 @@ var move_multiplier := 1.0
 var explosive_jumping := false
 var stunned := false
 var turning := true
+var turn_target := Vector2()
 
 @export var target : CharacterBody3D
 @export var model : VisualInstance3D
@@ -42,7 +43,7 @@ func _ready():
 
 
 func _process(_delta) -> void :
-	model_controls(_delta)
+	model_controls(move_dir if turn_target == Vector2() else turn_target)
 
 
 func _physics_process(_delta) -> void :
@@ -81,13 +82,13 @@ func ground_movement(delta : float) -> void :
 		target.velocity.z = Global.decay_towards(target.velocity.z, 0.0, friction, delta)
 
 
-func model_controls(delta : float) -> void :
+func model_controls(dir := move_dir) -> void :
 	if move_dir != Vector2.ZERO and turning and not stunned:
 		model.rotation.y = Global.decay_angle_towards(
 				model.rotation.y,
-				atan2(move_dir.x, move_dir.y) + PI,
+				atan2(dir.x, dir.y) + PI,
 				turn_acceleration,
-				delta)
+				get_process_delta_time())
 
 
 func jump() -> void :
