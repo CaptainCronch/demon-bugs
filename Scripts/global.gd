@@ -121,7 +121,7 @@ func spawn_item_pop(slotref : SlotRef,
 	if not is_instance_valid(slotref): return
 
 	var rand := Vector3(randf_range(-rand_factor, rand_factor),
-			randf_range(-rand_factor, rand_factor),
+			randf_range(0, rand_factor),
 			randf_range(-rand_factor, rand_factor))
 
 	var item : Item = tag_to_item(slotref.itemref.ref_id).instantiate()

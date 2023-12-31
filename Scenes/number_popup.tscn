@@ -3,13 +3,12 @@
 [ext_resource type="Script" path="res://Scripts/Misc/number_popup.gd" id="1_mmj8y"]
 
 [node name="NumberPopup" type="Label3D"]
-pixel_size = 0.001
+pixel_size = 0.0005
 billboard = 1
 no_depth_test = true
 fixed_size = true
 modulate = Color(1, 0, 0, 1)
-text = "17"
-font_size = 16
+text = "fuckass text"
 script = ExtResource("1_mmj8y")
 
 [node name="Lifetime" type="Timer" parent="."]

@@ -83,7 +83,7 @@ func ground_movement(delta : float) -> void :
 
 
 func model_controls(dir := move_dir) -> void :
-	if move_dir != Vector2.ZERO and turning and not stunned:
+	if dir != Vector2.ZERO and turning and not stunned:
 		model.rotation.y = Global.decay_angle_towards(
 				model.rotation.y,
 				atan2(dir.x, dir.y) + PI,

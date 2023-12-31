@@ -3,14 +3,13 @@ class_name Player
 
 var jump_move_multiplier := 1.2
 var throw_force := 5.0
-
 var buffer_time := 0.2
 var coyote_time := 0.2
 
-var tool_stun_time := 0.5
-
 var holding_item := false
 var held_item : Item
+
+@export var idle_heal_bonus := 1.0
 
 @export var inventory : InventoryRef
 @export var ui : UI
@@ -59,6 +58,11 @@ func _process(_delta : float) -> void :
 func _physics_process(_delta : float) -> void :
 	air_movement(_delta)
 	pick_up()
+
+	if is_zero_approx(velocity.x) and is_zero_approx(velocity.z):
+		health_comp.bonus_comp.add_bonus("idle", idle_heal_bonus)
+	else:
+		health_comp.bonus_comp.remove_bonus("idle")
 
 
 func _unhandled_input(event : InputEvent) -> void :
@@ -160,10 +164,6 @@ func switch_held(index : int):
 	for child in held_item.get_children():
 		if child is CollisionShape3D:
 			child.disabled = true
-	if held_item is Melee:
-		melee_comp.base_shape.size.z = held_item.attack_range + 1
-		melee_comp.position.z = held_item.attack_range / -2
-		melee_comp.base_attack = held_item.attack
 
 
 func _on_inventory_updated(new_invref: InventoryRef):

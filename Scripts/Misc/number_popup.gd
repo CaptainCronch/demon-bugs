@@ -1,7 +1,7 @@
 extends Label3D
 
-@export var initial_size := 16
-@export var final_size := 32
+@export var initial_size := 0.0005
+@export var final_size := 0.001
 @export var height := 2.0
 @export var displacement := 3.0
 @export var lifetime := 1.0
@@ -11,10 +11,10 @@ extends Label3D
 
 func _ready():
 	lifetime_timer.start(lifetime)
-	font_size = initial_size
+	pixel_size = initial_size
 	var tween := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
-	tween.tween_property(self, "font_size", final_size, lifetime / 4)
-	tween.set_ease(Tween.EASE_IN).tween_property(self, "font_size", 0, lifetime - (lifetime / 4))
+	tween.tween_property(self, "pixel_size", final_size, lifetime / 4)
+	tween.set_ease(Tween.EASE_IN).tween_property(self, "pixel_size", 0, lifetime - (lifetime / 4))
 
 	await get_tree().process_frame
 

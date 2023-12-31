@@ -1,14 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://cl82itj3cqgxi"]
+[gd_scene load_steps=10 format=3 uid="uid://cl82itj3cqgxi"]
 
-[ext_resource type="Script" path="res://Scripts/Items/net.gd" id="1_5x8rh"]
+[ext_resource type="Script" path="res://Scripts/Classes/tool.gd" id="1_pkb23"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_tmt06"]
 [ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="3_guf1y"]
+[ext_resource type="PackedScene" uid="uid://3iq3avr3te45" path="res://Scenes/Components/melee_component.tscn" id="4_whs8y"]
 
-[sub_resource type="Resource" id="Resource_yr4dl"]
+[sub_resource type="Resource" id="Resource_t82my"]
 script = ExtResource("2_tmt06")
 attack_damage = 7.0
 knockback_force = 10.0
-stun_time = 0.0
+stun_time = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukpxc"]
 albedo_texture = ExtResource("3_guf1y")
@@ -20,13 +21,18 @@ size = Vector3(0.15, 1.5, 0.15)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ftoqi"]
 height = 0.2
 
-[node name="Net" type="RigidBody3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_eg8xh"]
+size = Vector3(3, 2, 3)
+
+[node name="Net" type="RigidBody3D" node_paths=PackedStringArray("melee_comp")]
 collision_layer = 16
 collision_mask = 51
 mass = 2.0
-script = ExtResource("1_5x8rh")
-attack = SubResource("Resource_yr4dl")
+script = ExtResource("1_pkb23")
+attack = SubResource("Resource_t82my")
 attack_cooldown = 0.3
+type = 1
+melee_comp = NodePath("MeleeComponent")
 ref_id = "bug_net"
 
 [node name="Model" type="CSGCombiner3D" parent="."]
@@ -50,3 +56,8 @@ shape = SubResource("BoxShape3D_2mwuh")
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.37693, 0)
 shape = SubResource("CylinderShape3D_ftoqi")
+
+[node name="MeleeComponent" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("4_whs8y")]
+parent = NodePath("..")
+shape = SubResource("BoxShape3D_eg8xh")
+layers = 8

@@ -11,10 +11,6 @@ var cam_lock := false
 @export var target : Node3D
 
 
-func _ready():
-	cam_lock
-
-
 func _process(_delta):
 	$"../UI/FPS".text = str(Engine.get_frames_per_second())
 	_analog_look = Input.get_axis("look_left", "look_right")

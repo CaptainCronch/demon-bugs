@@ -11,16 +11,15 @@ albedo_texture = ExtResource("2_nnosk")
 [sub_resource type="BoxShape3D" id="BoxShape3D_wwws1"]
 size = Vector3(0.5, 0.25, 0.5)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_p2e10"]
-height = 1.0
-radius = 0.75
+[sub_resource type="BoxShape3D" id="BoxShape3D_msxvb"]
+size = Vector3(1.5, 1, 1.5)
 
 [node name="DemonSickleProjectile" type="CharacterBody3D"]
 collision_layer = 64
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_5jhmj")
-pierce = 1
+pierce = 4
 
 [node name="Model" type="CSGCombiner3D" parent="."]
 material_override = SubResource("StandardMaterial3D_2ndyx")
@@ -44,9 +43,6 @@ collision_mask = 8
 detection_groups = PackedStringArray("enemy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HurtAreaComponent"]
-shape = SubResource("CylinderShape3D_p2e10")
-
-[node name="SpeedTime" type="Timer" parent="."]
-one_shot = true
+shape = SubResource("BoxShape3D_msxvb")
 
 [connection signal="area_entered" from="HurtAreaComponent" to="." method="_on_hurt_area_component_area_entered"]
