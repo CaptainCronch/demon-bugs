@@ -1,11 +1,14 @@
-extends PanelContainer
+extends Control
 class_name InventoryPanel
 
 const SLOT := preload("res://Scenes/Player/UI/item_display.tscn")
 
 @export var parent_node : Node3D
+@export var grid : Container
 
-@onready var grid = $MarginContainer/GridContainer
+
+func _ready():
+	if not is_instance_valid(grid): grid = $MarginContainer/GridContainer
 
 
 func set_inventory_data(invref : InventoryRef) -> void :

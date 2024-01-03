@@ -7,10 +7,13 @@ signal active_slot_changed(index : int)
 @export var inv_slide_duration := 0.2
 @export var open_pos := Vector2(1392, 668)
 @export var closed_pos := Vector2(1392, 972)
+@export var equipment_open_pos := Vector2(1376, 1080)
+@export var equipment_closed_pos := Vector2(1376, 1491)
 @export var external_open_pos := Vector2(1392, 0)
 @export var external_closed_pos := Vector2(1392, -312)
 
 @onready var inventory_panel : InventoryPanel = $InventoryPanel
+@onready var equipment_panel = $Equipment
 @onready var grabbed_slot = $GrabbedSlot
 @onready var external_inventory = $ExternalInventory
 @onready var active_selector = $ActiveSelector
@@ -30,6 +33,7 @@ func _ready():
 
 	last_mouse_pos = get_window().size / 2
 	inventory_panel.set_deferred("position", closed_pos)
+	equipment_panel.set_deferred("position", equipment_closed_pos)
 	external_inventory.set_deferred("position", external_closed_pos)
 
 
@@ -52,18 +56,26 @@ func slide_inventory() -> void :
 
 	if slide_tween: slide_tween.kill()
 	var change_pos : Vector2 = closed_pos if inv_open else open_pos
+	var equipment_change_pos : Vector2 = equipment_closed_pos if inv_open else equipment_open_pos
 	var external_change_pos : Vector2 = external_closed_pos if inv_open else external_open_pos
 	slide_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
 	slide_tween.tween_property(inventory_panel, "position", change_pos, inv_slide_duration)
+	slide_tween.parallel().tween_property(equipment_panel, "position", equipment_change_pos, inv_slide_duration)
 	slide_tween.tween_property(external_inventory, "position", external_change_pos, inv_slide_duration)
 
 	inv_open = !inv_open
 
 
-func set_inventory_data(invref : InventoryRef, is_player := false) -> void:
+func set_inventory_data(invref : InventoryRef, is_player := false, armorref: InventoryRef = null, accessoryref : InventoryRef = null) -> void:
 	invref.inventory_interact.connect(_on_inventory_interact)
 	if is_player:
 		inventory_panel.set_inventory_data(invref)
+		if is_instance_valid(armorref):
+			armorref.inventory_interact.connect(_on_inventory_interact)
+			equipment_panel.armor.set_inventory_data(armorref)
+		if is_instance_valid(accessoryref):
+			accessoryref.inventory_interact.connect(_on_inventory_interact)
+			equipment_panel.accessory.set_inventory_data(accessoryref)
 
 
 func _on_inventory_interact(invref : InventoryRef, index : int, button : int) -> void :

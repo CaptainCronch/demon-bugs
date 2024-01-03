@@ -70,14 +70,17 @@ albedo_texture = ExtResource("4_l0ih0")
 [sub_resource type="Resource" id="Resource_iy2ja"]
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+allowed_tag = ""
 
 [sub_resource type="Resource" id="Resource_lv4vn"]
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+allowed_tag = ""
 
 [sub_resource type="Resource" id="Resource_mg8un"]
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
+allowed_tag = ""
 
 [node name="Level" type="Node3D"]
 

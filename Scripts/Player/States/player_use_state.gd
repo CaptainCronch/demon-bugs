@@ -15,8 +15,7 @@ func physics_update(_delta) -> void : # Tool melee check must occur during physi
 			player.animation_player.play("swing_down", -1, 1 / player.held_item.attack_cooldown)
 		else:
 			cooldown_timer.start(player.held_item.attack_cooldown)
-		player.held_item.on_use(player.global_position, player.model.rotation)
-		player.held_item.player_effect(player)
+		player.held_item.on_use(player, player.global_position, player.model.rotation)
 
 		attacking = false
 	elif not player.animation_player.is_playing() and cooldown_timer.is_stopped():

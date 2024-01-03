@@ -89,11 +89,39 @@ func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 
 		return mesh_instance
 
 
-func tag_to_item(tag : String) -> PackedScene:
+func cube(box : BoxShape3D, color = Color.WHITE_SMOKE, persist_ms = 0):
+	var mesh_instance := MeshInstance3D.new()
+	var immediate_mesh := ImmediateMesh.new()
+	var material := ORMMaterial3D.new()
+
+	mesh_instance.mesh = immediate_mesh
+	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+	immediate_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, material)
+	immediate_mesh.surface_add_vertex(Vector3.RIGHT * box.size.x / -2)
+	immediate_mesh.surface_add_vertex(Vector3.RIGHT * box.size.x / 2)
+	immediate_mesh.surface_add_vertex(Vector3.FORWARD * box.size.z / -2)
+	immediate_mesh.surface_add_vertex(Vector3.FORWARD * box.size.z / 2)
+	immediate_mesh.surface_add_vertex(Vector3.UP * box.size.y / -2)
+	immediate_mesh.surface_add_vertex(Vector3.UP * box.size.y / 2)
+	immediate_mesh.surface_end()
+
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = color
+
+	get_tree().get_root().add_child(mesh_instance)
+	if persist_ms:
+		await get_tree().create_timer(persist_ms).timeout
+		mesh_instance.queue_free()
+	else:
+		return mesh_instance
+
+
+func tag_to_item(tag : StringName) -> PackedScene:
 	return load("res://Scenes/Items/" + tag + ".tscn")
 
 
-func tag_to_ref(tag : String) -> ItemRef:
+func tag_to_ref(tag : StringName) -> ItemRef:
 	return load("res://Resources/" + tag + ".tres")
 
 
@@ -101,7 +129,8 @@ func spawn_item(slotref : SlotRef,
 		pos : Vector3,
 		rotation := Vector3(),
 		velocity := Vector3(),
-		torque := Vector3()) -> void :
+		torque := Vector3()) -> Item :
+	if not is_instance_valid(slotref): return null
 
 	var item : Item = tag_to_item(slotref.itemref.ref_id).instantiate()
 	get_tree().current_scene.add_child(item)
@@ -110,6 +139,7 @@ func spawn_item(slotref : SlotRef,
 	item.linear_velocity = velocity
 	item.rotation = rotation
 	item.slotref = slotref
+	return item
 
 
 func spawn_item_pop(slotref : SlotRef,
@@ -117,8 +147,8 @@ func spawn_item_pop(slotref : SlotRef,
 		torque := 0.0,
 		force := 0.0,
 		directional := Vector3(),
-		rand_factor := 1.0) -> void :
-	if not is_instance_valid(slotref): return
+		rand_factor := 1.0) -> Item :
+	if not is_instance_valid(slotref): return null
 
 	var rand := Vector3(randf_range(-rand_factor, rand_factor),
 			randf_range(0, rand_factor),
@@ -130,3 +160,4 @@ func spawn_item_pop(slotref : SlotRef,
 	item.angular_velocity = rand * torque
 	item.linear_velocity = rand * force if not directional else directional * (force * randf_range(0, rand_factor))
 	item.slotref = slotref
+	return item

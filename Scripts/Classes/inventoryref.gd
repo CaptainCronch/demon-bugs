@@ -5,6 +5,7 @@ signal inventory_interact(invref: InventoryRef, index: int, button: int)
 signal inventory_updated(invref: InventoryRef)
 
 @export var slotref_list : Array[SlotRef] = []
+@export var allowed_tag := ""
 
 
 func get_slotrefs() -> Array[SlotRef] :
@@ -43,6 +44,7 @@ func grab_half_slotref(index : int) -> SlotRef :
 
 
 func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
+	if not check_eligibility(grabbed_slotref): return grabbed_slotref
 	var slotref = get_slotref(index)
 
 	if slotref and slotref.can_merge_with(grabbed_slotref):
@@ -56,6 +58,7 @@ func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 
 
 func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
+	if not check_eligibility(grabbed_slotref): return grabbed_slotref
 	var slotref = get_slotref(index)
 
 	if not slotref:
@@ -72,6 +75,7 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 
 
 func pick_up_slotref(pickup : SlotRef) -> bool :
+	if not check_eligibility(pickup): return false
 	for ref in get_slotrefs():
 		if ref.can_merge_with(pickup):
 			ref.merge_with(pickup)
@@ -85,6 +89,7 @@ func delete_slotref(index : int) -> void :
 
 
 func add_slotref(input : SlotRef) -> SlotRef :
+	if not check_eligibility(input): return input
 	var slotref := input.duplicate()
 	var i := 0
 	for space in get_slotrefs():
@@ -106,3 +111,9 @@ func add_slotref(input : SlotRef) -> SlotRef :
 func _on_slot_clicked(index : int, button : int) -> void :
 	inventory_interact.emit(self, index, button)
 	#print("inventory interacted at index ", str(index), " with button ", str(button))
+
+
+func check_eligibility(slotref : SlotRef) -> bool :
+	if not allowed_tag: return true
+	if slotref.itemref.tags.has(allowed_tag): return true
+	else: return false

@@ -1,5 +1,5 @@
-extends Node
-class_name BonusComponent
+extends Resource
+class_name BonusManager
 
 #@export var multiplicative := false ## Decides if bonuses should multiply with each other.
 

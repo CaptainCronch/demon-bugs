@@ -32,6 +32,7 @@ var heal_rate := 0.0
 var heal_multiplier := 1.0
 var cap_heal_multiplier := 1.0
 
+var heal_bonus : BonusManager
 var heal_tween : Tween
 var cap_heal_tween : Tween
 
@@ -40,10 +41,10 @@ var cap_heal_tween : Tween
 @onready var cap_heal_timer : Timer = $CapHeal
 @onready var heal_delay_timer : Timer = $HealDelay
 @onready var cap_heal_delay_timer : Timer = $CapHealDelay
-@onready var bonus_comp : BonusComponent = $IdleMultiplier
 
 
 func _ready():
+	heal_bonus = BonusManager.new()
 	#heal_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	#cap_heal_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	cap_health = max_health
@@ -120,12 +121,12 @@ func spawn_number_popup(number : float):
 
 
 func _on_heal_timeout():
-	heal(heal_rate * (cap_health / max_health) * bonus_comp.get_total())
+	heal(heal_rate * (cap_health / max_health) * heal_bonus.get_total())
 	heal_timer.start(heal_tick)
 
 
 func _on_cap_heal_timeout():
-	heal_cap(cap_heal_rate * bonus_comp.get_total())
+	heal_cap(cap_heal_rate * heal_bonus.get_total())
 	cap_heal_timer.start(heal_tick)
 
 

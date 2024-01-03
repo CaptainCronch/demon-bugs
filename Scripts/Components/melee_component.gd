@@ -22,13 +22,12 @@ func melee(attack : Attack, pos : Vector3, rot : Vector3, offset := true) -> voi
 	var world := get_world_3d().direct_space_state
 
 	params.shape = shape
-	var pos_offset := Vector3.FORWARD.rotated(Vector3.UP, rot.y) * (shape.size.z - 1) if offset else Vector3()
-	params.transform = Transform3D(Basis.from_euler(rot), pos + pos_offset + Vector3.UP)
-	var collisions := world.intersect_shape(params)
+	var pos_offset := Vector3.FORWARD.rotated(Vector3.UP, rot.y) * ((shape.size.z / 2) - 0.5) if offset else Vector3()
+	pos_offset += Vector3.UP * ((shape.size.y / 2) - 1) if offset else Vector3() # add forwards and up offsets so melee hit comes from the front and above
+	params.transform = Transform3D(Basis.from_euler(rot), pos + pos_offset)
+	var collisions := world.intersect_shape(params, 128)
 
 	for collision in collisions:
 		if collision.collider is HitboxComponent:
 			collision.collider.damage(attack)
 			hit.emit(collision.collider)
-
-

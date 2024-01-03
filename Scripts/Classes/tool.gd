@@ -40,21 +40,18 @@ func _process(delta):
 	if charging: charge_power += delta
 
 
-func on_use(pos := Vector3(), rot := Vector3()) -> void : ## Call from inherited object only after using charge_power variable
+func on_use(player : Player, pos := Vector3(), rot := Vector3()) -> void : ## Call from inherited object only after using charge_power variable
 	charging = false
 	charge_power = 0.0
 
 	attack.attack_position = pos
 	if is_instance_valid(projectile_scene): shoot(projectile_scene)
 	if is_instance_valid(melee_comp): melee_comp.melee(attack, pos, rot)
+	if cap_damage_amount != 0: player.health_comp.cap_damage(cap_damage_amount)
 
 
 func charge() -> void:
 	charging = true
-
-
-func player_effect(player : Player) -> void :
-	if cap_damage_amount != 0: player.health_comp.cap_damage(cap_damage_amount)
 
 
 func shoot(projectile : PackedScene):

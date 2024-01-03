@@ -7,6 +7,7 @@ class_name Item
 var grabbable := false
 var pick_up_delay := 0.5
 var slotref : SlotRef
+var tags : PackedStringArray = []
 var timer : Timer
 
 
@@ -15,6 +16,8 @@ func _ready():
 	slotref.itemref = Global.tag_to_ref(ref_id)
 	if slotref.itemref == null:
 		printerr("couldnt find itemref resource")
+	else:
+		tags = slotref.itemref.tags
 	if amount:
 		slotref.amount = amount
 

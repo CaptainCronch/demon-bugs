@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bck2h1tbc7hvs"]
-
-[ext_resource type="Script" path="res://Scripts/Components/multiplier_component.gd" id="1_7k10c"]
-
-[node name="BonusComponent" type="Node"]
-script = ExtResource("1_7k10c")

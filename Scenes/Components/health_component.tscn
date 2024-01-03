@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvqtx7jv8iblb"]
+[gd_scene load_steps=2 format=3 uid="uid://bvqtx7jv8iblb"]
 
 [ext_resource type="Script" path="res://Scripts/Components/health_component.gd" id="1_me57m"]
-[ext_resource type="PackedScene" uid="uid://bck2h1tbc7hvs" path="res://Scenes/Components/bonus_component.tscn" id="2_8e04m"]
 
 [node name="HealthComponent" type="Node3D"]
 script = ExtResource("1_me57m")
@@ -20,8 +19,6 @@ one_shot = true
 
 [node name="CapHealDelay" type="Timer" parent="."]
 one_shot = true
-
-[node name="IdleMultiplier" parent="." instance=ExtResource("2_8e04m")]
 
 [connection signal="timeout" from="Heal" to="." method="_on_heal_timeout"]
 [connection signal="timeout" from="CapHeal" to="." method="_on_cap_heal_timeout"]

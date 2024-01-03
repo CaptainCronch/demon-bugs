@@ -22,7 +22,7 @@ size = Vector3(0.15, 1.5, 0.15)
 height = 0.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_eg8xh"]
-size = Vector3(3, 2, 3)
+size = Vector3(2, 3, 3)
 
 [node name="Net" type="RigidBody3D" node_paths=PackedStringArray("melee_comp")]
 collision_layer = 16

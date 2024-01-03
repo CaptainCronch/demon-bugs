@@ -12,6 +12,8 @@ var held_item : Item
 @export var idle_heal_bonus := 1.0
 
 @export var inventory : InventoryRef
+@export var armor_inventory : InventoryRef
+@export var accessory_inventory : InventoryRef
 @export var ui : UI
 
 @export var model : VisualInstance3D
@@ -30,7 +32,7 @@ var held_item : Item
 
 
 func _ready() -> void :
-	ui.set_inventory_data(inventory, true)
+	ui.set_inventory_data(inventory, true, armor_inventory, accessory_inventory)
 	ui.active_slot_changed.connect(switch_held)
 	inventory.inventory_updated.connect(_on_inventory_updated)
 
@@ -60,9 +62,9 @@ func _physics_process(_delta : float) -> void :
 	pick_up()
 
 	if is_zero_approx(velocity.x) and is_zero_approx(velocity.z):
-		health_comp.bonus_comp.add_bonus("idle", idle_heal_bonus)
+		health_comp.heal_bonus.add_bonus("idle", idle_heal_bonus)
 	else:
-		health_comp.bonus_comp.remove_bonus("idle")
+		health_comp.heal_bonus.remove_bonus("idle")
 
 
 func _unhandled_input(event : InputEvent) -> void :
