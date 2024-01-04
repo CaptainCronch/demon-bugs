@@ -1,7 +1,7 @@
 extends Resource
 class_name BonusManager
 
-#@export var multiplicative := false ## Decides if bonuses should multiply with each other.
+@export var multiplicative := true ## Decides if bonus should start at 1.
 
 var bonuses : Dictionary = {} ## Name and value of bonus.
 var fines : Dictionary = {} ## Name and value of fine.
@@ -23,10 +23,18 @@ func remove_fine(id : String) -> bool : ## Returns true if successful, false if 
 	return fines.erase(id)
 
 
-func get_total() -> float :
+func has_bonus(id : String) -> bool :
+	return bonuses.has(id)
+
+
+func has_fine(id : String) -> bool :
+	return fines.has(id)
+
+
+func get_total() -> float : ## Add up all bonuses and subtract fines.
 	if bonuses.is_empty() and fines.is_empty():
-		return 1.0
-	var total := 1.0
+		return 1.0 if multiplicative else 0.0
+	var total := 1.0 if multiplicative else 0.0
 	for bonus in bonuses:
 		total += bonuses[bonus]
 	for fine in fines:

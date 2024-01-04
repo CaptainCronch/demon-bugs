@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=26 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://kxrynlmrjn5c" path="res://Scenes/chest.tscn" id="11_x56hf"]
 [ext_resource type="PackedScene" uid="uid://cgmw6nuxj2d8r" path="res://Scenes/Items/demon_sickle.tscn" id="12_22w3c"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
+[ext_resource type="PackedScene" uid="uid://cmfupjgyd7biq" path="res://Scenes/Items/beekeeper_hat.tscn" id="13_yuojv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -410,5 +411,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.41327, 0, 0)
 
 [node name="DemonSickle" parent="." instance=ExtResource("12_22w3c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7936, 7.79614, 22.1775)
+
+[node name="BeekeeperHat" parent="." instance=ExtResource("13_yuojv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.27158, 0.412496, 23.7667)
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://5ba1t8kf7lhx"]
+
+[ext_resource type="Script" path="res://Scripts/Modifiers/beekeeper_hat_mod.gd" id="1_xyoya"]
+
+[node name="BeekeeperHatMod" type="Node"]
+script = ExtResource("1_xyoya")
+defense = 2.0
+set_defense = 1.0
+set_partner = &"beekeeper_outfit"
+tag = &"beekeeper_hat"

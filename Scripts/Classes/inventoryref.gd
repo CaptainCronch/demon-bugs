@@ -3,6 +3,7 @@ class_name InventoryRef
 
 signal inventory_interact(invref: InventoryRef, index: int, button: int)
 signal inventory_updated(invref: InventoryRef)
+signal slotref_changed(old_ref : SlotRef, new_ref : SlotRef) ## Used only for modifiers currently.
 
 @export var slotref_list : Array[SlotRef] = []
 @export var allowed_tag := ""
@@ -17,10 +18,12 @@ func get_slotref(index : int) -> SlotRef :
 
 
 func set_slotref(index : int, value : SlotRef) -> void :
+	var old := slotref_list[index]
 	slotref_list[index] = value
+	slotref_changed.emit(old, value)
 
 
-func grab_slotref(index : int) -> SlotRef :
+func grab_slotref(index : int) -> SlotRef : ## Called on primary click with empty hand.
 	var slotref = get_slotref(index)
 	if slotref:
 		set_slotref(index, null)
@@ -30,7 +33,7 @@ func grab_slotref(index : int) -> SlotRef :
 		return null
 
 
-func grab_half_slotref(index : int) -> SlotRef :
+func grab_half_slotref(index : int) -> SlotRef : ## Called on secondary click with empty hand.
 	var slotref = get_slotref(index).duplicate()
 	if slotref:
 		if slotref.amount == 1: return grab_slotref(index)
@@ -43,9 +46,9 @@ func grab_half_slotref(index : int) -> SlotRef :
 		return null
 
 
-func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
-	if not check_eligibility(grabbed_slotref): return grabbed_slotref
-	var slotref = get_slotref(index)
+func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef : ## Called on primary click with grabbed slotref.
+	var slotref := get_slotref(index)
+	if not check_eligibility(grabbed_slotref, index): return grabbed_slotref
 
 	if slotref and slotref.can_merge_with(grabbed_slotref):
 		var grabbed := slotref.merge_with(grabbed_slotref)
@@ -57,9 +60,9 @@ func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 		return slotref
 
 
-func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
-	if not check_eligibility(grabbed_slotref): return grabbed_slotref
+func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef : ## Called on secondary click with grabbed slotref.
 	var slotref = get_slotref(index)
+	if not check_eligibility(grabbed_slotref, index): return grabbed_slotref
 
 	if not slotref:
 		set_slotref(index, grabbed_slotref.create_single_slotref())
@@ -74,36 +77,37 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef :
 		return null
 
 
-func pick_up_slotref(pickup : SlotRef) -> bool :
-	if not check_eligibility(pickup): return false
-	for ref in get_slotrefs():
-		if ref.can_merge_with(pickup):
-			ref.merge_with(pickup)
-			return true
-	return false
+#func pick_up_slotref(pickup : SlotRef) -> bool :
+	#for ref in get_slotrefs():
+		#if ref.can_merge_with(pickup):
+			#if not check_eligibility(pickup, ref): continue
+			#ref.merge_with(pickup)
+			#return true
+	#return false
 
 
 func delete_slotref(index : int) -> void :
+	slotref_changed.emit(get_slotref(index), null)
 	set_slotref(index, null)
 	inventory_updated.emit(self)
 
 
 func add_slotref(input : SlotRef) -> SlotRef :
-	if not check_eligibility(input): return input
 	var slotref := input.duplicate()
 	var i := 0
 	for space in get_slotrefs():
-		if space == null:
-			set_slotref(i, slotref)
-			slotref = null
-			inventory_updated.emit(self)
-			return null
-		if space.can_merge_with(slotref):
-			var remainder := space.merge_with(slotref)
-			if remainder == null:
+		if check_eligibility(slotref, i):
+			if space == null:
+				set_slotref(i, slotref)
+				slotref = null
 				inventory_updated.emit(self)
 				return null
-			else: add_slotref(remainder)
+			if space.can_merge_with(slotref):
+				var remainder := space.merge_with(slotref)
+				if remainder == null:
+					inventory_updated.emit(self)
+					return null
+				else: add_slotref(remainder)
 		i += 1
 	return slotref
 
@@ -113,7 +117,7 @@ func _on_slot_clicked(index : int, button : int) -> void :
 	#print("inventory interacted at index ", str(index), " with button ", str(button))
 
 
-func check_eligibility(slotref : SlotRef) -> bool :
+func check_eligibility(new_slotref : SlotRef, _index : int) -> bool :
 	if not allowed_tag: return true
-	if slotref.itemref.tags.has(allowed_tag): return true
+	if new_slotref.itemref.tags.has(allowed_tag): return true
 	else: return false

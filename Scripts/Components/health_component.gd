@@ -11,7 +11,8 @@ signal death(attack : Attack)
 
 const number_popup := preload("res://Scenes/number_popup.tscn")
 
-@export var color := Color.RED
+@export var default_color := Color.RED
+@export var blocked_color := Color.DARK_ORANGE
 @export var max_health : float
 @export var target : Node3D
 @export var invincibility_time := 0.0
@@ -24,6 +25,7 @@ const number_popup := preload("res://Scenes/number_popup.tscn")
 @export var cap_heal_time := 20.0
 @export var cap_heal_delay := 2.0
 @export var heal_tick := 0.25
+@export var defense := 0.0
 
 var cap_health := 0.0
 var health := 0.0
@@ -31,8 +33,10 @@ var cap_heal_rate := 0.0
 var heal_rate := 0.0
 var heal_multiplier := 1.0
 var cap_heal_multiplier := 1.0
+var dead := false
 
 var heal_bonus : BonusManager
+var defense_bonus : BonusManager
 var heal_tween : Tween
 var cap_heal_tween : Tween
 
@@ -45,6 +49,8 @@ var cap_heal_tween : Tween
 
 func _ready():
 	heal_bonus = BonusManager.new()
+	defense_bonus = BonusManager.new()
+	defense_bonus.multiplicative = false
 	#heal_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	#cap_heal_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
 	cap_health = max_health
@@ -56,25 +62,33 @@ func _ready():
 
 
 func damage(attack : Attack):
+	if dead: return
 	heal_delay_timer.start(heal_delay)
-	heal_timer.stop()
+	heal_timer.stop() # stop healing even if damage is 0
 	heal_rate = heal_min_rate
 	if heal_tween: heal_tween.kill()
 	if attack.attack_damage <= 0: return
 	if not invincibility_timer.is_stopped(): return
-	health -= roundf(attack.attack_damage)
+	print(defense + defense_bonus.get_total())
+	var total_attack := attack.attack_damage - (defense + defense_bonus.get_total())
+	if total_attack <= 0.0:
+		spawn_number_popup("BLOCKED!!", blocked_color)
+		return
+
+	health -= roundf(total_attack)
 	damage_taken.emit(attack)
-	spawn_number_popup(attack.attack_damage)
+	health_changed.emit(-attack.attack_damage)
+	spawn_number_popup(str(roundf(total_attack)), default_color)
 
 	if health <= 0:
 		die(attack)
 		return
 	if is_zero_approx(invincibility_time): return
 	invincibility_timer.start(invincibility_time)
-	health_changed.emit(-attack.attack_damage)
 
 
 func cap_damage(amount : float) -> void :
+	if dead: return
 	cap_heal_delay_timer.start(cap_heal_delay)
 	cap_heal_timer.stop()
 	cap_heal_rate = cap_heal_min_rate
@@ -92,11 +106,14 @@ func cap_damage(amount : float) -> void :
 
 
 func die(attack):
+	if dead: return
 	death.emit(attack)
+	dead = true
 	target.queue_free()
 
 
 func heal(amount : float) -> void :
+	if dead: return
 	if amount <= 0: return
 	health = minf(health + amount, cap_health)
 	healed.emit(amount)
@@ -104,6 +121,7 @@ func heal(amount : float) -> void :
 
 
 func heal_cap(amount : float) -> void :
+	if dead: return
 	if amount <= 0: return
 	var health_ratio := inverse_lerp(0, cap_health, health)
 	cap_health = minf(cap_health + amount, max_health)
@@ -112,11 +130,12 @@ func heal_cap(amount : float) -> void :
 	cap_health_changed.emit(amount)
 
 
-func spawn_number_popup(number : float):
+func spawn_number_popup(value : String, color := Color.RED):
+	if dead: return
 	var new_popup := number_popup.instantiate()
 	get_tree().current_scene.add_child(new_popup)
 	new_popup.global_position = global_position
-	new_popup.text = str(round(number))
+	new_popup.text = value
 	new_popup.modulate = color
 
 

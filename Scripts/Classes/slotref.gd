@@ -4,6 +4,8 @@ class_name SlotRef
 @export var itemref : ItemRef
 @export var amount := 1 : set = set_amount
 
+var allowed_tag := ""
+
 
 func can_merge_with(other_slotref: SlotRef, single := false) -> bool :
 	return (itemref == other_slotref.itemref

@@ -116,7 +116,7 @@ func knockback(attack : Attack) -> void :
 	var attack_2d := Vector2(attack.attack_position.x, attack.attack_position.z)
 	var dir := attack_2d.direction_to(pos_2d)
 	var kb_factor := attack.knockback_force - (attack.knockback_force * knockback_resistance)
-	var knockback_total := Vector3(dir.x, 1, dir.y).normalized() * kb_factor
+	var knockback_total := Vector3(dir.x, 0.5, dir.y).normalized() * kb_factor
 	target.velocity = knockback_total
 
 

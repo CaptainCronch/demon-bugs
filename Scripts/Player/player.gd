@@ -12,7 +12,7 @@ var held_item : Item
 @export var idle_heal_bonus := 1.0
 
 @export var inventory : InventoryRef
-@export var armor_inventory : InventoryRef
+@export var armor_inventory : ArmorInventoryRef
 @export var accessory_inventory : InventoryRef
 @export var ui : UI
 
@@ -28,7 +28,7 @@ var held_item : Item
 
 @export var plat_comp : PlatformerComponent
 @export var health_comp : HealthComponent
-@export var melee_comp : MeleeComponent
+@export var mod_comp : ModifierComponent
 
 
 func _ready() -> void :

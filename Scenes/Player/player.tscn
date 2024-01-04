@@ -1,16 +1,18 @@
-[gd_scene load_steps=39 format=3 uid="uid://cpsbck5o8h5qa"]
+[gd_scene load_steps=41 format=3 uid="uid://cpsbck5o8h5qa"]
 
 [ext_resource type="Script" path="res://Scripts/Player/player.gd" id="1_fbsit"]
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="2_g5p8y"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="2_mtpeg"]
 [ext_resource type="Texture2D" uid="uid://b5184hy24g7q7" path="res://Assets/goth-twink-natural-beauty-wojak-doomer-overblown-white-glowing-shiny-roblox-avatar.jpg" id="2_mvr2n"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_xugwe"]
+[ext_resource type="Script" path="res://Scripts/Classes/armor_inventoryref.gd" id="3_15wbj"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_idle_state.gd" id="3_c040h"]
 [ext_resource type="PackedScene" uid="uid://bvqtx7jv8iblb" path="res://Scenes/Components/health_component.tscn" id="3_rsfx7"]
 [ext_resource type="Script" path="res://Scripts/Player/Camera/spring_arm.gd" id="3_xot8x"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_walk_state.gd" id="4_e3lre"]
 [ext_resource type="PackedScene" uid="uid://twyxycotby4a" path="res://Scenes/Components/hitbox_component.tscn" id="4_js2p5"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_run_state.gd" id="5_cp4a0"]
+[ext_resource type="Script" path="res://Scripts/Components/modifier_component.gd" id="6_6maji"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_hold_state.gd" id="6_rqytr"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_use_state.gd" id="7_4de8u"]
 [ext_resource type="Script" path="res://Scripts/Player/States/player_charge_state.gd" id="7_o62mw"]
@@ -32,10 +34,10 @@ script = ExtResource("2_mtpeg")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 allowed_tag = ""
 
-[sub_resource type="Resource" id="Resource_3adte"]
-script = ExtResource("2_mtpeg")
+[sub_resource type="Resource" id="Resource_2adks"]
+script = ExtResource("3_15wbj")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null])
-allowed_tag = "armor"
+allowed_tag = ""
 
 [sub_resource type="Resource" id="Resource_kgbrf"]
 script = ExtResource("2_mtpeg")
@@ -46,7 +48,7 @@ allowed_tag = "accessory"
 height = 0.8
 radius = 0.2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6c5e"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ncmt"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 0.352941)
 
@@ -140,14 +142,14 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_5u7wp"]
 radius = 3.0
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "cap_health_bar", "plat_comp", "health_comp") groups=["player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ui", "model", "item_holder", "spring_arm", "buffer_timer", "coyote_timer", "animation_player", "pickup_area", "health_bar", "cap_health_bar", "plat_comp", "health_comp", "mod_comp") groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 4
 collision_mask = 35
 platform_on_leave = 2
 script = ExtResource("1_fbsit")
 inventory = SubResource("Resource_tidbt")
-armor_inventory = SubResource("Resource_3adte")
+armor_inventory = SubResource("Resource_2adks")
 accessory_inventory = SubResource("Resource_kgbrf")
 ui = NodePath("UI")
 model = NodePath("Model")
@@ -161,6 +163,7 @@ health_bar = NodePath("UI/HealthBar")
 cap_health_bar = NodePath("UI/CapHealthBar")
 plat_comp = NodePath("PlatformerComponent")
 health_comp = NodePath("HealthComponent")
+mod_comp = NodePath("ModifierComponent")
 
 [node name="PlatformerComponent" parent="." node_paths=PackedStringArray("target", "model", "health_comp") instance=ExtResource("2_xugwe")]
 stun_resistance = 0.5
@@ -169,7 +172,7 @@ model = NodePath("../Model")
 health_comp = NodePath("../HealthComponent")
 
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_rsfx7")]
-color = Color(1, 0, 1, 1)
+default_color = Color(0, 0.831373, 0.52549, 1)
 max_health = 100.0
 target = NodePath("..")
 invincibility_time = 1.0
@@ -182,6 +185,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.879393, 0)
 billboard = 1
 no_depth_test = true
 text = "wishlist on steam"
+
+[node name="ModifierComponent" type="Node3D" parent="." node_paths=PackedStringArray("target")]
+script = ExtResource("6_6maji")
+target = NodePath("..")
 
 [node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_comp") groups=["player"] instance=ExtResource("4_js2p5")]
 collision_layer = 4
@@ -344,7 +351,7 @@ layout_mode = 0
 offset_right = 96.0
 offset_bottom = 96.0
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_u6c5e")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ncmt")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("plat_comp", "target")]
 transform = Transform3D(1, 0, 0, 0, 0.866026, 0.5, 0, -0.5, 0.866026, 0, 0.8, 0)
@@ -391,6 +398,11 @@ shape = SubResource("CylinderShape3D_8vfe4")
 [node name="Model" type="CSGCombiner3D" parent="."]
 layers = 2
 material_override = SubResource("StandardMaterial3D_5cai1")
+
+[node name="Head" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Body" type="Node3D" parent="Model"]
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="Model"]
 radius = 0.3
