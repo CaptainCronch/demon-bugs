@@ -6,8 +6,9 @@ var throw_force := 5.0
 var buffer_time := 0.2
 var coyote_time := 0.2
 
-var holding_item := false
 var held_item : Item
+var head_item : Item
+var body_item : Item
 
 @export var idle_heal_bonus := 1.0
 
@@ -18,6 +19,9 @@ var held_item : Item
 
 @export var model : VisualInstance3D
 @export var item_holder : Node3D
+@export var head_slot : Node3D
+@export var body_slot : Node3D
+
 @export var spring_arm : SpringArm3D
 @export var buffer_timer : Timer
 @export var coyote_timer : Timer
@@ -30,11 +34,20 @@ var held_item : Item
 @export var health_comp : HealthComponent
 @export var mod_comp : ModifierComponent
 
+enum BODY_SLOT {
+	NONE,
+	HAND,
+	HEAD,
+	BODY,
+}
+
 
 func _ready() -> void :
 	ui.set_inventory_data(inventory, true, armor_inventory, accessory_inventory)
-	ui.active_slot_changed.connect(switch_held)
+	ui.active_slot_changed.connect(switch_slot)
 	inventory.inventory_updated.connect(_on_inventory_updated)
+	armor_inventory.inventory_updated.connect(_on_inventory_updated)
+	accessory_inventory.inventory_updated.connect(_on_inventory_updated)
 
 	health_bar.max_value = health_comp.max_health
 	health_bar.value = health_comp.health
@@ -44,13 +57,12 @@ func _ready() -> void :
 	cap_health_bar.value = health_comp.max_health - health_comp.cap_health
 	health_comp.cap_health_changed.connect(update_cap_health_bar)
 
-	if item_holder.get_child_count() > 0:
-		holding_item = true
-		held_item = item_holder.get_child(0)
-		held_item.global_position = item_holder.global_position
-		for child in held_item.get_children():
-				if child is CollisionShape3D:
-					child.disabled = true
+	#if item_holder.get_child_count() > 0:
+		#held_item = item_holder.get_child(0)
+		#held_item.global_position = item_holder.global_position
+		#for child in held_item.get_children():
+				#if child is CollisionShape3D:
+					#child.disabled = true
 
 
 func _process(_delta : float) -> void :
@@ -121,7 +133,6 @@ func throw_item(power_level) -> void :
 	item.global_position = item_holder.global_position
 	item.rotation.y = model.rotation.y
 	item.freeze = false
-	holding_item = false
 	held_item = null
 	var offset := randf_range(-1.0, 1.0)
 	item.linear_velocity = (Vector3(0, 0.5, -1).rotated(Vector3.UP, model.rotation.y) * throw_force * power_level) + (velocity * 0.5)
@@ -139,44 +150,122 @@ func pick_up() -> void : # if item fits delete item else set item quantity to re
 				else: body.slotref = result
 
 
-func switch_held(index : int):
-	var slotref : SlotRef = inventory.get_slotref(index)
-	#var new_item = item.item_scene.instantiate()
+#func switch_held(index : int):
+	#var slotref : SlotRef = inventory.get_slotref(index)
+#
+	#if not is_instance_valid(slotref):
+		#if is_instance_valid(held_item): # if nothing in new slot but held item then delete item and return
+			#held_item.free()
+		#return
+#
+	#if is_instance_valid(held_item): # if held item and new slot is actually new then delete held item
+		#if slotref != held_item.slotref: # but if the new slot is the same as held item then return
+			#held_item.free()
+		#else:
+			#return
+#
+	#held_item = Global.tag_to_item(slotref.itemref.ref_id).instantiate()
+	#item_holder.add_child(held_item)
+#
+	#held_item.global_position = item_holder.global_position
+	#held_item.rotation = item_holder.rotation
+	#held_item.freeze = true
+#
+	#held_item.slotref = slotref
+#
+	#for child in held_item.get_children():
+		#if child is CollisionShape3D:
+			#child.disabled = true
+
+
+func switch_slot(index : int, slot := BODY_SLOT.HAND) -> void :
+	var slotref : SlotRef
+	var item_var : Item
+	var holder_var : Node3D
+
+	match slot:
+		BODY_SLOT.NONE:
+			return
+		BODY_SLOT.HAND:
+			slotref = inventory.get_slotref(index)
+			item_var = held_item
+			holder_var = item_holder
+		BODY_SLOT.HEAD:
+			slotref = armor_inventory.get_slotref(index)
+			item_var = head_item
+			holder_var = head_slot
+		BODY_SLOT.BODY:
+			slotref = armor_inventory.get_slotref(index)
+			item_var = body_item
+			holder_var = body_slot
+
 	if not is_instance_valid(slotref):
-		if is_instance_valid(held_item): # if nothing in new slot but held item then delete item and return
-			held_item.free()
+		if is_instance_valid(item_var): # if nothing in new slot but held item then delete item and return
+			item_var.free()
 		return
 
-	if is_instance_valid(held_item): # if held item and new slot is actually new then delete held item
-		if slotref != held_item.slotref: # but if the new slot is the same as held item then return
-			held_item.free()
+	if is_instance_valid(item_var): # if held item and new slot is actually new then delete held item
+		if slotref != item_var.slotref: # but if the new slot is the same as held item then return
+			item_var.free()
 		else:
 			return
 
-	held_item = Global.tag_to_item(slotref.itemref.ref_id).instantiate()
-	item_holder.add_child(held_item)
+	item_var = Global.tag_to_item(slotref.itemref.ref_id).instantiate()
+	holder_var.add_child(item_var)
 
-	held_item.global_position = item_holder.global_position
-	held_item.rotation = item_holder.rotation
-	held_item.freeze = true
+	item_var.global_position = holder_var.global_position
+	item_var.rotation = holder_var.rotation
+	item_var.freeze = true
 
-	held_item.slotref = slotref
-	holding_item = true
+	item_var.slotref = slotref
 
-	for child in held_item.get_children():
+	for child in item_var.get_children():
 		if child is CollisionShape3D:
 			child.disabled = true
 
+	match slot:
+		BODY_SLOT.NONE:
+			return
+		BODY_SLOT.HAND:
+			held_item = item_var
+			item_holder = holder_var
+		BODY_SLOT.HEAD:
+			head_item = item_var
+			head_slot = holder_var
+		BODY_SLOT.BODY:
+			body_item = item_var
+			body_slot = holder_var
 
-func _on_inventory_updated(new_invref: InventoryRef):
-	if not is_instance_valid(held_item): # if not holding an item switch to current slot (does nothing if nothing in slot)
-		switch_held(ui.active_slot)
+
+func _on_inventory_updated(new_invref: InventoryRef, slot : BODY_SLOT, index := ui.active_slot):
+	var item_var : Item
+	match slot:
+		BODY_SLOT.NONE:
+			return
+		BODY_SLOT.HAND:
+			item_var = held_item
+		BODY_SLOT.HEAD:
+			item_var = head_item
+		BODY_SLOT.BODY:
+			item_var = body_item
+			print("bodied")
+
+	if not is_instance_valid(item_var): # if not holding an item switch to current slot (does nothing if nothing in slot)
+		switch_slot(index, slot)
 		return
-	elif not new_invref.get_slotref(ui.active_slot): # if no item in slot delete held item
-		held_item.free()
+	elif not new_invref.get_slotref(index): # if no item in slot delete held item
+		match slot:
+			BODY_SLOT.NONE:
+				return
+			BODY_SLOT.HAND:
+				held_item.free()
+			BODY_SLOT.HEAD:
+				head_item.free()
+			BODY_SLOT.BODY:
+				body_item.free()
 		return
-	elif new_invref.get_slotref(ui.active_slot) != held_item.slotref: # if item different then switch
-		call_deferred("switch_held", ui.active_slot) #switch_held(ui.active_slot)
+	elif new_invref.get_slotref(index) != item_var.slotref: # if item different then switch
+		call_deferred("switch_slot", index, slot) #switch_slot(index, slot)
 		return
 
 

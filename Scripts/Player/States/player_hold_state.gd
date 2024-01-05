@@ -22,7 +22,7 @@ func _unhandled_input(event):
 			transitioned.emit(self, "charge")
 	#elif event.is_action_pressed("interact"):
 		#player.pick_up()
-	elif event.is_action_pressed("drop") and player.holding_item:
+	elif event.is_action_pressed("drop") and is_instance_valid(player.held_item):
 		if is_instance_valid(player.held_item) and player.held_item is Item:
 			transitioned.emit(self, "throw")
 	elif event.is_action_pressed("next_hotbar_slot"):

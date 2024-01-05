@@ -6,17 +6,9 @@ class_name ArmorModifier
 @export var set_partner : StringName ## Only the head piece should care.
 
 
-func _ready():
-	mod_comp.modifiers_changed.connect(update_bonuses)
-
-
 func enable():
-	mod_comp.target.health_comp.defense_bonus.add_bonus(String(tag), defense)
+	mod_comp.target.health_comp.defense_bonus.add_bonus(String(id), defense)
 
 
 func disable():
-	mod_comp.target.health_comp.defense_bonus.remove_bonus(String(tag))
-
-
-func update_bonuses() -> void :
-	pass
+	mod_comp.target.health_comp.defense_bonus.remove_bonus(String(id))

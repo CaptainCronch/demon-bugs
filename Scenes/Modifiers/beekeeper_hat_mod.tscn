@@ -7,4 +7,4 @@ script = ExtResource("1_xyoya")
 defense = 2.0
 set_defense = 1.0
 set_partner = &"beekeeper_outfit"
-tag = &"beekeeper_hat"
+id = &"beekeeper_hat"

@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtf43fv3aiwtr"]
+
+[ext_resource type="Script" path="res://Scripts/Classes/item.gd" id="1_aob2f"]
+[ext_resource type="Texture2D" uid="uid://db5p23x4jjytc" path="res://Assets/texture_09.png" id="2_uroek"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plort"]
+size = Vector3(0.625, 0.5, 0.625)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0igr2"]
+albedo_texture = ExtResource("2_uroek")
+
+[node name="BeekeeperOutfit" type="RigidBody3D"]
+collision_layer = 16
+collision_mask = 51
+script = ExtResource("1_aob2f")
+ref_id = "beekeeper_outfit"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0)
+shape = SubResource("BoxShape3D_plort")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.127454, 0)
+radius = 0.31
+height = 0.5
+material = SubResource("StandardMaterial3D_0igr2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.275)
+operation = 2
+size = Vector3(0.2, 1, 0.2)
+material = SubResource("StandardMaterial3D_0igr2")

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlrdw38adnsgo"]
+
+[ext_resource type="Script" path="res://Scripts/Classes/armor_modifier.gd" id="1_8rhcp"]
+
+[node name="BeekeeperOutfitMod" type="Node"]
+script = ExtResource("1_8rhcp")
+defense = 3.0
+id = &"beekeeper_outfit"

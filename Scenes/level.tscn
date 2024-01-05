@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://ds82nbqrof5xr"]
+[gd_scene load_steps=27 format=3 uid="uid://ds82nbqrof5xr"]
 
 [ext_resource type="Texture2D" uid="uid://bx3q1d6c8k7bt" path="res://Assets/texture_10.png" id="1_hm3ms"]
 [ext_resource type="PackedScene" uid="uid://cpsbck5o8h5qa" path="res://Scenes/Player/player.tscn" id="2_0uico"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cgmw6nuxj2d8r" path="res://Scenes/Items/demon_sickle.tscn" id="12_22w3c"]
 [ext_resource type="Script" path="res://Scripts/Classes/inventoryref.gd" id="12_a5c8j"]
 [ext_resource type="PackedScene" uid="uid://cmfupjgyd7biq" path="res://Scenes/Items/beekeeper_hat.tscn" id="13_yuojv"]
+[ext_resource type="PackedScene" uid="uid://dtf43fv3aiwtr" path="res://Scenes/Items/beekeeper_outfit.tscn" id="14_1jh2v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n2pj1"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -72,16 +73,19 @@ albedo_texture = ExtResource("4_l0ih0")
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 allowed_tag = ""
+slot_type = 1
 
 [sub_resource type="Resource" id="Resource_lv4vn"]
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 allowed_tag = ""
+slot_type = 1
 
 [sub_resource type="Resource" id="Resource_mg8un"]
 script = ExtResource("12_a5c8j")
 slotref_list = Array[Resource("res://Scripts/Classes/slotref.gd")]([null, null, null, null, null, null, null, null, null, null, null, null, null, null, null])
 allowed_tag = ""
+slot_type = 1
 
 [node name="Level" type="Node3D"]
 
@@ -414,5 +418,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7936, 7.79614, 22.1775)
 
 [node name="BeekeeperHat" parent="." instance=ExtResource("13_yuojv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.27158, 0.412496, 23.7667)
+
+[node name="BeekeeperOutfit" parent="." instance=ExtResource("14_1jh2v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4246, 0.573728, 22.9596)
 
 [connection signal="body_entered" from="Basket/Area3D" to="Basket" method="_on_body_entered"]

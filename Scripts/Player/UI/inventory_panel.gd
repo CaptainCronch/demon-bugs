@@ -13,10 +13,10 @@ func _ready():
 
 func set_inventory_data(invref : InventoryRef) -> void :
 	invref.inventory_updated.connect(populate_grid)
-	populate_grid(invref)
+	populate_grid(invref, 0, -1)
 
 
-func populate_grid(invref: InventoryRef) -> void :
+func populate_grid(invref: InventoryRef, _slot, _index) -> void :
 	for child in grid.get_children():
 		child.queue_free()
 

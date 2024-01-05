@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemRef" load_steps=4 format=3 uid="uid://ci3nktssiqwjc"]
+
+[ext_resource type="Texture2D" uid="uid://b2wo57rakd4jw" path="res://Assets/green-eyed-people.jpg" id="1_x43kq"]
+[ext_resource type="PackedScene" uid="uid://dlrdw38adnsgo" path="res://Scenes/Modifiers/beekeeper_outfit_mod.tscn" id="2_dpsiy"]
+[ext_resource type="Script" path="res://Scripts/Classes/itemref.gd" id="3_mcji4"]
+
+[resource]
+script = ExtResource("3_mcji4")
+ref_id = "beekeeper_outfit"
+image = ExtResource("1_x43kq")
+name = "Beekeeper Outfit"
+description = "Part of the Beekeeper set."
+stackable = false
+max_stack = 1
+tags = ["body"]
+modifier_scene = ExtResource("2_dpsiy")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=33 format=3 uid="uid://dy6oqfyna5fh4"]
 
-[ext_resource type="Script" path="res://Scripts/Bug/bug.gd" id="1_dcr2u"]
+[ext_resource type="Script" path="res://Scripts/Enemies/bug.gd" id="1_dcr2u"]
 [ext_resource type="Script" path="res://Scripts/Classes/weighted_inventoryref.gd" id="2_bhmm0"]
 [ext_resource type="Script" path="res://Scripts/Classes/attack.gd" id="2_c41qw"]
 [ext_resource type="PackedScene" uid="uid://dgm8e3v4kpfux" path="res://Scenes/Components/platformer_component.tscn" id="2_k3w74"]
@@ -15,11 +15,11 @@
 [ext_resource type="Script" path="res://Scripts/Classes/state_machine.gd" id="6_o58k5"]
 [ext_resource type="PackedScene" uid="uid://cpb1xkk2tq52j" path="res://Scenes/Components/hurt_area_component.tscn" id="6_rlhxv"]
 [ext_resource type="Resource" uid="uid://betck3oxakj1e" path="res://Resources/bug_net.tres" id="6_s44dk"]
-[ext_resource type="Script" path="res://Scripts/Bug/States/bug_wander_state.gd" id="7_34q3n"]
-[ext_resource type="Script" path="res://Scripts/Bug/States/bug_wait_state.gd" id="8_x74jg"]
-[ext_resource type="Script" path="res://Scripts/Bug/States/bug_chase_state.gd" id="10_bkqep"]
-[ext_resource type="Script" path="res://Scripts/Bug/States/bug_attack_state.gd" id="11_hq22q"]
-[ext_resource type="Script" path="res://Scripts/Bug/States/bug_anticipation_state.gd" id="13_edfgo"]
+[ext_resource type="Script" path="res://Scripts/Enemies/States/bug_wander_state.gd" id="7_34q3n"]
+[ext_resource type="Script" path="res://Scripts/Enemies/States/bug_wait_state.gd" id="8_x74jg"]
+[ext_resource type="Script" path="res://Scripts/Enemies/States/bug_chase_state.gd" id="10_bkqep"]
+[ext_resource type="Script" path="res://Scripts/Enemies/States/bug_attack_state.gd" id="11_hq22q"]
+[ext_resource type="Script" path="res://Scripts/Enemies/States/bug_anticipation_state.gd" id="13_edfgo"]
 
 [sub_resource type="Resource" id="Resource_ymjcy"]
 script = ExtResource("4_ckeq3")

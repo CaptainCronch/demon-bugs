@@ -2,11 +2,12 @@ extends Resource
 class_name InventoryRef
 
 signal inventory_interact(invref: InventoryRef, index: int, button: int)
-signal inventory_updated(invref: InventoryRef)
+signal inventory_updated(invref: InventoryRef, slot : Player.BODY_SLOT, index : int)
 signal slotref_changed(old_ref : SlotRef, new_ref : SlotRef) ## Used only for modifiers currently.
 
 @export var slotref_list : Array[SlotRef] = []
 @export var allowed_tag := ""
+@export var slot_type := Player.BODY_SLOT.HAND
 
 
 func get_slotrefs() -> Array[SlotRef] :
@@ -27,7 +28,7 @@ func grab_slotref(index : int) -> SlotRef : ## Called on primary click with empt
 	var slotref = get_slotref(index)
 	if slotref:
 		set_slotref(index, null)
-		inventory_updated.emit(self)
+		emit_updated(index)
 		return slotref
 	else:
 		return null
@@ -40,7 +41,7 @@ func grab_half_slotref(index : int) -> SlotRef : ## Called on secondary click wi
 		var half_amount = round(slotref.amount / 2)
 		get_slotref(index).amount = half_amount
 		slotref.amount -= half_amount
-		inventory_updated.emit(self)
+		emit_updated(index)
 		return slotref
 	else:
 		return null
@@ -52,11 +53,11 @@ func drop_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef : ## Called
 
 	if slotref and slotref.can_merge_with(grabbed_slotref):
 		var grabbed := slotref.merge_with(grabbed_slotref)
-		inventory_updated.emit(self)
+		emit_updated(index)
 		return grabbed
 	else:
 		set_slotref(index, grabbed_slotref)
-		inventory_updated.emit(self)
+		emit_updated(index)
 		return slotref
 
 
@@ -69,7 +70,7 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef : ##
 	elif slotref.can_merge_with(grabbed_slotref, true):
 		slotref.merge_with(grabbed_slotref, true)
 
-	inventory_updated.emit(self)
+	emit_updated(index)
 
 	if grabbed_slotref.amount > 0:
 		return grabbed_slotref
@@ -89,7 +90,7 @@ func drop_single_slotref(grabbed_slotref : SlotRef, index : int) -> SlotRef : ##
 func delete_slotref(index : int) -> void :
 	slotref_changed.emit(get_slotref(index), null)
 	set_slotref(index, null)
-	inventory_updated.emit(self)
+	emit_updated(index)
 
 
 func add_slotref(input : SlotRef) -> SlotRef :
@@ -100,12 +101,12 @@ func add_slotref(input : SlotRef) -> SlotRef :
 			if space == null:
 				set_slotref(i, slotref)
 				slotref = null
-				inventory_updated.emit(self)
+				emit_updated(i)
 				return null
 			if space.can_merge_with(slotref):
 				var remainder := space.merge_with(slotref)
 				if remainder == null:
-					inventory_updated.emit(self)
+					emit_updated(i)
 					return null
 				else: add_slotref(remainder)
 		i += 1
@@ -121,3 +122,7 @@ func check_eligibility(new_slotref : SlotRef, _index : int) -> bool :
 	if not allowed_tag: return true
 	if new_slotref.itemref.tags.has(allowed_tag): return true
 	else: return false
+
+
+func emit_updated(index := -1) -> void :
+	inventory_updated.emit(self, slot_type, index)
